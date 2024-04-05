@@ -81,7 +81,7 @@ for file in fl_all:
     print(a.line6562.ew)
     dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
     savename = datafile_folder_apo+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
-    pickle.dump(a, open(savename, 'w'))
+    pickle.dump(a, open(savename, 'wb'))
     print(k, mark)
     k+=1
 

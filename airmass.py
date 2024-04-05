@@ -630,7 +630,7 @@ def equivalent_width(velo,wl,flux,linecenter,snr):
         vlim = 800
         ll = -380
         ul = 620
-    print(linecenter,vlim)
+    # print(linecenter,vlim)
     wl_linepart = wl[(velo > ll) & (velo < ul)]
     dwl = wl_linepart[-1] - wl_linepart[0]
     v_linepart = velo[(velo > ll) & (velo < ul)]

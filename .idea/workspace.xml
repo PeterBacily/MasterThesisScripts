@@ -4,26 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/EW_Table_APO_2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ExecuteDataReduc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Make_Plots.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Path_check.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eShel_order_overlap_problems.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ew_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linelists.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/make_plots_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/normilization_plot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/open datafiles.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/open_datafiles.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/open_masterfiles.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/single order error.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stack_files.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/t.py" afterDir="false" />
-    </list>
+    <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -348,6 +329,14 @@
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
     </task>
+    <task id="LOCAL-00001" summary="changes">
+      <created>1712314991956</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712314991956</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -413,6 +402,10 @@
     <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
       <collection />
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

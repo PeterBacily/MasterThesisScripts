@@ -126,7 +126,6 @@ def timeanddate2(DATE_OBS):
     d = dt[8:10]
     t = dt[11:16]
     m_n = calendar.month_abbr[m]
-    datafile.close()
     return str(d) + ' ' + str( m_n) + ' ' + str(t)
 
 def date(file):

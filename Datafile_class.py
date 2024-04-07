@@ -104,6 +104,7 @@ class Datafile_mercator:
             setattr(self,linekey , linedata)
             setattr(self,linekey+'_original',linedata_original)
             self.available_lines.append(linekey)
+        data.close()
 
 class Datafile_apo:
     observatory = 'APO'
@@ -152,6 +153,7 @@ class Datafile_apo:
             setattr(self,linekey , linedata)
             setattr(self,linekey+'_original',linedata_original)
             self.available_lines.append(linekey)
+        data.close()
 
 
 # class datafile_stack_apo:

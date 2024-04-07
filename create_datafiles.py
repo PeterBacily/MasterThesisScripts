@@ -78,10 +78,11 @@ for file in fl_all:
     elif k in mark3:
         mark = 3
     a = Datafile_class.Datafile_apo(file, i=k, mark=mark)
-    print(a.line6562.ew)
     dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
     savename = datafile_folder_apo+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
-    pickle.dump(a, open(savename, 'wb'))
+    workfileresource = open(savename, 'wb')
+    pickle.dump(a, workfileresource)
+    workfileresource.close()
     print(k, mark)
     k+=1
 

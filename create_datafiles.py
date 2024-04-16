@@ -86,9 +86,8 @@ for file in fl_eshel_all:
     print(k, mark)
     k+=1
 
-quit()
 
-# # # print sortedfl_lapalma
+
 k=1
 for file in sortedfl_lapalma:
     print(k)

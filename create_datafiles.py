@@ -46,7 +46,7 @@ fl_eshel_clean_folder = str(Data_folder)+r'\eShelData\data\clean' #Zonder twee s
 filelist_lapalma_folder = str(Data_folder)+r'\LaPalmaData'
 fl_eshel_all_folder = str(Data_folder)+r'\eShelData\data\AlleSpectra'
 fl_eshel_goodSNR_folder = str(Data_folder)+r'\eShelData\data'
-fl_all = glob.glob(fl_eshel_all_folder+r'\*.fit')
+fl_eshel_all = glob.glob(fl_eshel_all_folder+r'\*.fit')
 fl_clean = glob.glob(fl_eshel_clean_folder+r'\*.fit')
 fl_goodSNR = glob.glob(fl_eshel_goodSNR_folder+r'\*.fit')
 filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
@@ -68,8 +68,8 @@ mark3 = [8, 9]
 sortedfl_lapalma = sorted(filelist_lapalma, key=lambda x: bjd(x), reverse=False)
 k = 1
 
-#hier was je geb
-for file in fl_all:
+
+for file in fl_eshel_all:
     mark = 0
     if k in mark1:
         mark = 1
@@ -96,7 +96,9 @@ for file in sortedfl_lapalma:
     a = Datafile_class.Datafile_mercator(file, i=k)
     dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
     savename = datafile_folder_merc+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
-    pickle.dump(a, open(savename, 'w'))
+    workfileresource = open(savename, 'wb')
+    pickle.dump(a, workfileresource)
+    workfileresource.close()
     k+=1
 # testfile_apo = fl_clean[12]
 # a = Datafile_class.Datafile_apo(testfile_apo)

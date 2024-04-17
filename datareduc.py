@@ -43,7 +43,6 @@ filepath_eshel_spectra_info = str(Data_folder)+r'\masterfiles\dict_apo_files.txt
 f = open(filepath_eshel_spectra_info,'r')
 dict_eshel = ast.literal_eval(f.read())
 f.close()
-quit()
 # del filelist2[0]
 # del filelist2[-6:]
 # del filelist2[]

@@ -28,7 +28,7 @@ datafolder = r'C:\peter\School\Master Scriptie\Data\EW\apo/'
 
 datafile_list = glob.glob(datafolder + '*[!nn].npy')
 sorted_datafilelist = sorted(datafile_list, key=lambda x: np.load(x)[9])
-print len(sorted_datafilelist)
+print(len(sorted_datafilelist))
 print datafile_list
 print sorted_datafilelist
 # print len(datafile_list)

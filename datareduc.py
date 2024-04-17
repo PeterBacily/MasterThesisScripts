@@ -1,7 +1,7 @@
 from __future__ import division
 import matplotlib.pyplot as plt
 import glob
-import pyfits as pf
+import astropy.io.fits as pf
 from astropy.time import Time
 import math
 import calendar
@@ -583,7 +583,7 @@ def plot_quotient_eShel(datafile_folder, plot_save_folder, linelist,overplot = '
         file2_id = file2_info[1] + str(file2_info[0])
         fi=[file1_info,file2_info]
         for line in linelist:
-            print line[7]
+            print(line[7])
             swl = line[3]-40
             ewl = line[6]+40
             lw,v,qf =airmass.quotient_eShel(file1,file2,line,swl,ewl, v_rad=18.5)

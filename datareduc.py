@@ -13,6 +13,15 @@ from PyAstronomy import pyasl
 import matplotlib.style
 import SavitzkyGolay
 import ast
+import os
+import Path_check
+folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
+Path_check.dir_check(folder_of_this_file)
+
+[converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
+print(converted_Data_folder, Data_folder, Plots_folder, Scripts_folder)
+
+
 matplotlib.style.use('classic')
 vsini =127
 c_light = 299792.458
@@ -26,14 +35,15 @@ ll3 = [[r'H$\alpha$', 35, 6562.819, 6554, 6556, 6578, 6579],[r'H$\beta$',35, 486
 ll4 = [[r'H$\alpha$', 35, 6562.819, 6554, 6556, 6578, 6579],[r'H$\beta$',35, 4861.333, 4838.0-5.0, 4839.0, 4880.0, 4881.0+5.0],['He I',35, 5875.621, 5865, 5869.1, 5879.9, 5882]]
 ll_lapalma = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['Hy', 4340.472, 4322, 4324, 4357, 4360, r'H$\gamma$ 4340'], ['He_I', 4026.1914, 4018.1914, 4022.1914, 4030.1914, 4034.1914, 'He I 4026'], ['He_I', 4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'], ['He_I', 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 5875.621, 5863.0, 5864.5, 5885.0, 5885.8, 'He I 5876'], ['He_II', 4541.6, 4498, 4499, 4580, 4581, 'He II 4542'], ['He_II', 4685.804, 4679, 4680, 4690, 4691, 'He II 4686'], ['He_II', 5411.521, 5400.7, 5401.7, 5422.0, 5423.0, 'He II 5412'], ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'], ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
 ll_TVS_eshel = [['Ha', 35, 6562.819, 6554, 6556, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 35, 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['He_I', 35, 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 35, 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5876'], ['He_II', 35, 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4542'], ['He_II', 35, 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4686'], ['He_II', 35, 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5412'], ['O_III', 35, 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'], ['C_IV', 35, 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
-fl_clean = glob.glob(r'D:\Peter\School\Master Thesis\Data\eShelData\data\clean\*.fit')
-filelist = glob.glob(r'D:\Peter\School\Master Thesis\Data\LaPalmaData\*.fits')
-filelist_lapalma = glob.glob(r'D:\Peter\School\Master Thesis\Data\LaPalmaData\*.fits')
-filelist2 =  glob.glob(r'D:\Peter\School\Master Thesis\Data/eShelData/data/*.fit')
-filepath_eshel_spectra_info = r'D:\Peter\School\Master Thesis\Data\masterfiles\dict_apo_files.txt'
+fl_clean = glob.glob(str(Data_folder) + r'\eShelData\data\clean\*.fit')
+filelist = glob.glob(str(Data_folder) + r'\LaPalmaData\*.fits')
+filelist_lapalma = glob.glob(str(Data_folder)+r'\LaPalmaData\*.fits')
+filelist2 = glob.glob(str(Data_folder)+r'/eShelData/data/*.fit')
+filepath_eshel_spectra_info = str(Data_folder)+r'\masterfiles\dict_apo_files.txt'
 f = open(filepath_eshel_spectra_info,'r')
 dict_eshel = ast.literal_eval(f.read())
 f.close()
+quit()
 # del filelist2[0]
 # del filelist2[-6:]
 # del filelist2[]
@@ -402,13 +412,13 @@ def plot_TVS_eShel(datafile_folder, plot_save_folder, linelist,show='off',save='
     filelist = glob.glob(datafile_folder+'\*.fit')
     # print filelist
     for line in linelist:
-        print line[7]
+        print(line[7])
         swl = line[3]-40
         ewl = line[6]+40
         lw,TVS,v,n =airmass.TVS(filelist,line,swl,ewl, v_rad=18.5)
         sgn = 101  # window size for SavitzkyGolay (must be odd integer)
         TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
-        print v[sgn] - v[0]
+        print(v[sgn] - v[0])
         p = chi2.ppf(0.99, n-1)/(n-1)
         vs,lws = airmass.overplot(filelist,'-',line, '-',v_rad=18.5,startwl=swl,endwl=ewl)
         f, (ax1, ax2) = plt.subplots(2, sharex=True)
@@ -458,7 +468,7 @@ def plot_TVS_eShel(datafile_folder, plot_save_folder, linelist,show='off',save='
 def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist,show='off',save='on',sg='on',oneline='on'):
     filelist = glob.glob(datafile_folder+'\*.fits')
     for line in linelist:
-        print line[6]
+        print(line[6])
         swl = line[2]-40
         ewl = line[5]+40
         lw,TVS,v,n =airmass.TVS_LaPalma(filelist,line,swl,ewl, v_rad=18.5)

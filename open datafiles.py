@@ -1,7 +1,7 @@
 from __future__ import division
 import matplotlib.pyplot as plt
 import glob
-import pyfits as pf
+import astropy.io.fits as pf
 from astropy.time import Time
 import math
 import calendar

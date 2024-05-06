@@ -15,7 +15,7 @@ import datareduc
 import pickle
 import os
 import Datafile_class
-def apo(wantedmarks = [0,3],path = r'D:\Peter\School\Master Thesis\Data\masterfiles\apo\\',manual_filelist=None):
+def apo(wantedmarks = [0,3],path = r'peter\Master Thesis\Datareduction\Data\masterfiles\apo\\',manual_filelist=None):
     if manual_filelist == None:
         fl = glob.glob(path+r'*.txt')
     else:
@@ -33,7 +33,7 @@ def apo(wantedmarks = [0,3],path = r'D:\Peter\School\Master Thesis\Data\masterfi
     sortednewlist = sorted(newlist,key=lambda x: x.i)
     return sortednewlist
 
-def mercator(path = r'D:\Peter\School\Master Thesis\Data\masterfiles\mercator\\',manual_filelist=None):
+def mercator(path = r'D:\peter\Master Thesis\Datareduction\Data\masterfiles\mercator\\',manual_filelist=None):
     if manual_filelist == None:
         fl = glob.glob(path+r'*.txt')
     else:

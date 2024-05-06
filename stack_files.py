@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.backends.backend_pdf
 import glob
 import SavitzkyGolay
-import pyfits as pf
+import astropy.io.fits as pf
 from astropy.time import Time
 import math
 import calendar
@@ -20,36 +20,36 @@ import Datafile_class
 import open_masterfiles
 import warnings
 
-# files = open_masterfiles.apo()
-#
-# clusters = []
-# cluster = []
-#
-# i=1
-# imax = len(files)
-# # print imax
-# while i<imax:
-#     file0 = files[i-1]
-#     file1 = files[i]
-#     t0 = file0.HJD
-#     t1 = file1.HJD
-#     dt = (t1-t0)*24*60
-#     # print i
-#     cluster.append(file0)
-#     if dt>20:
-#         clusters.append(cluster)
-#         cluster = []
-#     i+=1
-# cluster.append(file1)
-# clusters.append(cluster)
-#
-# # for file in files:
+files = open_masterfiles.apo()
+
+clusters = []
+cluster = []
+
+i=1
+imax = len(files)
+# print imax
+while i<imax:
+    file0 = files[i-1]
+    file1 = files[i]
+    t0 = file0.HJD
+    t1 = file1.HJD
+    dt = (t1-t0)*24*60
+    # print i
+    cluster.append(file0)
+    if dt>20:
+        clusters.append(cluster)
+        cluster = []
+    i+=1
+cluster.append(file1)
+clusters.append(cluster)
+
 # for file in files:
-#     print file.i, file.time_and_date
+for file in files:
+    print(file.i, file.time_and_date)
 #
 # # k=1
 # a = open(file, 'r')
-clusters = pickle.load(open(r'D:\Peter\School\Master Thesis\Data\apo_file_stack_list.txt','r'))
+# clusters = pickle.load(open(r'D:\Peter\School\Master Thesis\Data\apo_file_stack_list.txt','r'))
 # for cluster in clusters:
 #     print '----'
 #     wls = []

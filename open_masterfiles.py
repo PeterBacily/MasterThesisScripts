@@ -15,7 +15,7 @@ import datareduc
 import pickle
 import os
 import Datafile_class
-def apo(wantedmarks = [0,3],path = r'D:\peter\Master Thesis\Datareduction\Data\masterfiles\apo\\',manual_filelist=None):
+def apo(wantedmarks = [0,3],path = r'D:\peter\Master_Thesis\Datareduction\Data\masterfiles\apo\\',manual_filelist=None):
     if manual_filelist == None:
         fl = glob.glob(path+r'*.txt')
     else:

@@ -22,8 +22,11 @@ def apo(wantedmarks = [0,3],path = r'D:\peter\Master_Thesis\Datareduction\Data\m
         fl=manual_filelist
     datafiles = []
     print(fl)
+    # for line in testfile:
+    #     print line
+    # print b.line6562.ew
     for file in fl:
-        a = open(file, 'r')
+        a = open(file, 'rb')
         # for line in testfile:
         #     print line
         b = pickle.load(a)
@@ -32,7 +35,6 @@ def apo(wantedmarks = [0,3],path = r'D:\peter\Master_Thesis\Datareduction\Data\m
     newlist = [x for x in datafiles if x.mark in wantedmarks]
     sortednewlist = sorted(newlist,key=lambda x: x.i)
     return sortednewlist
-
 def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Data\masterfiles\mercator\\',manual_filelist=None):
     if manual_filelist == None:
         fl = glob.glob(path+r'*.txt')

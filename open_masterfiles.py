@@ -15,13 +15,13 @@ import datareduc
 import pickle
 import os
 import Datafile_class
-def apo(wantedmarks = [0,3],path = r'peter\Master Thesis\Datareduction\Data\masterfiles\apo\\',manual_filelist=None):
+def apo(wantedmarks = [0,3],path = r'D:\peter\Master Thesis\Datareduction\Data\masterfiles\apo\\',manual_filelist=None):
     if manual_filelist == None:
         fl = glob.glob(path+r'*.txt')
     else:
         fl=manual_filelist
     datafiles = []
-
+    print(fl)
     for file in fl:
         a = open(file, 'r')
         # for line in testfile:

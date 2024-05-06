@@ -27,7 +27,7 @@ cluster = []
 
 i=1
 imax = len(files)
-# print imax
+print(imax)
 while i<imax:
     file0 = files[i-1]
     file1 = files[i]

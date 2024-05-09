@@ -4,10 +4,15 @@ import astropy.io.fits as pf
 import airmass
 import matplotlib.style
 import pickle
-import Datafile_class
+# import Datafile_class
 import os
 import Path_check
 import pathlib
+import sys
+from Datafile_class import *
+sys.modules['Line'] = Line
+sys.modules['Datafile_mercator'] = Datafile_mercator
+sys.modules['Datafile_apo'] = Datafile_apo
 # import matplotlib.pyplot as plt
 # from astropy.time import Time
 # import math
@@ -77,7 +82,7 @@ for file in fl_eshel_all:
         mark = 2
     elif k in mark3:
         mark = 3
-    a = Datafile_class.Datafile_apo(file, i=k, mark=mark)
+    a = Datafile_apo(file, i=k, mark=mark)
     dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
     savename = datafile_folder_apo+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
     workfileresource = open(savename, 'wb')
@@ -92,7 +97,7 @@ k=1
 for file in sortedfl_lapalma:
     print(k)
     startdate = airmass.timeanddatelp(file)
-    a = Datafile_class.Datafile_mercator(file, i=k)
+    a = Datafile_mercator(file, i=k)
     dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
     savename = datafile_folder_merc+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
     workfileresource = open(savename, 'wb')

@@ -14,8 +14,13 @@ import matplotlib.style
 import datareduc
 import pickle
 import os
-import Datafile_class
-def apo(wantedmarks = [0,3],path = r'D:\peter\Master_Thesis\Datareduction\Data\masterfiles\apo\\',manual_filelist=None):
+# import Datafile_class
+import sys
+from Datafile_class import *
+sys.modules['Line'] = Line
+sys.modules['Datafile_mercator'] = Datafile_mercator
+sys.modules['Datafile_apo'] = Datafile_apo
+def apo(wantedmarks = [0,3],path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\apo\test\\',manual_filelist=None):
     if manual_filelist == None:
         fl = glob.glob(path+r'*.txt')
     else:
@@ -26,16 +31,18 @@ def apo(wantedmarks = [0,3],path = r'D:\peter\Master_Thesis\Datareduction\Data\m
     #     print line
     # print b.line6562.ew
     for file in fl:
+        print(file)
         a = open(file, 'rb')
         # for line in testfile:
         #     print line
         b = pickle.load(a)
         # print b.line6562.ew
         datafiles.append(b)
+        a.close()
     newlist = [x for x in datafiles if x.mark in wantedmarks]
     sortednewlist = sorted(newlist,key=lambda x: x.i)
     return sortednewlist
-def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Data\masterfiles\mercator\\',manual_filelist=None):
+def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',manual_filelist=None):
     if manual_filelist == None:
         fl = glob.glob(path+r'*.txt')
     else:
@@ -49,5 +56,10 @@ def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Data\masterfiles\merc
         b = pickle.load(a)
         # print b.line6562.ew
         datafiles.append(b)
+        a.close()
     sortednewlist = sorted(datafiles,key=lambda x: x.i)
     return sortednewlist
+
+instances= apo()
+
+print(type(instances[0]))

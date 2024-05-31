@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
-      <change beforePath="$PROJECT_DIR$/stack_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/stack_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open_masterfiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/open_masterfiles.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +178,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.testfile">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -197,7 +198,7 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <configuration name="create_datafiles" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Datafile_class" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -209,7 +210,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/create_datafiles.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Datafile_class.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -218,7 +219,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="datareduc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="open_datafiles" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -230,7 +231,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/datareduc.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/open_datafiles.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -281,7 +282,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="testfile" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="testfile" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -303,19 +304,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.stack_files" />
-      <item itemvalue="Python.datareduc" />
-      <item itemvalue="Python.open_masterfiles" />
-      <item itemvalue="Python.create_datafiles" />
       <item itemvalue="Python.testfile" />
+      <item itemvalue="Python.Datafile_class" />
+      <item itemvalue="Python.open_datafiles" />
+      <item itemvalue="Python.stack_files" />
+      <item itemvalue="Python.open_masterfiles" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.open_masterfiles" />
-        <item itemvalue="Python.stack_files" />
-        <item itemvalue="Python.datareduc" />
-        <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.testfile" />
+        <item itemvalue="Python.open_masterfiles" />
+        <item itemvalue="Python.Datafile_class" />
+        <item itemvalue="Python.stack_files" />
+        <item itemvalue="Python.open_datafiles" />
       </list>
     </recent_temporary>
   </component>
@@ -394,7 +395,63 @@
       <option name="project" value="LOCAL" />
       <updated>1715001279549</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="changes">
+      <created>1715001497276</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1715001497276</updated>
+    </task>
+    <task id="LOCAL-00011" summary="changes">
+      <created>1715001595385</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1715001595385</updated>
+    </task>
+    <task id="LOCAL-00012" summary="changes">
+      <created>1715001793468</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1715001793468</updated>
+    </task>
+    <task id="LOCAL-00013" summary="changes">
+      <created>1715001870662</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1715001870662</updated>
+    </task>
+    <task id="LOCAL-00014" summary="changes">
+      <created>1715001912342</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1715001912342</updated>
+    </task>
+    <task id="LOCAL-00015" summary="changes">
+      <created>1715001929341</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1715001929341</updated>
+    </task>
+    <task id="LOCAL-00016" summary="changes">
+      <created>1715002635149</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1715002635149</updated>
+    </task>
+    <task id="LOCAL-00017" summary="changes">
+      <created>1715277110901</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1715277110901</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">

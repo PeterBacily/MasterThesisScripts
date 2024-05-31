@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.backends.backend_pdf
 import glob
 import ast
-import pyfits as pf
+import astropy.io.fits as pf
 from astropy.time import Time
 import math
 import calendar

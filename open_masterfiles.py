@@ -26,12 +26,10 @@ def apo(wantedmarks = [0,3],path = r'D:\peter\Master_Thesis\Datareduction\Conver
     else:
         fl=manual_filelist
     datafiles = []
-    print(fl)
     # for line in testfile:
     #     print line
     # print b.line6562.ew
     for file in fl:
-        print(file)
         a = open(file, 'rb')
         # for line in testfile:
         #     print line
@@ -62,4 +60,6 @@ def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercat
 
 instances= apo()
 
-print(type(instances[0]))
+testfile = instances[0]
+
+print( testfile.line6562.wl, testfile.line6562.flux)

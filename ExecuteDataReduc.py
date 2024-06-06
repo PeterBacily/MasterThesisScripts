@@ -71,4 +71,5 @@ filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
 # for i in range(len(fl_clean)-1):
 #     print fl_clean[i],fl_clean[i+1]
 
-datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr\reference_line',   ll_nieuwe_lijnen,show='on', save = 'off', sg='off', oneline='on')
+# datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr\reference_line',   ll_nieuwe_lijnen,show='on', save = 'off', sg='off', oneline='on')
+

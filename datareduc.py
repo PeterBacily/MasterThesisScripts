@@ -11,10 +11,14 @@ from scipy.optimize import *
 from scipy.stats import chi2
 from PyAstronomy import pyasl
 import matplotlib.style
-import SavitzkyGolay
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore",category=DeprecationWarning)
+    import SavitzkyGolay
 import ast
 import os
 import Path_check
+import open_masterfiles
 folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
 Path_check.dir_check(folder_of_this_file)
 
@@ -519,6 +523,116 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist,show='off',save
             plt.show()
         plt.close()
 
+
+def plot_TVS_eShel_masterfile(datafile_folder, plot_save_folder, linelist,show='off',save='on',sg='on',oneline='on'):
+    # print datafile_folder
+    filelist = glob.glob(datafile_folder+'\*.fit')
+    # print filelist
+    swl = line[3]-40
+    ewl = line[6]+40
+    lw,TVS,v,n =airmass.TVS(filelist,line,swl,ewl, v_rad=18.5)
+    sgn = 101  # window size for SavitzkyGolay (must be odd integer)
+    TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
+    print(v[sgn] - v[0])
+    p = chi2.ppf(0.99, n-1)/(n-1)
+    vs,lws = airmass.overplot(filelist,'-',line, '-',v_rad=18.5,startwl=swl,endwl=ewl)
+    f, (ax1, ax2) = plt.subplots(2, sharex=True)
+    for i,spec in enumerate(lws):
+        ax1.plot(vs[i],spec,linewidth=1.0 )
+    ax1.set_title(line[7])
+    # ax1.legend()
+    # ax1.set_xlim([-600,600])
+    spec2 = spec[(v>-300)& (v<300)]
+    mini = np.floor(10*0.9*np.amin(spec2))/10
+    maxi = np.ceil(10*1.01*np.amax(spec2))/10
+    ax1.set_ylim([mini,maxi])
+    ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
+    ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
+    # if line[2]==5875.621:
+    #     TVS2 = np.array(TVS)*1.4
+    ax2.plot(v, TVS, color='b')
+    if sg == 'on':
+        ax2.plot(v,TVS_smoothed,color='r',linestyle='dashed')
+    if oneline == 'on':
+        ax2.axhline(y=1, color='gray', linestyle='--')
+    # else:
+    #     ax2.plot(v,TVS)
+    ax2.axvline(vsini, color='k', linestyle=':', linewidth=1)
+    ax2.axvline(-vsini, color='k', linestyle=':', linewidth=1)
+    # ax2.plot([v[0],v[-1]],[1,1],linestyle='dashed', linewidth=1,c='g')
+    # ax2.plot([v[0],v[-1]],[p,p], linewidth=1,c='g')
+    # print len(v)
+    # print len(TVS)
+    # print v
+    TVS2 = np.array(TVS)[(v>-200)& (v<200)]
+    # print TVS2
+    # print np.amax(TVS2)
+    maxi2 = np.ceil(np.amax(TVS2))
+    ax2.set_ylim([0,maxi2])
+    ax2.set_xlabel('V (km/s)')
+    ax1.set_ylabel('Normlized Flux')
+    ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
+    ax2.set_xlim([-600,600])
+    if save =='on':
+        plt.savefig(plot_save_folder + r'\\APO' + line[0] + str(int(np.round(line[2])))+'_TVS.pdf',format='pdf', dpi=1200)
+    if show =='on':
+        plt.show()
+    plt.close()
+
+
+def plot_TVS_Lapalma_masterfile(plot_save_folder,show='off',save='on',sg='on',oneline='on'):
+    filelist = open_masterfiles.mercator()
+    line = filelist[0].line6562.lineinfo
+    swl = line[2]-40
+    ewl = line[5]+40
+    lw,TVS,v,n =airmass.TVS_masterfiles(filelist,'line6562')
+    sgn= 151 #window size for SavitzkyGolay (must be odd integer)
+    TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS,sgn,4)
+    # print v[sgn]-v[0]
+    p = chi2.ppf(0.99, n-1)/(n-1)
+    vs,lws = airmass.overplot_masterfiles(filelist,'line6562')
+    f, (ax1, ax2) = plt.subplots(2, sharex=True)
+    for i,spec in enumerate(lws):
+        ax1.plot(vs[i],spec,linewidth=1.0 )
+    ax1.set_title(line[6])
+    # ax1.legend()
+    # ax1.set_xlim([-600,600])
+    spec2 = spec[(v>-300)& (v<300)]
+    mini = np.floor(10*0.9*np.amin(spec2))/10
+    maxi = np.ceil(10*1.01*np.amax(spec2))/10
+    ax1.set_ylim([mini,maxi])
+    ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
+    ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
+    # if line[2]==5875.621:
+    #     TVS2 = np.array(TVS)*1.4
+    ax2.plot(v, TVS, color='b')
+    if sg == 'on':
+        ax2.plot(v,TVS_smoothed,color='r',linestyle='dashed')
+    if oneline == 'on':
+        ax2.axhline(y=1, color='gray', linestyle='--')
+    # else:
+    #     ax2.plot(v,TVS)
+    ax2.axvline(vsini, color='k', linestyle=':', linewidth=1)
+    ax2.axvline(-vsini, color='k', linestyle=':', linewidth=1)
+    # ax2.plot([v[0],v[-1]],[1,1],linestyle='dashed', linewidth=1,c='g')
+    # ax2.plot([v[0],v[-1]],[p,p], linewidth=1,c='g')
+    # print len(v)
+    # print len(TVS)
+    # print v
+    TVS2 = np.array(TVS)[(v>-200)& (v<200)]
+    # print TVS2
+    # print np.amax(TVS2)
+    maxi2 = np.ceil(np.amax(TVS2))
+    ax2.set_ylim([0,maxi2])
+    ax2.set_xlabel('V (km/s)')
+    ax1.set_ylabel('Normlized Flux')
+    ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
+    ax2.set_xlim([-600,600])
+    if save =='on':
+        plt.savefig(plot_save_folder + r'\\LaPalma' + line[0] + str(int(np.round(line[1])))+'_TVS.pdf',format='pdf', dpi=1200)
+    if show =='on':
+        plt.show()
+    plt.close()
 
 # plot_TVS_Lapalma('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 # D:\Peter\Master Thesis\Data\eShelData\data\clean

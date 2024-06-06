@@ -11,7 +11,6 @@ from scipy.optimize import *
 from scipy.stats import chi2
 from PyAstronomy import pyasl
 import matplotlib.style
-import datareduc
 import pickle
 import os
 # import Datafile_class
@@ -48,7 +47,7 @@ def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercat
     datafiles = []
 
     for file in fl:
-        a = open(file, 'r')
+        a = open(file, 'rb')
         # for line in testfile:
         #     print line
         b = pickle.load(a)
@@ -58,8 +57,8 @@ def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercat
     sortednewlist = sorted(datafiles,key=lambda x: x.i)
     return sortednewlist
 
-instances= apo()
+instances= mercator()
 
 testfile = instances[0]
 
-print( testfile.line6562.wl, testfile.line6562.flux)
+print(testfile.line6562.lineinfo, testfile.line6562.wl, testfile.line6562.flux)

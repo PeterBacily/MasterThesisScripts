@@ -2,10 +2,11 @@ from __future__ import division
 import os
 # os.environ['PYSYN_CDBS'] = 'C:\Users\Peter\Anaconda2\envs\p27\Lib\site-packages\pysynphot\data\cbds\grp\hst\cdbs'
 os.environ.get('PYSYN_CDBS')
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 import matplotlib.pyplot as plt
 import matplotlib.backends.backend_pdf
 import glob
-import ast
 import astropy.io.fits as pf
 from astropy.time import Time
 import math
@@ -18,6 +19,7 @@ from PyAstronomy import pyasl
 import matplotlib.style
 import datareduc
 import pickle
+import warnings
 from SavitzkyGolay import savitzky_golay
 import open_masterfiles
 # fl_eshel_clean_folder = r'D:\Peter\Master Thesis\Data\eShelData\data\clean' #Zonder twee spectra met rare Halpha spike
@@ -209,14 +211,16 @@ mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'l
                       'line4685', 'line4921', 'line5801', 'line4713', 'line5411', 'line4541']
 
 
-apo_master_files = open_masterfiles.apo()
-master_files = apo_master_files
-line =apo_lines[0]
-wl, TVS, v, n = airmass.TVS_masterfiles(master_files, line)
-vsini = 127
-plt.plot(wl,TVS)
-plt.show()
-plt.close()
-plt.plot(v,TVS)
-plt.show()
-plt.close()
+# apo_master_files = open_masterfiles.apo()
+# master_files = apo_master_files
+# line =apo_lines[0]
+# wl, TVS, v, n = airmass.TVS_masterfiles(master_files, line)
+# vsini = 127
+# plt.plot(wl,TVS)
+# plt.show()
+# plt.close()
+# plt.plot(v,TVS)
+# plt.show()
+# plt.close()
+
+datareduc.plot_TVS_Lapalma_masterfile(r'D:\peter\Master_Thesis\Datareduction\Plots\test',show='on',save='off',sg='off',oneline='off')

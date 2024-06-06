@@ -10,9 +10,9 @@ import numpy as np
 from scipy import interpolate
 from scipy.optimize import *
 from PyAstronomy import pyasl
-from SavitzkyGolay import savitzky_golay
 import scipy.stats as ss
 warnings.simplefilter('ignore')
+from SavitzkyGolay import savitzky_golay
 from pysynphot import observation
 from pysynphot import spectrum
 warnings.resetwarnings()

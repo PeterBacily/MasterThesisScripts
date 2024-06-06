@@ -1022,3 +1022,10 @@ def EW_stats3(ew, phase, error,fx2='off'):
     # print dif1
     # print '#######'
     return chisq, red_chisq, AIC_1,AIC_2,AIC_3,probfactor
+
+from scipy.stats.distributions import chi2
+import numpy as np
+def TVS_significance_level(Nfiles, p):
+    degfree = Nfiles-1
+    siglvl = np.sqrt(chi2.ppf(1-p, df=degfree)/degfree)
+    return siglvl

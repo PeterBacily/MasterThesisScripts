@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.backends.backend_pdf
 import glob
 import SavitzkyGolay
-import pyfits as pf
+import astropy.io.fits as pf
 from astropy.time import Time
 import math
 import calendar
@@ -66,13 +66,13 @@ def sort_linelist(lines, obs='MERCATOR',apowantedmarks = None):
         chisq, red_chisq, AIC_1, AIC_2, AIC_3, probfactor = airmass.EW_stats2(np.array(ews), np.array(phases),
                                                                               np.array(ew_error))
         pfs.append((1/probfactor))
-    print lines
-    print pfs
+    print(lines)
+    print (pfs)
     outlist = [x for y,x in sorted(zip(pfs,lines), reverse=True)]
-    print outlist
+    print(outlist)
 
 
-def plot_EW(obs='MERCATOR',apowantedmarks = None):
+def plot_EW(obs='BOTH',apowantedmarks = None, figsavefolder = r'D:\Peter\School\Master Thesis\figures\EWs\verslag\\',custom_lines = None, custom_files = None ):
     # apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592', 'line4861', 'line4921', 'line6678', 'line4471']
     apo_lines = ['line6562', 'line4713', 'line5801', 'line4685', 'line5875', 'line4541', 'line5411', 'line5592', 'line4861', 'line4921', 'line6678', 'line4471']
 
@@ -80,10 +80,6 @@ def plot_EW(obs='MERCATOR',apowantedmarks = None):
     mercator_lines = ['line4861', 'line5875', 'line4340', 'line6562', 'line6678', 'line5592', 'line4685', 'line4026', 'line4471',
      'line4921', 'line4713', 'line5801', 'line5411', 'line4541']
 
-    custom_lines = []
-    custom_files = []
-
-    figsavefolder = r'D:\Peter\School\Master Thesis\figures\EWs\verslag\\'
     # split_up_lines = list(chunks(mercator_lines,3))
     # print chunks(apo_lines,3)
     # obs = 'APO'
@@ -114,7 +110,7 @@ def plot_EW(obs='MERCATOR',apowantedmarks = None):
             savename = ''
             for i,ax in enumerate(axs):
                 line = chunk[i]
-                print line
+                print(line)
                 phases = []
                 ews = []
                 ew_error = []
@@ -125,7 +121,7 @@ def plot_EW(obs='MERCATOR',apowantedmarks = None):
                     ews.append(linedata.ew)
                     ew_error.append(linedata.ew_error)
                 chisq, red_chisq, AIC_1, AIC_2, AIC_3, probfactor = airmass.EW_stats2(np.array(ews),np.array(phases),np.array(ew_error))
-                print lineinfo
+                print(lineinfo)
                 p1 = [0.005, 0.5, 1]
                 fit1 = curve_fit(my_sin, phases, ews, p0=p1, sigma=ew_error, absolute_sigma=True)
                 fit2 = curve_fit(airmass.flat_line, phases,ews,p0=[1],sigma=ew_error,absolute_sigma=True)
@@ -142,7 +138,7 @@ def plot_EW(obs='MERCATOR',apowantedmarks = None):
                 ax.set_ylim(uplim,lowlim)
                 savename+= lineinfo[0]+line[-4:]+'_'
             savename += obs+'_EW.pdf'
-            print savename
+            print(savename)
             plt.figlegend((l1,l2,l3),('Data','Sinusodial fit','Weighted Average'),bbox_to_anchor = [1., 0.92], prop={'size': 10},fancybox=True, framealpha=1)
             plt.suptitle('Normalized Equivalent width \n'+obs, size=16)
             # plt.tight_layout()
@@ -158,7 +154,7 @@ def plot_EW(obs='MERCATOR',apowantedmarks = None):
             savename = ''
             for i,ax in enumerate(axs):
                 line = chunk[i]
-                print line
+                print(line)
                 phases_apo = []
                 phases_mercator = []
                 phases = []
@@ -219,7 +215,7 @@ def plot_EW(obs='MERCATOR',apowantedmarks = None):
                 # ax.set_ylim(uplim,lowlim)
                 savename+= lineinfo[0]+line[-4:]+'_'
             savename += obs+'_EW.pdf'
-            print savename
+            print(savename)
             plt.figlegend((l1_apo,l1_mercator,l2a,l3),('APO Data','MERCATOR Data','Sinusodial fit','Weighted Average'),bbox_to_anchor = [1., 0.92], prop={'size': 10},fancybox=True, framealpha=1)
             plt.suptitle('Normalized Equivalent width \n'+obs, size=16)
             # plt.tight_layout()
@@ -251,11 +247,11 @@ def plot_TVS(obs='MERCATOR',save='off',show='on',plot_save_folder='',oneline='of
     for line in lines:
         wl,TVS,v,n = airmass.TVS_masterfiles(master_files,line)
         lineinfo = getattr(master_files[0], line).lineinfo
-        print lineinfo
+        print(lineinfo)
         sgn = 91  # window size for SavitzkyGolay (must be odd integer)
         TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
         # print v[sgn]-v[0]
-        p = chi2.ppf(0.99, n - 1) / (n - 1)
+        p = scipy.stats.distributions.chi2.ppf(0.99, n - 1) / (n - 1)
         vs, lfs = airmass.overplot_masterfiles(master_files, line)
         f, (ax1, ax2) = plt.subplots(2, sharex=True)
         spec2 =[]
@@ -271,7 +267,7 @@ def plot_TVS(obs='MERCATOR',save='off',show='on',plot_save_folder='',oneline='of
         spec3 = np.array(spec2)
         mini = np.floor(20 * 0.99 * np.amin(spec3)) / 20
         maxi = np.ceil(20 * 1.01 * np.amax(spec3)) / 20
-        print maxi, np.amax(spec3)
+        print(maxi, np.amax(spec3))
         ax1.set_ylim([mini, maxi])
         ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
         ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
@@ -300,7 +296,7 @@ def plot_TVS(obs='MERCATOR',save='off',show='on',plot_save_folder='',oneline='of
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel(r'$\sigma_{obs}$' + r' \ ' + r'$\sigma_{exp}$', size=16)
         ax2.set_xlim([-600, 600])
-        print line[4:]
+        print(line[4:])
         if save == 'on':
             plt.savefig(plot_save_folder + r'\\'+obs + lineinfo[0] + line[4:] + '_TVS.pdf', format='pdf',
                         dpi=1200)
@@ -349,7 +345,7 @@ def plot_quotient(obs='MERCATOR',save='off',show='on',plot_save_folder='',overpl
         t1 = file1.HJD
         t2 = file2.HJD
         dt = t2 - t1
-        print dt
+        print(dt)
         phi1 = file1.phase
         phi2 = file2.phase
         # print phi1,phi2
@@ -393,7 +389,7 @@ def plot_quotient(obs='MERCATOR',save='off',show='on',plot_save_folder='',overpl
                 spec2 = np.append(flux1[(v1>-300)& (v1<300)],flux2[(v1>-300)& (v1<300)])
                 mini = np.floor(10*0.99*np.amin(spec2))/10
                 maxi = np.ceil(10*1.01*np.amax(spec2))/10
-                print mini, maxi
+                print(mini, maxi)
                 # ax1.set_ylim([mini,maxi])
                 ax1.axvline(vsini, color='k', linestyle='dashed', linewidth=1)
                 ax1.axvline(-vsini, color='k', linestyle='dashed', linewidth=1)
@@ -443,7 +439,7 @@ def plot_quotient(obs='MERCATOR',save='off',show='on',plot_save_folder='',overpl
             plt.close()
     savepdf.close()
 
-def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg='off', apowantedmarks = None,customlines = None,customfiles = None):
+def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg='on', siglvlline=0.01,apowantedmarks = None,customlines = None,customfiles = None):
     apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
                  'line4861', 'line4921', 'line6678', 'line4471']
     mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'line5592', 'line4026', 'line4471',
@@ -468,11 +464,11 @@ def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg=
                 obs = 'MERCATOR'
             wl, TVS, v, n = airmass.TVS_masterfiles(master_files, line)
             lineinfo = getattr(master_files[0], line).lineinfo
-            print lineinfo
+            # print lineinfo
             sgn = 91  # window size for SavitzkyGolay (must be odd integer)
             TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
             # print v[sgn]-v[0]
-            p = chi2.ppf(0.99, n - 1) / (n - 1)
+            # p = chi2.ppf(0.99, n - 1) / (n - 1)
             vs, lfs = airmass.overplot_masterfiles(master_files, line)
             # f, (axarr[0, i], axarr[0, i]) = plt.subplots(2, sharex=True)
             spec2 = []
@@ -488,7 +484,7 @@ def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg=
             spec3 = np.array(spec2)
             mini = np.floor(20 * 0.99 * np.amin(spec3)) / 20
             maxi = np.ceil(20 * 1.01 * np.amax(spec3)) / 20
-            print maxi, np.amax(spec3)
+            # print maxi, np.amax(spec3)
             axarr[0, i].set_ylim([mini, maxi])
             axarr[0, i].axvline(vsini, color='k', linestyle=':', linewidth=1)
             axarr[0, i].axvline(-vsini, color='k', linestyle=':', linewidth=1)
@@ -499,6 +495,11 @@ def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg=
                 axarr[1, i].plot(v, TVS_smoothed, color='r', linestyle='dashed')
             if oneline == 'on':
                 axarr[1, i].axhline(y=1, color='gray', linestyle='--')
+            if isinstance(siglvlline, float):
+                Nfiles = len(master_files)
+                p = siglvlline
+                siglvl = airmass.TVS_significance_level(Nfiles, p)
+                axarr[1, i].axhline(y=siglvl, color='red', linestyle='--')
             # else:
             #     axarr[1, i].plot(v,TVS)
             axarr[1, i].axvline(vsini, color='k', linestyle=':', linewidth=1)
@@ -518,7 +519,7 @@ def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg=
             axarr[0, 0].set_ylabel('Normlized Flux', size = 14)
             axarr[1, 0].set_ylabel(r'$\sigma_{obs}$' + r' \ ' + r'$\sigma_{exp}$', size=20)
             axarr[1, i].set_xlim([-600, 600])
-            print line[4:]
+            # print line[4:]
             # plt.tight_layout()
             plt.subplots_adjust(left=0.08, bottom=None, right=0.98, top=None,
                             wspace=None, hspace=0.15)
@@ -552,7 +553,7 @@ def plot_EW_together(save='off',show='on',plot_save_folder='',oneline='off',sg='
             elif i == 1:
                 master_files = merc_master_files
                 obs = 'MERCATOR'
-            print line
+            print(line)
             phases = []
             ews = []
             ew_error = []
@@ -570,7 +571,7 @@ def plot_EW_together(save='off',show='on',plot_save_folder='',oneline='off',sg='
                 add = '\n'+ str('LR: ' + '%.2E' % (1. / probfactor2))
             else:
                 add = ''
-            print lineinfo
+            print(lineinfo)
             p1 = [0.005, 0.5, 1]
             t = np.linspace(0, 1, 50)
             if fx2 == 'on':
@@ -593,7 +594,7 @@ def plot_EW_together(save='off',show='on',plot_save_folder='',oneline='off',sg='
             axarr[i].set_ylim( lowlim,uplim)
         savename += lineinfo[0] + line[-4:] + '_'
         savename += '_EW.pdf'
-        print savename
+        print(savename)
         plt.figlegend((l1, l2, l3), ('Data', 'Sinusodial fit', 'Weighted Average'), bbox_to_anchor=[0.87, 0.85],
                       prop={'size': 11}, fancybox=True, framealpha=0.8)
         plt.suptitle('Normalized Equivalent Width \n' + lineinfo[-1], size=18)
@@ -658,7 +659,7 @@ def EW_peak_table():
             else:
                 det = 'No'
             if 1/probfactor>20:
-                print obs, lineinfo[-1], '   &',pf, '   &', '%.2f' % t[imax],r'\\'
+                print(obs, lineinfo[-1], '   &',pf, '   &', '%.2f' % t[imax],r'\\')
 
 
 
@@ -696,7 +697,7 @@ def EW_fit_table():
                 ew_error.append(linedata.ew_error)
             chisq, red_chisq, AIC_1, AIC_2, AIC_3, probfactor = airmass.EW_stats3(np.array(ews), np.array(phases),np.array(ew_error))
             if i == 0:
-                print lineinfo[-1], r'  & \ref{fig:EW_' + lineinfo[-1][-4:] +r'} &',
+                print(lineinfo[-1], r'  & \ref{fig:EW_' + lineinfo[-1][-4:] +r'} &'),
             p1 = [0.005, 0.5, 1]
             fit1 = curve_fit(my_sin, phases, ews, p0=p1, sigma=ew_error, absolute_sigma=True)
             fit2 = curve_fit(airmass.flat_line, phases, ews, p0=[1], sigma=ew_error, absolute_sigma=True)
@@ -711,8 +712,8 @@ def EW_fit_table():
             else:
                 det = 'No'
 
-            print pf, '   &', det,'   &',
-        print r'\\'
+            print(pf, '   &', det,'   &',)
+        print(r'\\')
 
 def get_mfs(obs):
     if obs =='APO':
@@ -731,7 +732,7 @@ def EW_EW_plots(line1,obs,line2,save = 'off',plot_save_folder = '',show='off',in
     ews1 = []
     ew_error1 = []
     if invert=='on':
-        print 'onononon'
+        # print 'onononon'
         line_1 = line2
         line_2 = line1
     else:
@@ -818,20 +819,20 @@ def loop_EW_EW(obs = 'APO', save = 'on',show = 'off',plot_save_folder = r'D:\Pet
         for k in range(len(linelist)-1-i):
             line2 = linelist[k+1+i]
             EW_EW_plots(line1,obs,line2,save=save,plot_save_folder = plot_save_folder,show=show, invert='off')
-            print obs, j
+            print(obs, j)
             j+=1
 def loop_EW_COR():
     linelist  = ['line6562', 'line4713', 'line5801', 'line4685', 'line5875', 'line4541', 'line5411', 'line5592',
                  'line4861', 'line4921', 'line6678', 'line4471']
     # linelist  = ['line6562', 'line4713', 'line5801']
-    print 'OBS  line 1  line 2  pearsonr    p-value'
+    print('OBS  line 1  line 2  pearsonr    p-value')
     obses = ['APO','MERC']
     ew_cor_list = []
     for obs in obses:
         for i in range(len(linelist)-1):
             line1 = linelist[i]
             for k in range(len(linelist)-1-i):
-                print i,k
+                print(i,k)
                 line2 = linelist[k+1+i]
                 ewcor = EW_CORRELATION(line1,obs,line2)
                 ew_cor_list.append(ewcor)
@@ -853,7 +854,7 @@ def sorted_ew_correlation_lists():
         elif item[0]=='MERC':
             cllist_merc.append(item)
         else:
-            print 'error'
+            print('error')
 
     sorted_apo = sorted(cllist_apo, key=lambda x: x[3][0], reverse=True)
     sorted_merc = sorted(cllist_merc, key=lambda x: x[3][0], reverse=True)
@@ -877,8 +878,8 @@ def sorted_ew_correlation_lists():
 # plot_TVS(obs = 'MERCATOR',oneline='on',plot_save_folder=r'D:\Peter\School\Master Thesis\figures\TVS\LaPalma\from_masterfiles',save='on',show='off')
 # plot_EW(obs='MERCATOR',apowantedmarks = None)
 # plot_EW(obs='APO',apowantedmarks = None)
-# plot_TVS_together(plot_save_folder= r'D:\Peter\School\Master Thesis\figures\TVS\verslag', save = 'on', show='off', oneline='on')
-plot_EW_together(plot_save_folder= r'D:\Peter\School\Master Thesis\figures\EWs\verslag\half_period\EW_', save = 'on', show='off', oneline='on', bad='off',fx2='on')
+plot_TVS_together(plot_save_folder= r'D:\Peter\School\Master Thesis\figures\TVS\verslag', save = 'off', show='on', oneline='on')
+# plot_EW_together(plot_save_folder= r'D:\Peter\School\Master Thesis\figures\EWs\verslag\half_period\EW_', save = 'off', show='off', oneline='on', bad='off',fx2='on')
 
 # EW_EW_plots('line6562','APO','line4861',save = 'off',show = 'on', plot_save_folder = r'D:\Peter\School\Master Thesis\figures\EWs\EW-EW\inverted\\' )
 # loop_EW_EW(obs= 'MERCATOR', save='on',show='off')

@@ -870,7 +870,7 @@ def sorted_ew_correlation_lists():
 # apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592', 'line4861', 'line4921', 'line6678', 'line4471']
 # mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'line5592', 'line4026', 'line4471', 'line4685', 'line4921', 'line5801', 'line4713', 'line5411', 'line4541']
 # sort_linelist(apo_lines, obs='APO',apowantedmarks = None)
-
+#2
 
 # plot_quotient(obs='APO',overplot='on', oneline='on', show='off', save='on', plot_save_folder=r'D:\Peter\School\Master Thesis\figures\Quotients\apo\overplot')
 # plot_quotient(obs='MERCATOR',overplot='on', oneline='on', show='off', save='on', plot_save_folder=r'D:\Peter\School\Master Thesis\figures\Quotients\mercator\overplot')

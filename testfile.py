@@ -4,6 +4,8 @@ import os
 os.environ.get('PYSYN_CDBS')
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
+
 import matplotlib.pyplot as plt
 import matplotlib.backends.backend_pdf
 import glob
@@ -223,8 +225,9 @@ mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'l
 # plt.show()
 # plt.close()
 
-# datareduc.plot_TVS_Lapalma_masterfile(r'D:\peter\Master_Thesis\Datareduction\Plots\test',show='on',save='on',sg='off',oneline='on')
-from scipy.stats.distributions import chi2
-
-print(np.sqrt(chi2.ppf(0.999, df=24)/24))
-print(airmass.TVS_significance_level(25,0.001))
+# datareduc.plot_TVS_Lapalma_masterfile(mercator_lines,r'D:\peter\Master_Thesis\Datareduction\Plots\test',show='on',save='off',sg='off',oneline='on',siglvlline=0.01)
+datareduc.plot_TVS_eShel_masterfile(apo_lines,r'D:\peter\Master_Thesis\Datareduction\Plots\test',show='on',save='off',sg='off',oneline='on',siglvlline=0.01)
+# from scipy.stats.distributions import chi2
+#
+# print(np.sqrt(chi2.ppf(0.999, df=24)/24))
+# print(airmass.TVS_significance_level(25,0.001))

@@ -878,7 +878,7 @@ def sorted_ew_correlation_lists():
 # plot_TVS(obs = 'MERCATOR',oneline='on',plot_save_folder=r'D:\Peter\School\Master Thesis\figures\TVS\LaPalma\from_masterfiles',save='on',show='off')
 # plot_EW(obs='MERCATOR',apowantedmarks = None)
 # plot_EW(obs='APO',apowantedmarks = None)
-plot_TVS_together(plot_save_folder= r'D:\Peter\School\Master Thesis\figures\TVS\verslag', save = 'off', show='on', oneline='on')
+plot_TVS_together(plot_save_folder= r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\combined\no_sg', save = 'on', show='off',sg='off', oneline='on')
 # plot_EW_together(plot_save_folder= r'D:\Peter\School\Master Thesis\figures\EWs\verslag\half_period\EW_', save = 'off', show='off', oneline='on', bad='off',fx2='on')
 
 # EW_EW_plots('line6562','APO','line4861',save = 'off',show = 'on', plot_save_folder = r'D:\Peter\School\Master Thesis\figures\EWs\EW-EW\inverted\\' )

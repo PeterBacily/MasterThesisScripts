@@ -468,6 +468,24 @@ def TVS_masterfiles(filelist,line):
     return np.array(wl),np.array(TVS),np.array(v),len(filelist)
 
 
+def average_masterfiles(filelist,line):
+    wls = []
+    lfs = []
+    for file in filelist:
+        linedata = getattr(file, line)
+        flux = linedata.flux
+        wl = linedata.wl
+        v = linedata.v_cor
+        nf = linedata.normalizationflux
+        wls.append(wl)
+        lfs.append(flux)
+    average_lineprofile = []
+    for datapoint in np.transpose(lfs):
+        average_lineprofile.append(np.average(datapoint))
+    return np.array(wl),np.array(average_lineprofile),np.array(v),len(filelist)
+
+
+
 def overplot_LaPalma(filelist,line,startwl,endwl,separate_lines=False, v_rad = 18.5):
     vsini = 127
     lfs = []

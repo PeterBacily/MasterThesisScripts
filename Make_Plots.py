@@ -860,6 +860,36 @@ def sorted_ew_correlation_lists():
     sorted_merc = sorted(cllist_merc, key=lambda x: x[3][0], reverse=True)
     return sorted_apo,sorted_merc
 
+def compare_average(save = 'off',show = 'on',plot_save_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\Average_comparison\\'):
+    apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
+                 'line4861', 'line4921', 'line6678', 'line4471']
+    mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'line5592', 'line4026', 'line4471',
+                      'line4685', 'line4921', 'line5801', 'line4713', 'line5411', 'line4541']
+
+    apo_master_files = open_masterfiles.apo()
+    mercator_master_files = open_masterfiles.mercator()
+    for line in apo_lines:
+        lineinfo = getattr(apo_master_files[0], line).lineinfo
+        wl, avg, v, n = airmass.average_masterfiles(apo_master_files, line)
+        wl2, avg2, v2, n2 = airmass.average_masterfiles(mercator_master_files, line)
+        # vsini = 127
+        plt.title('Average of normalized spectra of the \n ' + lineinfo[-1] + 'line',
+                  size=14, weight='light')
+
+        # savename = 'EW_CORRELATION_' + '%.4s' % (obs,) + '_' + lineinfo1[0] + line1[-4:] + '_' + lineinfo2[0] + line2[-4:] + '.pdf'
+        plt.plot(v, avg,label='APO')
+        plt.plot(v2, avg2,label = 'Mercator')
+        plt.xlim([-600, 600])
+        plt.ylabel('Normalized flux')
+        plt.xlabel('velocity (km/s)')
+        plt.legend()
+        if save == 'on':
+            plt.savefig(plot_save_folder + r'\\Average_' + lineinfo[0] + line[4:] + '_line.pdf', format='pdf',
+                        dpi=1200)
+        if show == 'on':
+            plt.show()
+        plt.close()
+
 # a = sorted_ew_correlation_lists()
 # i=1
 # for line in a[1][:15]:
@@ -878,8 +908,10 @@ def sorted_ew_correlation_lists():
 # plot_TVS(obs = 'MERCATOR',oneline='on',plot_save_folder=r'D:\Peter\School\Master Thesis\figures\TVS\LaPalma\from_masterfiles',save='on',show='off')
 # plot_EW(obs='MERCATOR',apowantedmarks = None)
 # plot_EW(obs='APO',apowantedmarks = None)
-plot_TVS_together(plot_save_folder= r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\combined\no_sg', save = 'on', show='off',sg='off', oneline='on')
+# plot_TVS_together(plot_save_folder= r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\combined\no_sg', save = 'on', show='off',sg='off', oneline='on')
 # plot_EW_together(plot_save_folder= r'D:\Peter\School\Master Thesis\figures\EWs\verslag\half_period\EW_', save = 'off', show='off', oneline='on', bad='off',fx2='on')
+compare_average(save = 'on',show = 'off')
+
 
 # EW_EW_plots('line6562','APO','line4861',save = 'off',show = 'on', plot_save_folder = r'D:\Peter\School\Master Thesis\figures\EWs\EW-EW\inverted\\' )
 # loop_EW_EW(obs= 'MERCATOR', save='on',show='off')

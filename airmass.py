@@ -227,7 +227,12 @@ def HJD_rounded(file):
     BCCor, HJD = barcor(file)
     return round(HJD - 2457000, 3)
 
-def normalize(wave,flux,a,b,c,d,startwl,endwl):
+def normalize(wls,flux,a,b,c,d,startwl,endwl,xtype = 'wave',linecenter = None):
+    if xtype == 'velo':
+        wave = wl_to_velocity(wls,linecenter)
+    if xtype == 'wave':
+        wave = wls
+
     normwave = np.hstack((wave[(wave>a)&(wave<b)],wave[(wave>c)&(wave<d)]))
     normflux = np.hstack((flux[(wave>a)&(wave<b)],flux[(wave>c)&(wave<d)]))
     #fit line trough slice
@@ -247,7 +252,7 @@ def normalize(wave,flux,a,b,c,d,startwl,endwl):
     for k, nwl in enumerate(normwave):
         nnf.append(normflux[k]/fit(nwl))
 
-    return linewave, fluxarray,nnf
+    return linewave, fluxarray,nnf,lineflux, fit
 
 def snr(wl,flux):
 

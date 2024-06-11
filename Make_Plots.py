@@ -102,7 +102,7 @@ def plot_EW(obs='BOTH',apowantedmarks = None, figsavefolder = r'D:\Peter\School\
         lines = custom_lines
         warnings.warn('observatory is not APO, MERCATOR or BOTH, if this is not intentional look at obs variable')
 
-    if obs is not 'BOTH':
+    if obs != 'BOTH':
         for chunk in chunks(lines,3):
             fig, axs = plt.subplots(nrows=len(chunk), ncols=1,sharex=True,figsize=(5, 8))
             fig.subplots_adjust(top = 0.83)
@@ -524,7 +524,7 @@ def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg=
             axarr[1, i].set_xlabel('V (km/s)',size = 14)
             axarr[0, 0].set_ylabel('Normlized Flux', size = 14)
             axarr[1, 0].set_ylabel(r'$\sigma_{obs}$' + r' \ ' + r'$\sigma_{exp}$', size=20)
-            axarr[1, i].set_xlim([-600, 600])
+            # axarr[1, i].set_xlim([-600, 600])
             # print line[4:]
             # plt.tight_layout()
             plt.subplots_adjust(left=0.08, bottom=None, right=0.98, top=None,

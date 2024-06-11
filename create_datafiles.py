@@ -56,8 +56,8 @@ fl_clean = glob.glob(fl_eshel_clean_folder+r'\*.fit')
 fl_goodSNR = glob.glob(fl_eshel_goodSNR_folder+r'\*.fit')
 filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
 
-datafile_folder_merc = str(converted_Data_folder)+r'\mercator\test\\'
-datafile_folder_apo = str(converted_Data_folder)+r'\apo\test\\'
+datafile_folder_merc = str(converted_Data_folder)+r'\mercator\\'
+datafile_folder_apo = str(converted_Data_folder)+r'\apo\\'
 test_datafile_folder = str(converted_Data_folder)+r'\test\\'
 def bjd(file):
     fits = pf.open(file)

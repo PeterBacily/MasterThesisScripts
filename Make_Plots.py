@@ -459,12 +459,16 @@ def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg=
             if i == 0:
                 master_files = apo_master_files
                 obs = 'APO'
+                k=2
             elif i == 1:
                 master_files = merc_master_files
                 obs = 'MERCATOR'
+                k=1
             wl, TVS, v, n = airmass.TVS_masterfiles(master_files, line)
             lineinfo = getattr(master_files[0], line).lineinfo
-            # print lineinfo
+
+            normwl_edges = [lineinfo[k+1],lineinfo[k+2],lineinfo[k+3],lineinfo[k+4]]
+            norm_v_edges =airmass.wl_to_velocity(normwl_edges,lineinfo[k])[0]
             sgn = 91  # window size for SavitzkyGolay (must be odd integer)
             TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
             # print v[sgn]-v[0]
@@ -488,6 +492,8 @@ def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg=
             axarr[0, i].set_ylim([mini, maxi])
             axarr[0, i].axvline(vsini, color='k', linestyle=':', linewidth=1)
             axarr[0, i].axvline(-vsini, color='k', linestyle=':', linewidth=1)
+            for edge in norm_v_edges:
+                axarr[0, i].axvline(edge, color='green', linestyle=':', linewidth=1)
             # if line[2]==5875.621:
             #     TVS2 = np.array(TVS)*1.4
             axarr[1, i].plot(v, TVS, color='b')
@@ -908,9 +914,9 @@ def compare_average(save = 'off',show = 'on',plot_save_folder = r'D:\peter\Maste
 # plot_TVS(obs = 'MERCATOR',oneline='on',plot_save_folder=r'D:\Peter\School\Master Thesis\figures\TVS\LaPalma\from_masterfiles',save='on',show='off')
 # plot_EW(obs='MERCATOR',apowantedmarks = None)
 # plot_EW(obs='APO',apowantedmarks = None)
-# plot_TVS_together(plot_save_folder= r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\combined\no_sg', save = 'on', show='off',sg='off', oneline='on')
+plot_TVS_together(plot_save_folder= r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\combined\no_sg', save = 'off', show='on',sg='off', oneline='on')
 # plot_EW_together(plot_save_folder= r'D:\Peter\School\Master Thesis\figures\EWs\verslag\half_period\EW_', save = 'off', show='off', oneline='on', bad='off',fx2='on')
-compare_average(save = 'on',show = 'off')
+# compare_average(save = 'on',show = 'off')
 
 
 # EW_EW_plots('line6562','APO','line4861',save = 'off',show = 'on', plot_save_folder = r'D:\Peter\School\Master Thesis\figures\EWs\EW-EW\inverted\\' )

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.style
 # import matplotlib as mpl
 import glob
-import pyfits as pf
+import astropy.io.fits as pf
 from astropy.time import Time
 import math
 import calendar
@@ -45,7 +45,7 @@ def line(x, x0, a1, b1, tau1):
 def Lapalma_vrad(datafile_folder, plot_save_folder, linelist):
     filelist = glob.glob(datafile_folder+'\*.fits')
     for line in linelist:
-        print line[6]
+        # print line[6]
         swl = line[2]-10
         ewl = line[5]+10
         vs,lfs =airmass.overplot_LaPalma(filelist,line,swl,ewl, v_rad=18.5)
@@ -58,7 +58,7 @@ def Lapalma_vrad(datafile_folder, plot_save_folder, linelist):
             minv = v[index]
             minvs.append(minv)
         # print minvs
-        print np.median(minvs)
+        print(np.median(minvs))
 # Lapalma_vrad('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 # x = np.arange(-300,300,1)
 
@@ -129,7 +129,7 @@ def aphase(filetime):
 def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
     filelist = glob.glob(datafile_folder+'\*.fits')
     for line in linelist:
-        print line[6]
+        print(line[6])
         swl = line[2]-40
         ewl = line[5]+40
         lw,TVS,v,n =airmass.TVS_LaPalma(filelist,line,swl,ewl, v_rad=18.5)
@@ -164,7 +164,15 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 
 # plot_TVS_Lapalma('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 
-folder = r'D:\Peter\Master Thesis\Data\LaPalmaData'
+# folder = r'D:\Peter\Master Thesis\Data\LaPalmaData'
+#
+# filelist = glob.glob(folder+'\*.fits')
+# print filelist
+fp = r'D:\peter\Master_Thesis\Master_Thesis\Other\demetra_test_2\20160304\archive\20160304-225457-Zeta_Ori-600s-1.fit'
+a=pf.open(fp)
 
-filelist = glob.glob(folder+'\*.fits')
-print filelist
+b= a[0].data
+print(len(b))
+
+# a =pf.open(fp)
+# pf.close(fp)

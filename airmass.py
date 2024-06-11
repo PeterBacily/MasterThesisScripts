@@ -200,6 +200,7 @@ def extractdata(j,file,return_header = 'off'):
         return wl2, data, header
     else:
         return wl2, data
+    pf.close(file)
 
 
 

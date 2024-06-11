@@ -1,7 +1,7 @@
 from __future__ import division
 import matplotlib.pyplot as plt
 import glob
-import pyfits as pf
+import astropy.io.fits as pf
 from astropy.time import Time
 import math
 import calendar
@@ -45,12 +45,12 @@ def normalize(wave,flux,a,b,c,d,startwl,endwl):
     for k, nwl in enumerate(normwave):
         nnf.append(normflux[k]/fit(nwl))
     return linewave, fluxarray, nnf, lineflux, fit
-print '1'
+print('1')
 apo_files = open_masterfiles.apo()
 # print apo_files
-print '2'
+print('2')
 merc_files = open_masterfiles.mercator()
-print '3'
+print('3')
 merc_file =apo_files[1]
 # line = ['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861']
 for i,line in enumerate(apo_linelist):

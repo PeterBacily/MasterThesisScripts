@@ -56,9 +56,3 @@ def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercat
         a.close()
     sortednewlist = sorted(datafiles,key=lambda x: x.i)
     return sortednewlist
-
-instances= mercator()
-
-testfile = instances[0]
-
-print(testfile.line6562.lineinfo, testfile.line6562.wl, testfile.line6562.flux)

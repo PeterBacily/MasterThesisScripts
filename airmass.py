@@ -228,18 +228,21 @@ def HJD_rounded(file):
     return round(HJD - 2457000, 3)
 
 def normalize(wls,flux,a,b,c,d,startwl,endwl,xtype = 'wave',linecenter = None):
-    if xtype == 'velo':
-        wave = wl_to_velocity(wls,linecenter)
     if xtype == 'wave':
         wave = wls
-
+    if xtype == 'velo':
+        wave,vsini = wl_to_velocity(wls,linecenter)
     normwave = np.hstack((wave[(wave>a)&(wave<b)],wave[(wave>c)&(wave<d)]))
     normflux = np.hstack((flux[(wave>a)&(wave<b)],flux[(wave>c)&(wave<d)]))
     #fit line trough slice
+    # print('ss', startwl, endwl)
     slope,height = np.polyfit(normwave,normflux,1)
     # print 'slope and height are', slope, height
     fit = np.poly1d([slope,height])
     linewave = wave[(wave>startwl)&(wave<endwl)]
+
+
+    # print('linewave=', linewave)
     # print wave[0],startwl,wave[-1],endwl
     # print wave
     lineflux = flux[(wave>(startwl))&(wave<(endwl))]

@@ -24,7 +24,7 @@ folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
 Path_check.dir_check(folder_of_this_file)
 
 [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
-print(converted_Data_folder, Data_folder, Plots_folder, Scripts_folder)
+# print(converted_Data_folder, Data_folder, Plots_folder, Scripts_folder)
 
 
 matplotlib.style.use('classic')

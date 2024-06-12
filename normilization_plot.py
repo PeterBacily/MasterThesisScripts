@@ -21,13 +21,22 @@ import open_masterfiles
 
 # merc_linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['Hy', 4340.472, 4322, 4324, 4357, 4360, r'H$\gamma$ 4340'], ['He_I', 4026.1914, 4018.1914, 4022.1914, 4030.1914, 4034.1914, 'He I 4026'], ['He_I', 4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'], ['He_I', 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 5875.621, 5863.0, 5864.5, 5885.0, 5885.8, 'He I 5876'], ['He_II', 4541.6, 4498, 4499, 4580, 4581, 'He II 4542'], ['He_II', 4685.804, 4679, 4680, 4690, 4691, 'He II 4686'], ['He_II', 5411.521, 5400.7, 5401.7, 5422.0, 5423.0, 'He II 5412'], ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'],['He_I', 6678.15, 6656, 6660, 6690, 6695, r'He I 6678'],['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'], ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
 # apo_linelist = [['Ha', 35, 6562.819, 6554, 6556, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 35, 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['He_I', 35, 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 35, 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5876'], ['He_II', 35, 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4542'], ['He_II', 35, 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4686'], ['He_II', 35, 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5412'], ['He_I', 35,4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'] , ['He_I',35, 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'] , ['He_I', 35, 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'] ,['O_III', 35, 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'], ['C_IV', 35, 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
-print('asdasd')
 merc_linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'], ['Hy', 4340.472, 4322, 4324, 4357, 4360, r'H$\gamma$ 4340'], ['He_I', 4026.1914, 4016, 4020, 4032, 4036, 'He I 4026'], ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'], ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'], ['He_I', 5875.621, 5863.0, 5864.5, 5884.6, 5885.5, 'He I 5876'], ['He_II', 4541.6, 4498, 4499, 4580, 4581, 'He II 4542'], ['He_II', 4685.804, 4679, 4680, 4690, 4691, 'He II 4686'], ['He_II', 5411.521, 5400.7, 5401.7, 5422.0, 5423.0, 'He II 5412'], ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'],['He_I', 6678.15, 6656, 6660, 6690, 6695, r'He I 6678'],['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'], ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
 apo_linelist = [['Ha', 35, 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 35, 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'], ['He_I', 35, 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'], ['He_I', 35, 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5876'], ['He_II', 35, 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4542'], ['He_II', 35, 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4686'], ['He_II', 35, 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5412'], ['He_I', 35,4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'] , ['He_I',35, 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'] , ['He_I', 35, 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'] ,['O_III', 35, 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'], ['C_IV', 35, 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
 
 Sil_Omar_normline_list= [['Ha', 6562.819, [[-1300, -1000], [1700, 1850]], r'H$\alpha$ 6563'], ['Hb', 4861.333, [[1387, 1927], [-1000, -700]], r'H$\beta$ 4861'], ['Hy', 4340.472, [[-1000, -700], [1000, 1500]], r'H$\gamma$ 4340'], ['He_I', 4026.1914, 4016, 4020, 4032, 4036, 'He I 4026'], ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'], ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'], ['He_I', 5875.621, 5863.0, 5864.5, 5884.6, 5885.5, 'He I 5876'], ['He_II', 4541.6, 4498, 4499, 4580, 4581, 'He II 4542'], ['He_II', 4685.804, 4679, 4680, 4690, 4691, 'He II 4686'], ['He_II', 5411.521, 5400.7, 5401.7, 5422.0, 5423.0, 'He II 5412'], ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'],['He_I', 6678.15, 6656, 6660, 6690, 6695, r'He I 6678'],['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'], ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
-Sil_Omar_normline_list_test_2 = [ ['Hb', 4861.333, [[-1000, -700],[1387, 1927]], r'H$\beta$ 4861'], ['Ha', 6562.819, [[-1300, -1000], [1700, 1850]], r'H$\alpha$ 6563'],['Hy', 4340.472, [[-1000, -700], [1000, 1500]], r'H$\gamma$ 4340']]
+
+
+
+
+Sil_Omar_normline_list_apo = [['Ha', 35, 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563', [[-1300, -1000], [1700, 1850]]], ['Hb', 35, 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861',[[-1886, -1252], [1387, 1927]]], ['He_I', 35, 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713',[[-1400, -1100], [1380, 1900]]], ['He_I', 35, 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5876',[[-1870, -1300], [1810, 1891]]], ['He_II', 35, 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4542',[[-1444, -1303], [1305, 1500]]], ['He_II', 35, 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4686',[[-430, -167], [237, 535]]], ['He_II', 35, 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5412',[[-900, -500], [700, 1000]]], ['He_I', 35,4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471',[[-1967, -1694], [1545, 1936]]]]
+
+
+testlist = [['Ha', 35, 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563', [[-1300, -1000], [1700, 1850]]]]
+
+
+    # [ ['Hb', 4861.333, [[-1000, -700],[1387, 1927]], r'H$\beta$ 4861'], ['Ha', 6562.819, [[-1300, -1000], [1700, 1850]], r'H$\alpha$ 6563'],['Hy', 4340.472, [[-1000, -700], [1000, 1500]], r'H$\gamma$ 4340']]
 Sil_Omar_normline_list_test = [ ['Hb', 4861.333, [[-1000, -700],[1387, 1927]], r'H$\beta$ 4861']]
 
 def normalize(wave,flux,a,b,c,d,startwl,endwl):
@@ -50,76 +59,138 @@ def normalize(wave,flux,a,b,c,d,startwl,endwl):
     for k, nwl in enumerate(normwave):
         nnf.append(normflux[k]/fit(nwl))
     return linewave, fluxarray, nnf, lineflux, fit
-apo_files = open_masterfiles.apo()
-# print apo_files
-merc_files = open_masterfiles.mercator()
-merc_file =merc_files[1]
+# apo_files = open_masterfiles.apo()
+# # print apo_files
+# merc_files = open_masterfiles.mercator()
+# merc_file =apo_files[1]
 # line = ['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861']
-for i,line in enumerate(Sil_Omar_normline_list_test_2):
-    # line_oud = apo_linelist[i]
-    k = 2
+def plot_norm_sil_omar(linelist,obs='apo'):
 
-    a =line[2][0][0]
-    b = line[2][0][1]
-    c = line[2][1][0]
-    d= line[2][1][1]
-    spacing = 200
-    start = a-200
-    stop = d+200
-    wl = merc_file.wl_rebin
-    flux = merc_file.flux_rebin
+    apo_files = open_masterfiles.apo()
+    # print apo_files
+    merc_files = open_masterfiles.mercator()
+    if obs == 'apo':
+        k = 8
+        filelist=apo_files
+    elif obs == 'merc':
+        k = 7
+        filelist=merc_files
+    else:
+        raise(Exception("obs needs to be 'apo' or 'merc'"))
+    file = filelist[1]
+    for line in linelist:
+        # line_oud = apo_linelist[i]
+        a = line[k][0][0]
+        b = line[k][0][1]
+        c = line[k][1][0]
+        d = line[k][1][1]
+        spacing = 200
+        start = a-spacing
+        stop = d+spacing
 
-    lw,nlf,nnf,lf,fit = airmass.normalize(wl,flux,a,b,c,d,start,stop,xtype='velo',linecenter=line[1])
-    cond1 = (lw>line[2][0][0])&(lw<line[2][0][1])
-    cond2 = (lw>line[2][1][0])&(lw<line[2][1][1])
-    normwave1 = lw[cond1]
-    normflux1= lf[cond1]
-    normwave2 = lw[cond2]
-    normflux2= lf[cond2]
+        wl = file.wl_rebin
+        flux = file.flux_rebin
+        print(wl[0])
+
+        lw,nlf,nnf,lf,fit = airmass.normalize(wl,flux,a,b,c,d,start,stop,xtype='velo',linecenter=line[2])
+        cond1 = (lw>a)&(lw<b)
+        cond2 = (lw>c)&(lw<d)
+        normwave1 = lw[cond1]
+        normflux1= lf[cond1]
+        normwave2 = lw[cond2]
+        normflux2= lf[cond2]
+        normflux3 = lf[lw<a]
+        normwave3 = lw[lw<a]
+        normflux4 = lf[(lw>b)&(lw<c)]
+        normwave4 = lw[(lw>b)&(lw<c)]
+        normflux5 = lf[lw>d]
+        normwave5 = lw[lw>d]
+        # lw_oud,nlf_oud,nnf_oud,lf_oud,fit_oud = normalize(wl,flux,line_oud[k+1],line_oud[1][0][1],line_oud[1][1][0],line_oud[1][1][1],line_oud[k+1]-20,line_oud[1][1][1]+20)
+        # cond1_oud = (lw>line_oud[k+1])&(lw<line_oud[1][0][1])
+        # cond2_oud = (lw>line_oud[1][1][0])&(lw<line_oud[1][1][1])
+        # normwave1_oud = lw[cond1_oud]
+        # normflux1_oud= lf[cond1_oud]
+        # normwave2_oud = lw[cond2_oud]
+        # normflux2_oud= lf[cond2_oud]
+        # ((lw>c)&(lw<d))]
+        # normflux = lf[((lw>line[k+1])&(lw<b)) or ((lw>c)&(lw<d))]
+        f, (ax1, ax2, ax3, ax4) = plt.subplots(4, sharex=True,layout="constrained")
+        # ax1.plot(lw,lf)
+        ax1.plot(normwave1,normflux1, c='r', label = 'continuum data slice')
+        ax1.plot(normwave2,normflux2, c='r')
+        ax1.plot(normwave3,normflux3, c='b', label = 'data')
+        ax1.plot(normwave4,normflux4, c='b')
+        ax1.plot(normwave5,normflux5, c='b')
+        # ax1.plot(normwave1_oud,normflux1_oud,c='g')
+        # ax1.plot(normwave2_oud, normflux2_oud, c='g')
+        # ax1.plot(lw, fit_oud(lw), c='g', label='fitted continuum')
+        ax1.plot(lw,fit(lw),c='red', linestyle='--', label = 'fitted continuum')
+        # ax1.legend(prop={'size': 10}, loc='best')
+        # ax2.plot
+        ax2.plot(lw,nlf,c='r')
+        ax1.set_title('Sil en omar \n Raw Flux')
+        ax2.set_title('Normalized Flux')
+        [a,b,c,d],vsini = airmass.wl_to_velocity([line[3],line[4],line[5],line[6]],line[2])
+        # spacing = 200
+        # start = a - spacing
+        # stop = d + spacing
+
+        wl = file.wl_rebin
+        flux = file.flux_rebin
+        print(wl[0])
+
+        lw, nlf, nnf, lf, fit = airmass.normalize(wl, flux, a, b, c, d, start, stop, xtype='velo', linecenter=line[2])
+        cond1 = (lw > a) & (lw < b)
+        cond2 = (lw > c) & (lw < d)
+        normwave1 = lw[cond1]
+        normflux1 = lf[cond1]
+        normwave2 = lw[cond2]
+        normflux2 = lf[cond2]
+        normflux3 = lf[lw < a]
+        normwave3 = lw[lw < a]
+        normflux4 = lf[(lw > b) & (lw < c)]
+        normwave4 = lw[(lw > b) & (lw < c)]
+        normflux5 = lf[lw > d]
+        normwave5 = lw[lw > d]
+
+        # lw_oud,nlf_oud,nnf_oud,lf_oud,fit_oud = normalize(wl,flux,line_oud[k+1],line_oud[1][0][1],line_oud[1][1][0],line_oud[1][1][1],line_oud[k+1]-20,line_oud[1][1][1]+20)
+        # cond1_oud = (lw>line_oud[k+1])&(lw<line_oud[1][0][1])
+        # cond2_oud = (lw>line_oud[1][1][0])&(lw<line_oud[1][1][1])
+        # normwave1_oud = lw[cond1_oud]
+        # normflux1_oud= lf[cond1_oud]
+        # normwave2_oud = lw[cond2_oud]
+        # normflux2_oud= lf[cond2_oud]
+
+        # ((lw>c)&(lw<d))]
+
+        # normflux = lf[((lw>line[k+1])&(lw<b)) or ((lw>c)&(lw<d))]
+        # ax1.plot(lw,lf)
+        f.legend(loc='lower right', bbox_to_anchor=[1.1, 0.04], prop={'size': 10})
+        ax3.plot(normwave1, normflux1, c='r', label='continuum data slice')
+        ax3.plot(normwave2, normflux2, c='r')
+        ax3.plot(normwave3, normflux3, c='b', label='data')
+        ax3.plot(normwave4, normflux4, c='b')
+        ax3.plot(normwave5, normflux5, c='b')
+        # ax1.plot(normwave1_oud,normflux1_oud,c='g')
+        # ax1.plot(normwave2_oud, normflux2_oud, c='g')
+        # ax1.plot(lw, fit_oud(lw), c='g', label='fitted continuum')
+        ax3.plot(lw, fit(lw), c='red', linestyle='--', label='fitted continuum')
+
+        # ax2.plot
+        ax4.plot(lw, nlf, c='r')
+
+        ax3.set_title('Peter \n Raw Flux')
+        ax4.set_title('Normalized Flux')
 
 
-    # lw_oud,nlf_oud,nnf_oud,lf_oud,fit_oud = normalize(wl,flux,line_oud[k+1],line_oud[1][0][1],line_oud[1][1][0],line_oud[1][1][1],line_oud[k+1]-20,line_oud[1][1][1]+20)
-    # cond1_oud = (lw>line_oud[k+1])&(lw<line_oud[1][0][1])
-    # cond2_oud = (lw>line_oud[1][1][0])&(lw<line_oud[1][1][1])
-    # normwave1_oud = lw[cond1_oud]
-    # normflux1_oud= lf[cond1_oud]
-    # normwave2_oud = lw[cond2_oud]
-    # normflux2_oud= lf[cond2_oud]
 
 
 
-    # ((lw>line[2][1][0])&(lw<line[2][1][1]))]
-
-    normflux3 = lf[lw<line[2][0][0]]
-    normwave3 = lw[lw<line[2][0][0]]
-
-    normflux4 = lf[(lw>line[2][0][1])&(lw<line[2][1][0])]
-    normwave4 = lw[(lw>line[2][0][1])&(lw<line[2][1][0])]
-
-    normflux5 = lf[lw>line[2][1][1]]
-    normwave5 = lw[lw>line[2][1][1]]
-    # normflux = lf[((lw>line[k+1])&(lw<line[2][0][1])) or ((lw>line[2][1][0])&(lw<line[2][1][1]))]
-    f, (ax1, ax2) = plt.subplots(2, sharex=True)
-    # ax1.plot(lw,lf)
-    ax1.plot(normwave1,normflux1, c='r', label = 'continuum data slice')
-    ax1.plot(normwave2,normflux2, c='r')
-    ax1.plot(normwave3,normflux3, c='b', label = 'data')
-    ax1.plot(normwave4,normflux4, c='b')
-    ax1.plot(normwave5,normflux5, c='b')
-    # ax1.plot(normwave1_oud,normflux1_oud,c='g')
-    # ax1.plot(normwave2_oud, normflux2_oud, c='g')
-    # ax1.plot(lw, fit_oud(lw), c='g', label='fitted continuum')
-    ax1.plot(lw,fit(lw),c='red', linestyle='--', label = 'fitted continuum')
-    ax1.legend(prop={'size': 10}, loc='best')
-    # ax2.plot
-    ax2.plot(lw,nlf,c='r')
-    ax1.set_title('Raw Flux')
-    ax2.set_title('Normalized Flux')
-    # ax2.plot(lw_oud,nlf_oud,c='g')
-    plt.suptitle(line[-1])
-    plt.show()
-    plt.close()
+        # ax2.plot(lw_oud,nlf_oud,c='g')
+        plt.suptitle(line[-2])
+        plt.show()
+        plt.close()
 
 
 
-
+plot_norm_sil_omar(Sil_Omar_normline_list_apo,obs='apo')

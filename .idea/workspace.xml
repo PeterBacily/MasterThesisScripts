@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/normilization_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/normilization_plot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -523,7 +521,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718128766880</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="changes">
+      <created>1718196346961</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1718196346961</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="ToolWindowManager">

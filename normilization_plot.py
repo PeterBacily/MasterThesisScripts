@@ -64,7 +64,7 @@ def normalize(wave,flux,a,b,c,d,startwl,endwl):
 # merc_files = open_masterfiles.mercator()
 # merc_file =apo_files[1]
 # line = ['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861']
-def plot_norm_sil_omar(linelist,obs='apo'):
+def plot_norm_sil_omar(linelist,obs='apo',show='on',save = 'off', plot_save_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\normalization\test'):
 
     apo_files = open_masterfiles.apo()
     # print apo_files
@@ -72,125 +72,130 @@ def plot_norm_sil_omar(linelist,obs='apo'):
     if obs == 'apo':
         k = 8
         filelist=apo_files
-    elif obs == 'merc':
-        k = 7
+    elif obs == 'mercator':
+        k = 8
         filelist=merc_files
     else:
-        raise(Exception("obs needs to be 'apo' or 'merc'"))
-    file = filelist[1]
-    for line in linelist:
-        # line_oud = apo_linelist[i]
-        a = line[k][0][0]
-        b = line[k][0][1]
-        c = line[k][1][0]
-        d = line[k][1][1]
-        spacing = 200
-        start = a-spacing
-        stop = d+spacing
+        raise(Exception("obs needs to be 'apo' or 'mercator'"))
+    i=0
+    for file in filelist:
+        i+=1
+        for line in linelist:
+            # line_oud = apo_linelist[i]
+            a = line[k][0][0]
+            b = line[k][0][1]
+            c = line[k][1][0]
+            d = line[k][1][1]
+            spacing = 200
+            start = a-spacing
+            stop = d+spacing
 
-        wl = file.wl_rebin
-        flux = file.flux_rebin
-        print(wl[0])
+            wl = file.wl_rebin
+            flux = file.flux_rebin
+            print(wl[0])
 
-        lw,nlf,nnf,lf,fit = airmass.normalize(wl,flux,a,b,c,d,start,stop,xtype='velo',linecenter=line[2])
-        cond1 = (lw>a)&(lw<b)
-        cond2 = (lw>c)&(lw<d)
-        normwave1 = lw[cond1]
-        normflux1= lf[cond1]
-        normwave2 = lw[cond2]
-        normflux2= lf[cond2]
-        normflux3 = lf[lw<a]
-        normwave3 = lw[lw<a]
-        normflux4 = lf[(lw>b)&(lw<c)]
-        normwave4 = lw[(lw>b)&(lw<c)]
-        normflux5 = lf[lw>d]
-        normwave5 = lw[lw>d]
-        # lw_oud,nlf_oud,nnf_oud,lf_oud,fit_oud = normalize(wl,flux,line_oud[k+1],line_oud[1][0][1],line_oud[1][1][0],line_oud[1][1][1],line_oud[k+1]-20,line_oud[1][1][1]+20)
-        # cond1_oud = (lw>line_oud[k+1])&(lw<line_oud[1][0][1])
-        # cond2_oud = (lw>line_oud[1][1][0])&(lw<line_oud[1][1][1])
-        # normwave1_oud = lw[cond1_oud]
-        # normflux1_oud= lf[cond1_oud]
-        # normwave2_oud = lw[cond2_oud]
-        # normflux2_oud= lf[cond2_oud]
-        # ((lw>c)&(lw<d))]
-        # normflux = lf[((lw>line[k+1])&(lw<b)) or ((lw>c)&(lw<d))]
-        f, (ax1, ax2, ax3, ax4) = plt.subplots(4, sharex=True,layout="constrained")
-        # ax1.plot(lw,lf)
-        ax1.plot(normwave1,normflux1, c='r', label = 'continuum data slice')
-        ax1.plot(normwave2,normflux2, c='r')
-        ax1.plot(normwave3,normflux3, c='b', label = 'data')
-        ax1.plot(normwave4,normflux4, c='b')
-        ax1.plot(normwave5,normflux5, c='b')
-        # ax1.plot(normwave1_oud,normflux1_oud,c='g')
-        # ax1.plot(normwave2_oud, normflux2_oud, c='g')
-        # ax1.plot(lw, fit_oud(lw), c='g', label='fitted continuum')
-        ax1.plot(lw,fit(lw),c='red', linestyle='--', label = 'fitted continuum')
-        # ax1.legend(prop={'size': 10}, loc='best')
-        # ax2.plot
-        ax2.plot(lw,nlf,c='r')
-        ax1.set_title('Sil en omar \n Raw Flux')
-        ax2.set_title('Normalized Flux')
-        [a,b,c,d],vsini = airmass.wl_to_velocity([line[3],line[4],line[5],line[6]],line[2])
-        # spacing = 200
-        # start = a - spacing
-        # stop = d + spacing
+            lw,nlf,nnf,lf,fit = airmass.normalize(wl,flux,a,b,c,d,start,stop,xtype='velo',linecenter=line[2])
+            cond1 = (lw>a)&(lw<b)
+            cond2 = (lw>c)&(lw<d)
+            normwave1 = lw[cond1]
+            normflux1= lf[cond1]
+            normwave2 = lw[cond2]
+            normflux2= lf[cond2]
+            normflux3 = lf[lw<a]
+            normwave3 = lw[lw<a]
+            normflux4 = lf[(lw>b)&(lw<c)]
+            normwave4 = lw[(lw>b)&(lw<c)]
+            normflux5 = lf[lw>d]
+            normwave5 = lw[lw>d]
+            # lw_oud,nlf_oud,nnf_oud,lf_oud,fit_oud = normalize(wl,flux,line_oud[k+1],line_oud[1][0][1],line_oud[1][1][0],line_oud[1][1][1],line_oud[k+1]-20,line_oud[1][1][1]+20)
+            # cond1_oud = (lw>line_oud[k+1])&(lw<line_oud[1][0][1])
+            # cond2_oud = (lw>line_oud[1][1][0])&(lw<line_oud[1][1][1])
+            # normwave1_oud = lw[cond1_oud]
+            # normflux1_oud= lf[cond1_oud]
+            # normwave2_oud = lw[cond2_oud]
+            # normflux2_oud= lf[cond2_oud]
+            # ((lw>c)&(lw<d))]
+            # normflux = lf[((lw>line[k+1])&(lw<b)) or ((lw>c)&(lw<d))]
+            f, (ax1, ax2, ax3, ax4) = plt.subplots(4, sharex=True,layout="constrained")
+            # ax1.plot(lw,lf)
+            ax1.plot(normwave1,normflux1, c='r', label = 'continuum data slice')
+            ax1.plot(normwave2,normflux2, c='r')
+            ax1.plot(normwave3,normflux3, c='b', label = 'data')
+            ax1.plot(normwave4,normflux4, c='b')
+            ax1.plot(normwave5,normflux5, c='b')
+            # ax1.plot(normwave1_oud,normflux1_oud,c='g')
+            # ax1.plot(normwave2_oud, normflux2_oud, c='g')
+            # ax1.plot(lw, fit_oud(lw), c='g', label='fitted continuum')
+            ax1.plot(lw,fit(lw),c='red', linestyle='--', label = 'fitted continuum')
+            # ax1.legend(prop={'size': 10}, loc='best')
+            # ax2.plot
+            ax2.plot(lw,nlf,c='r')
+            ax1.set_title('Sil en omar \n Raw Flux')
+            ax2.set_title('Normalized Flux')
+            [a,b,c,d],vsini = airmass.wl_to_velocity([line[3],line[4],line[5],line[6]],line[2])
+            # spacing = 200
+            # start = a - spacing
+            # stop = d + spacing
 
-        wl = file.wl_rebin
-        flux = file.flux_rebin
-        print(wl[0])
+            wl = file.wl_rebin
+            flux = file.flux_rebin
+            print(wl[0])
 
-        lw, nlf, nnf, lf, fit = airmass.normalize(wl, flux, a, b, c, d, start, stop, xtype='velo', linecenter=line[2])
-        cond1 = (lw > a) & (lw < b)
-        cond2 = (lw > c) & (lw < d)
-        normwave1 = lw[cond1]
-        normflux1 = lf[cond1]
-        normwave2 = lw[cond2]
-        normflux2 = lf[cond2]
-        normflux3 = lf[lw < a]
-        normwave3 = lw[lw < a]
-        normflux4 = lf[(lw > b) & (lw < c)]
-        normwave4 = lw[(lw > b) & (lw < c)]
-        normflux5 = lf[lw > d]
-        normwave5 = lw[lw > d]
+            lw, nlf, nnf, lf, fit = airmass.normalize(wl, flux, a, b, c, d, start, stop, xtype='velo', linecenter=line[2])
+            cond1 = (lw > a) & (lw < b)
+            cond2 = (lw > c) & (lw < d)
+            normwave1 = lw[cond1]
+            normflux1 = lf[cond1]
+            normwave2 = lw[cond2]
+            normflux2 = lf[cond2]
+            normflux3 = lf[lw < a]
+            normwave3 = lw[lw < a]
+            normflux4 = lf[(lw > b) & (lw < c)]
+            normwave4 = lw[(lw > b) & (lw < c)]
+            normflux5 = lf[lw > d]
+            normwave5 = lw[lw > d]
 
-        # lw_oud,nlf_oud,nnf_oud,lf_oud,fit_oud = normalize(wl,flux,line_oud[k+1],line_oud[1][0][1],line_oud[1][1][0],line_oud[1][1][1],line_oud[k+1]-20,line_oud[1][1][1]+20)
-        # cond1_oud = (lw>line_oud[k+1])&(lw<line_oud[1][0][1])
-        # cond2_oud = (lw>line_oud[1][1][0])&(lw<line_oud[1][1][1])
-        # normwave1_oud = lw[cond1_oud]
-        # normflux1_oud= lf[cond1_oud]
-        # normwave2_oud = lw[cond2_oud]
-        # normflux2_oud= lf[cond2_oud]
+            # lw_oud,nlf_oud,nnf_oud,lf_oud,fit_oud = normalize(wl,flux,line_oud[k+1],line_oud[1][0][1],line_oud[1][1][0],line_oud[1][1][1],line_oud[k+1]-20,line_oud[1][1][1]+20)
+            # cond1_oud = (lw>line_oud[k+1])&(lw<line_oud[1][0][1])
+            # cond2_oud = (lw>line_oud[1][1][0])&(lw<line_oud[1][1][1])
+            # normwave1_oud = lw[cond1_oud]
+            # normflux1_oud= lf[cond1_oud]
+            # normwave2_oud = lw[cond2_oud]
+            # normflux2_oud= lf[cond2_oud]
 
-        # ((lw>c)&(lw<d))]
+            # ((lw>c)&(lw<d))]
 
-        # normflux = lf[((lw>line[k+1])&(lw<b)) or ((lw>c)&(lw<d))]
-        # ax1.plot(lw,lf)
-        f.legend(loc='lower right', bbox_to_anchor=[1.1, 0.04], prop={'size': 10})
-        ax3.plot(normwave1, normflux1, c='r', label='continuum data slice')
-        ax3.plot(normwave2, normflux2, c='r')
-        ax3.plot(normwave3, normflux3, c='b', label='data')
-        ax3.plot(normwave4, normflux4, c='b')
-        ax3.plot(normwave5, normflux5, c='b')
-        # ax1.plot(normwave1_oud,normflux1_oud,c='g')
-        # ax1.plot(normwave2_oud, normflux2_oud, c='g')
-        # ax1.plot(lw, fit_oud(lw), c='g', label='fitted continuum')
-        ax3.plot(lw, fit(lw), c='red', linestyle='--', label='fitted continuum')
+            # normflux = lf[((lw>line[k+1])&(lw<b)) or ((lw>c)&(lw<d))]
+            # ax1.plot(lw,lf)
+            f.legend(loc='lower right', bbox_to_anchor=[1.1, 0.04], prop={'size': 10})
+            ax3.plot(normwave1, normflux1, c='r', label='continuum data slice')
+            ax3.plot(normwave2, normflux2, c='r')
+            ax3.plot(normwave3, normflux3, c='b', label='data')
+            ax3.plot(normwave4, normflux4, c='b')
+            ax3.plot(normwave5, normflux5, c='b')
+            # ax1.plot(normwave1_oud,normflux1_oud,c='g')
+            # ax1.plot(normwave2_oud, normflux2_oud, c='g')
+            # ax1.plot(lw, fit_oud(lw), c='g', label='fitted continuum')
+            ax3.plot(lw, fit(lw), c='red', linestyle='--', label='fitted continuum')
 
-        # ax2.plot
-        ax4.plot(lw, nlf, c='r')
+            # ax2.plot
+            ax4.plot(lw, nlf, c='r')
 
-        ax3.set_title('Peter \n Raw Flux')
-        ax4.set_title('Normalized Flux')
-
-
-
-
-
-        # ax2.plot(lw_oud,nlf_oud,c='g')
-        plt.suptitle(line[-2])
-        plt.show()
-        plt.close()
+            ax3.set_title('Peter \n Raw Flux')
+            ax4.set_title('Normalized Flux')
 
 
 
-plot_norm_sil_omar(Sil_Omar_normline_list_apo,obs='apo')
+
+
+            # ax2.plot(lw_oud,nlf_oud,c='g')
+            plt.suptitle(line[-2])
+            if save == 'on':
+                plt.savefig(plot_save_folder + r'\\' + obs +r'\\' + obs+'_' + line[0] + str(int(line[2])) + 'file_'+str(i) + '_normalization.pdf' , format='pdf', dpi=1200 )
+            if show == 'on':
+                plt.show()
+            plt.close()
+
+
+
+plot_norm_sil_omar(Sil_Omar_normline_list_apo,obs='mercator',save='on',show='off')

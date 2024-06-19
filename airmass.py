@@ -737,7 +737,29 @@ def fitfraunlp(file):
     datafile.close()
     return parms[0]
 
+def fitfraun_demetra(file):
 
+    datafile = pf.open(file)
+    header = datafile[0].header
+    naxis1 = header['NAXIS1']
+    crval1 = header['CRVAL1']
+    cdelt1 = header['CDELT1']
+    flux = datafile[0].data
+    wl = np.arange(naxis1)*cdelt1 + crval1
+    apo_wl, apo_flux, _ = normalize(np.array(wl),np.array(flux),5888.5,5889,5894.2,5894.75,5800,6000)
+    # print len(apo_wl), len(apo_flux)
+    dat_x = apo_wl[(apo_wl>5880)&(apo_wl<5905)]
+    dat_y = apo_flux[(apo_wl>5880)&(apo_wl<5905)]
+    parms, pcov = curve_fit(double_line,dat_x,dat_y,p0=(5896.92,0.55,2.5,0.4,0.55,2.5,0.4))
+    # wl_shift.append(parms[0])
+    # x = np.linspace(5880,5905,200)
+    # y = double_line(x,parms[0],parms[1],parms[2],parms[3],parms[4],parms[5],parms[6])
+    # plt.plot(dat_x,dat_y)
+    # plt.plot(x,y)
+    # plt.show()
+    # plt.close()
+    datafile.close()
+    return parms[0]
 
 # def ew(linelist,filelist):
 #     vsini =127

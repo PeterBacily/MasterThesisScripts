@@ -49,8 +49,10 @@ ll_nieuwe_lijnen = [['He_I', 35, 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922
 # ['He_I', 35, 6678.15, 6656, 6660, 6690, 6695, r'He I 6678']
 fl_eshel_clean_folder = str(Data_folder)+r'\eShelData\data\clean' #Zonder twee spectra met rare Halpha spike
 filelist_lapalma_folder = str(Data_folder)+r'\LaPalmaData'
+fl_eshel_demetra_folder = str(Data_folder)+r'\Demetra\spectra'
 fl_eshel_all_folder = str(Data_folder)+r'\eShelData\data\AlleSpectra'
 fl_eshel_goodSNR_folder = str(Data_folder)+r'\eShelData\data'
+fl_eshel_demetra = glob.glob(fl_eshel_demetra_folder+r'\*.fit')
 fl_eshel_all = glob.glob(fl_eshel_all_folder+r'\*.fit')
 fl_clean = glob.glob(fl_eshel_clean_folder+r'\*.fit')
 fl_goodSNR = glob.glob(fl_eshel_goodSNR_folder+r'\*.fit')
@@ -58,6 +60,8 @@ filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
 
 datafile_folder_merc = str(converted_Data_folder)+r'\mercator\\'
 datafile_folder_apo = str(converted_Data_folder)+r'\apo\\'
+datafile_folder_demetra = str(converted_Data_folder)+r'\demetra\\'
+datafile_folder_demetra_test= str(converted_Data_folder)+r'\test\demetra\\'
 test_datafile_folder = str(converted_Data_folder)+r'\test\\'
 def bjd(file):
     fits = pf.open(file)
@@ -67,43 +71,56 @@ def bjd(file):
     return HJD
 
 
-mark1 = [1, 37]
-mark2 = [7, 10, 11, 32, 33, 34, 35, 36]
-mark3 = [8, 9]
+
 sortedfl_lapalma = sorted(filelist_lapalma, key=lambda x: bjd(x), reverse=False)
 k = 1
 
+def create_datafiles_demetra(filelist=fl_eshel_demetra,savefolder=datafile_folder_demetra_test):
+    for file in filelist:
+        a = Datafile_apo_demetra(file)
+        dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
+        savename = savefolder+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(a, workfileresource)
+        workfileresource.close()
 
-for file in fl_eshel_all:
-    mark = 0
-    if k in mark1:
-        mark = 1
-    elif k in mark2:
-        mark = 2
-    elif k in mark3:
-        mark = 3
-    a = Datafile_apo(file, i=k, mark=mark)
-    dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
-    savename = datafile_folder_apo+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
-    workfileresource = open(savename, 'wb')
-    pickle.dump(a, workfileresource)
-    workfileresource.close()
-    print(k, mark)
-    k+=1
+def create_datafile_eshel(filelist=fl_eshel_all):
+    mark1 = [1, 37]
+    mark2 = [7, 10, 11, 32, 33, 34, 35, 36]
+    mark3 = [8, 9]
+    k=1
+    for file in filelist:
+        mark = 0
+        if k in mark1:
+            mark = 1
+        elif k in mark2:
+            mark = 2
+        elif k in mark3:
+            mark = 3
+        a = Datafile_apo(file, i=k, mark=mark)
+        dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
+        savename = datafile_folder_apo+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(a, workfileresource)
+        workfileresource.close()
+        print(k, mark)
+        k+=1
+
+def create_datafiles_lapalma(filelist=sortedfl_lapalma):
+    k=1
+    for file in sortedfl_lapalma:
+        print(k)
+        startdate = airmass.timeanddatelp(file)
+        a = Datafile_mercator(file, i=k)
+        dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
+        savename = datafile_folder_merc+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(a, workfileresource)
+        workfileresource.close()
+        k+=1
 
 
-
-k=1
-for file in sortedfl_lapalma:
-    print(k)
-    startdate = airmass.timeanddatelp(file)
-    a = Datafile_mercator(file, i=k)
-    dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
-    savename = datafile_folder_merc+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
-    workfileresource = open(savename, 'wb')
-    pickle.dump(a, workfileresource)
-    workfileresource.close()
-    k+=1
+create_datafiles_demetra(filelist=fl_eshel_demetra,savefolder=datafile_folder_demetra_test)
 # testfile_apo = fl_clean[12]
 # a = Datafile_class.Datafile_apo(testfile_apo)
 # testfile_merc = filelist_lapalma[3]

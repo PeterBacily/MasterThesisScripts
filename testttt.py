@@ -164,15 +164,35 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 
 # plot_TVS_Lapalma('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 
-# folder = r'D:\Peter\Master Thesis\Data\LaPalmaData'
+folder = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\final_spectra\spectra'
 #
-# filelist = glob.glob(folder+'\*.fits')
-# print filelist
-fp = r'D:\peter\Master_Thesis\Master_Thesis\Other\demetra_test_2\20160304\archive\20160304-225457-Zeta_Ori-600s-1.fit'
-a=pf.open(fp)
+filelist = glob.glob(folder+'\*.fit')
+print(filelist)
 
+# fp = r'D:\peter\Master_Thesis\Master_Thesis\Other\demetra_test_2\20160304\archive\20160304-225457-Zeta_Ori-600s-1.fit'
+a=pf.open(filelist[0])
+a.info()
 b= a[0].data
-print(len(b))
+header=a[0].header
+print(header)
+v_rad = 18.5
+naxis1 = header['NAXIS1']
+crval1 = header['CRVAL1']
+cdelt1 = header['CDELT1']
+print(naxis1,crval1,cdelt1)
+# print(dir(a[0]))
+from astropy.wcs import WCS
+w = WCS(header, naxis=1, relax=False, fix=False)
+lam = w.wcs_pix2world(np.arange(len(b)), 0)[0]
+
+wl_original = np.arange(naxis1) * cdelt1 + crval1
+              # - (v_rad / 299792.458)
+print(lam)
+print('asd',(lam==wl_original).all())
+# #
+plt.plot(lam,b)
+plt.show()
+plt.close()
 
 # a =pf.open(fp)
-# pf.close(fp)
+a.close()

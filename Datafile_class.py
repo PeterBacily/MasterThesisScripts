@@ -28,15 +28,18 @@ class Line:
 
 def line_data(line,wl,flux,observatory,snr,bccor,vrad):
     if observatory == 'MERC':
-        k=1
+        k = 1
         barcor = 0
     elif observatory == 'APO':
-        k=2
+        k = 2
         barcor = bccor
+    elif observatory == 'APO_DEMETRA':
+        barcor = bccor
+        k = 1
     else:
         print('observatory needs to be APO or MERC')
     center_wl = int(line[k])
-    lw, lf, nf = airmass.normalize(wl,flux,line[k+1],line[k+2],line[k+3],line[k+4],line[k+1]-20,line[k+4]+20)
+    lw, lf, nf, _,_ = airmass.normalize(wl,flux,line[k+1],line[k+2],line[k+3],line[k+4],line[k+1]-20,line[k+4]+20)
     v, vsini = airmass.wl_to_velocity(lw, line[k])
     normalization_wl= [line[k+1],line[k+2],line[k+3],line[k+4]]
     normalization_v = airmass.wl_to_velocity(normalization_wl, line[k])
@@ -186,10 +189,10 @@ class Datafile_apo_demetra:
         self.filename = fn[:fn.rfind(".")]
         self.header = data[0].header
         self.time_and_date = airmass.timeanddate2(self.header['DATE-OBS'])
-        self.baricentric_correction, self.HJD = airmass.barcor(file)
+        self.baricentric_correction, self.HJD = airmass.barcor(file,JDOBS=self.header['JD-MID'])
         self.phase =  airmass.aphase(self.HJD)
         self.exptime = airmass.exposuretime(file)
-        self.airmass, self.alt, JD = airmass.airmass(file)
+        self.airmass, self.alt, JD = airmass.airmass(file,JDOBS=self.header['JD-MID'])
         try:
             frwl = airmass.fitfraun_demetra(file)
         except RuntimeError:

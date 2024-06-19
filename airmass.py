@@ -79,9 +79,12 @@ def aphase(HJD):
     phase = ((HJD- jdstart)% period )/ period
     return phase
 
-def barcor(file):
+def barcor(file, JDOBS=None):
     datafile = pf.open(file)
-    JD =  datafile[0].header['MJD-OBS'] + 2400000.5
+    if JDOBS == None:
+        JD = 2400000.5 + datafile[0].header['MJD-OBS']
+    else:
+        JD = JDOBS
     DEC = (-1.9425736)
     RA = 85.18
     LAT = 52.354094
@@ -91,9 +94,12 @@ def barcor(file):
     datafile.close()
     return bcor[0], bcor[1]
 
-def airmass(file):
+def airmass(file, JDOBS=None):
     datafile = pf.open(file)
-    JD =  2400000.5+datafile[0].header['MJD-OBS']
+    if JDOBS == None:
+        JD =  2400000.5+datafile[0].header['MJD-OBS']
+    else:
+        JD = JDOBS
     DEC = (-1.94)* (2*math.pi/360)
     RA = 85.18* (2*math.pi/360)
     LAT = 52.354094* (2*math.pi/360)
@@ -268,7 +274,7 @@ def snr(wl,flux):
     wlslice = wl[(wl>start) & (wl<stop)]
 
     l = int((len(wlslice)-1)/2)
-    lw,lf, _ = normalize(wlslice,slice,wlslice[0],wlslice[l],wlslice[l+1],wlslice[-1],wlslice[0],wlslice[-1])
+    lw,lf, _,_,_ = normalize(wlslice,slice,wlslice[0],wlslice[l],wlslice[l+1],wlslice[-1],wlslice[0],wlslice[-1])
     # plt.plot(lw,lf)
     # plt.pause(0.5)
     avgcounts = np.average(lf)
@@ -746,7 +752,7 @@ def fitfraun_demetra(file):
     cdelt1 = header['CDELT1']
     flux = datafile[0].data
     wl = np.arange(naxis1)*cdelt1 + crval1
-    apo_wl, apo_flux, _ = normalize(np.array(wl),np.array(flux),5888.5,5889,5894.2,5894.75,5800,6000)
+    apo_wl, apo_flux, nnf,lineflux, fit = normalize(np.array(wl),np.array(flux),5888.5,5889,5894.2,5894.75,5800,6000)
     # print len(apo_wl), len(apo_flux)
     dat_x = apo_wl[(apo_wl>5880)&(apo_wl<5905)]
     dat_y = apo_flux[(apo_wl>5880)&(apo_wl<5905)]

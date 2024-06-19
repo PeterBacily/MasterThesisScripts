@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Datafile_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/normilization_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/normilization_plot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open_masterfiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/open_masterfiles.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testttt.py" beforeDir="false" afterPath="$PROJECT_DIR$/testttt.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -184,7 +182,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.testttt">
+  <component name="RunManager" selected="Python.create_datafiles">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -204,7 +202,7 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <configuration name="Make_Plots" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="Datafile_class" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -216,7 +214,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Make_Plots.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Datafile_class.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -310,19 +308,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.Datafile_class" />
       <item itemvalue="Python.datareduc" />
       <item itemvalue="Python.create_datafiles" />
       <item itemvalue="Python.normilization_plot" />
       <item itemvalue="Python.testttt" />
-      <item itemvalue="Python.Make_Plots" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.testttt" />
+        <item itemvalue="Python.Datafile_class" />
         <item itemvalue="Python.datareduc" />
         <item itemvalue="Python.normilization_plot" />
-        <item itemvalue="Python.Make_Plots" />
-        <item itemvalue="Python.create_datafiles" />
       </list>
     </recent_temporary>
   </component>
@@ -541,7 +539,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718215134928</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="changes">
+      <created>1718803395357</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1718803395357</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -623,6 +628,11 @@
           <url>file://$PROJECT_DIR$/testfile.py</url>
           <line>98</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/testttt.py</url>
+          <line>191</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

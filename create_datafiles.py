@@ -76,15 +76,17 @@ sortedfl_lapalma = sorted(filelist_lapalma, key=lambda x: bjd(x), reverse=False)
 k = 1
 
 def create_datafiles_demetra(filelist=fl_eshel_demetra,savefolder=datafile_folder_demetra_test):
+    i=0
     for file in filelist:
         a = Datafile_apo_demetra(file)
         dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
-        savename = savefolder+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
+        savename = savefolder+a.observatory+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
         workfileresource = open(savename, 'wb')
         pickle.dump(a, workfileresource)
         workfileresource.close()
+        i+=1
 
-def create_datafile_eshel(filelist=fl_eshel_all):
+def create_datafile_eshel(filelist=fl_eshel_all,i=0):
     mark1 = [1, 37]
     mark2 = [7, 10, 11, 32, 33, 34, 35, 36]
     mark3 = [8, 9]
@@ -106,7 +108,7 @@ def create_datafile_eshel(filelist=fl_eshel_all):
         print(k, mark)
         k+=1
 
-def create_datafiles_lapalma(filelist=sortedfl_lapalma):
+def create_datafiles_lapalma(filelist=sortedfl_lapalma,i=0):
     k=1
     for file in sortedfl_lapalma:
         print(k)

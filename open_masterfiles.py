@@ -56,3 +56,24 @@ def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercat
         a.close()
     sortednewlist = sorted(datafiles,key=lambda x: x.i)
     return sortednewlist
+
+def apo_demetra(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\demetra\\',manual_filelist=None,sorted='off'):
+    if manual_filelist == None:
+        fl = glob.glob(path+r'*.txt')
+    else:
+        fl=manual_filelist
+    datafiles = []
+
+    for file in fl:
+        a = open(file, 'rb')
+        # for line in testfile:
+        #     print line
+        b = pickle.load(a)
+        # print b.line6562.ew
+        datafiles.append(b)
+        a.close()
+    if sorted == 'on':
+        sortednewlist = sorted(datafiles,key=lambda x: x.i)
+        return sortednewlist
+    else:
+        return datafiles

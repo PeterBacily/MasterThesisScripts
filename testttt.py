@@ -175,24 +175,25 @@ a.info()
 b= a[0].data
 header=a[0].header
 print(header)
-v_rad = 18.5
-naxis1 = header['NAXIS1']
-crval1 = header['CRVAL1']
-cdelt1 = header['CDELT1']
-print(naxis1,crval1,cdelt1)
-# print(dir(a[0]))
-from astropy.wcs import WCS
-w = WCS(header, naxis=1, relax=False, fix=False)
-lam = w.wcs_pix2world(np.arange(len(b)), 0)[0]
-
-wl_original = np.arange(naxis1) * cdelt1 + crval1
-              # - (v_rad / 299792.458)
-print(lam)
-print('asd',(lam==wl_original).all())
-# #
-plt.plot(lam,b)
-plt.show()
-plt.close()
+print(airmass.timeanddate2(header['DATE-OBS']))
+# v_rad = 18.5
+# naxis1 = header['NAXIS1']
+# crval1 = header['CRVAL1']
+# cdelt1 = header['CDELT1']
+# print(naxis1,crval1,cdelt1)
+# # print(dir(a[0]))
+# from astropy.wcs import WCS
+# w = WCS(header, naxis=1, relax=False, fix=False)
+# lam = w.wcs_pix2world(np.arange(len(b)), 0)[0]
+#
+# wl_original = np.arange(naxis1) * cdelt1 + crval1
+#               # - (v_rad / 299792.458)
+# print(lam)
+# print('asd',(lam==wl_original).all())
+# # #
+# plt.plot(lam,b)
+# plt.show()
+# plt.close()
 
 # a =pf.open(fp)
 a.close()

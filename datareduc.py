@@ -525,9 +525,18 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist,show='off',save
         plt.close()
 
 
-def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='on', siglvlline=0.01,datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\apo\test\\'):
+def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='off', siglvlline=0.01,datafilefolder=None,datareductionprogram='Demetra'):
     # print datafile_folder
-    filelist = open_masterfiles.apo(path=datafilefolder)
+    if datareductionprogram == 'AudeLA':
+        if datafilefolder==None:
+            filelist = open_masterfiles.apo()
+        else:
+            filelist = open_masterfiles.apo(path=datafilefolder)
+    elif datareductionprogram =='Demetra':
+        if datafilefolder == None:
+            filelist = open_masterfiles.apo_demetra()
+        else:
+            filelist = open_masterfiles.apo_demetra(path=datafilefolder)
     for line in linelist:
         lineinfo = getattr(filelist[0], line).lineinfo
         # print filelist
@@ -541,7 +550,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         f, (ax1, ax2) = plt.subplots(2, sharex=True)
         for i,spec in enumerate(lws):
             ax1.plot(vs[i],spec,linewidth=1.0 )
-        ax1.set_title(lineinfo[7])
+        ax1.set_title(lineinfo[6])
         # ax1.legend()
         # ax1.set_xlim([-600,600])
         spec2 = spec[(v>-300)& (v<300)]
@@ -581,7 +590,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
         ax2.set_xlim([-600,600])
         if save =='on':
-            plt.savefig(plot_save_folder + r'\\APO' + lineinfo[0] + str(int(np.round(lineinfo[2])))+'_TVS.pdf',format='pdf', dpi=1200)
+            plt.savefig(plot_save_folder + r'\\APO_'+datareductionprogram+'_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_TVS.pdf',format='pdf', dpi=1200)
         if show =='on':
             plt.show()
         plt.close()

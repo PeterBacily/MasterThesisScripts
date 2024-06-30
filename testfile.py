@@ -213,20 +213,26 @@ mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'l
                       'line4685', 'line4921', 'line5801', 'line4713', 'line5411', 'line4541']
 
 
-apo_master_files = open_masterfiles.apo()
+apo_master_files = open_masterfiles.apo_demetra()
 mercator_master_files = open_masterfiles.mercator()
 line ='line4471'
-wl, avg, v, n = airmass.average_masterfiles(apo_master_files, line)
-wl2, avg2, v2, n2 = airmass.average_masterfiles(mercator_master_files, line)
-vsini = 127
-plt.plot(v,avg)
-plt.plot(v2,avg2)
-plt.show()
-plt.close()
+# wl, avg, v, n = airmass.average_masterfiles(apo_master_files, line)
+# wl2, avg2, v2, n2 = airmass.average_masterfiles(mercator_master_files, line)
+# vsini = 127
+# plt.plot(v,avg)
+# plt.plot(v2,avg2)
+# plt.show()
+# plt.close()
 # plt.plot(v,TVS)
 # plt.show()
 # plt.close()
 
+test_file = apo_master_files[3]
+flux = test_file.line4471.flux
+wl=test_file.line4471.wl
+plt.plot(wl,flux)
+plt.show()
+plt.close()
 # datareduc.plot_TVS_Lapalma_masterfile(mercator_lines,r'D:\peter\Master_Thesis\Datareduction\Plots\test',show='on',save='off',sg='off',oneline='on',siglvlline=0.01)
 # datareduc.plot_TVS_eShel_masterfile(apo_lines,r'D:\peter\Master_Thesis\Datareduction\Plots\test',show='on',save='off',sg='off',oneline='on',siglvlline=0.01)
 # from scipy.stats.distributions import chi2

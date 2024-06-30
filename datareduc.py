@@ -525,14 +525,16 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist,show='off',save
         plt.close()
 
 
-def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='off', siglvlline=0.01,datafilefolder=None,datareductionprogram='Demetra'):
+def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='off', siglvlline=0.01,datafilefolder=None,datareductionprogram='Demetra',norm_boundaries='on'):
     # print datafile_folder
     if datareductionprogram == 'AudeLA':
+        k=1
         if datafilefolder==None:
             filelist = open_masterfiles.apo()
         else:
             filelist = open_masterfiles.apo(path=datafilefolder)
     elif datareductionprogram =='Demetra':
+        k=0
         if datafilefolder == None:
             filelist = open_masterfiles.apo_demetra()
         else:
@@ -550,13 +552,20 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         f, (ax1, ax2) = plt.subplots(2, sharex=True)
         for i,spec in enumerate(lws):
             ax1.plot(vs[i],spec,linewidth=1.0 )
-        ax1.set_title(lineinfo[6])
+        ax1.set_title(lineinfo[6+k])
         # ax1.legend()
         # ax1.set_xlim([-600,600])
         spec2 = spec[(v>-300)& (v<300)]
         mini = np.floor(10*0.9*np.amin(spec2))/10
         maxi = np.ceil(10*1.01*np.amax(spec2))/10
         ax1.set_ylim([mini,maxi])
+        if norm_boundaries == 'on':
+            [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            ax1.axvline(normv_1, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_2, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_3, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_4, color='k', linestyle='dashed', linewidth=1)
+
         ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
         ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
         # if line[2]==5875.621:
@@ -573,6 +582,12 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
             ax2.axhline(y=siglvl, color='red', linestyle='--')
         # else:
         #     ax2.plot(v,TVS)
+        if norm_boundaries == 'on':
+            [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            ax2.axvline(normv_1, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_2, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_3, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_4, color='k', linestyle='dashed', linewidth=1)
         ax2.axvline(vsini, color='k', linestyle=':', linewidth=1)
         ax2.axvline(-vsini, color='k', linestyle=':', linewidth=1)
         # ax2.plot([v[0],v[-1]],[1,1],linestyle='dashed', linewidth=1,c='g')
@@ -588,7 +603,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         ax2.set_xlabel('V (km/s)')
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
-        ax2.set_xlim([-600,600])
+        ax2.set_xlim([normv_1-200,normv_4+200])
         if save =='on':
             plt.savefig(plot_save_folder + r'\\APO_'+datareductionprogram+'_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_TVS.pdf',format='pdf', dpi=1200)
         if show =='on':

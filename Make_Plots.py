@@ -439,16 +439,15 @@ def plot_quotient(obs='MERCATOR',save='off',show='on',plot_save_folder='',overpl
             plt.close()
     savepdf.close()
 
-def plot_TVS_together(save='off',show='on',plot_save_folder='',oneline='off',sg='on', siglvlline=0.01,apowantedmarks = None,customlines = None,customfiles = None):
+def plot_TVS_together(manual_filelist=None,obs='apo',save='off',show='on',plot_save_folder='',oneline='off',sg='on', siglvlline=0.01,apowantedmarks = None,customlines = None,customfiles = None):
     apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
                  'line4861', 'line4921', 'line6678', 'line4471']
     mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'line5592', 'line4026', 'line4471',
                       'line4685', 'line4921', 'line5801', 'line4713', 'line5411', 'line4541']
-
-
     apo_master_files = open_masterfiles.apo()
-
     merc_master_files = open_masterfiles.mercator()
+
+
 
     vsini = 127
 

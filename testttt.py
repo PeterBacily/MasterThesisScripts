@@ -164,18 +164,25 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 
 # plot_TVS_Lapalma('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 
-folder = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\final_spectra\spectra'
+# folder = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\final_spectra\spectra'
+# #
+# filelist = glob.glob(folder+'\*.fit')
+# print(filelist)
 #
-filelist = glob.glob(folder+'\*.fit')
-print(filelist)
+# # fp = r'D:\peter\Master_Thesis\Master_Thesis\Other\demetra_test_2\20160304\archive\20160304-225457-Zeta_Ori-600s-1.fit'
+# a=pf.open(filelist[0])
+# a.info()
+# b= a[0].data
+# header=a[0].header
+# print(header)
+# print(airmass.timeanddate2(header['DATE-OBS']))
+def openlinelistfile(listpath):
+    myfile=open(listpath, 'r')
+    b=myfile.read()
+    myfile.close()
 
-# fp = r'D:\peter\Master_Thesis\Master_Thesis\Other\demetra_test_2\20160304\archive\20160304-225457-Zeta_Ori-600s-1.fit'
-a=pf.open(filelist[0])
-a.info()
-b= a[0].data
-header=a[0].header
-print(header)
-print(airmass.timeanddate2(header['DATE-OBS']))
+
+openlinelistfile(r'D:\peter\Master_Thesis\Master_Thesis\Other\testlist.txt')
 # v_rad = 18.5
 # naxis1 = header['NAXIS1']
 # crval1 = header['CRVAL1']
@@ -196,4 +203,4 @@ print(airmass.timeanddate2(header['DATE-OBS']))
 # plt.close()
 
 # a =pf.open(fp)
-a.close()
+# a.close()

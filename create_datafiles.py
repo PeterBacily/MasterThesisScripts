@@ -63,6 +63,10 @@ datafile_folder_apo = str(converted_Data_folder)+r'\apo\\'
 datafile_folder_demetra = str(converted_Data_folder)+r'\demetra\\'
 datafile_folder_demetra_test= str(converted_Data_folder)+r'\test\demetra\\'
 test_datafile_folder = str(converted_Data_folder)+r'\test\\'
+
+fl_demetra_all = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Zet_Ori_Response\final_spectra\*.fit')
+fl_demetra_good = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Zet_Ori_Response\final_spectra\good\*.fit')
+
 def bjd(file):
     fits = pf.open(file)
     header = fits[0].header
@@ -122,7 +126,7 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,i=0):
         k+=1
 
 
-create_datafiles_demetra(filelist=fl_eshel_demetra,savefolder=datafile_folder_demetra_test)
+create_datafiles_demetra(filelist=fl_demetra_good,savefolder=datafile_folder_demetra_test+r'\good\\')
 # testfile_apo = fl_clean[12]
 # a = Datafile_class.Datafile_apo(testfile_apo)
 # testfile_merc = filelist_lapalma[3]

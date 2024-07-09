@@ -179,7 +179,12 @@ class Datafile_apo_demetra:
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-    def __init__(self, file,v_rad = 18.5,i='n/a',mark = 0):
+    def __init__(self, file,ll=None,v_rad = 18.5,i='n/a',mark = 0):
+        if ll == None:
+            pass
+        else:
+            linelist = 'invullen'
+
         fn = os.path.basename(file)
         data = pf.open(file)
         self.original_filepath = file

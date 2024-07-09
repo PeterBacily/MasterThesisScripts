@@ -49,3 +49,9 @@ def open_masterfiles_mercator(path = r'D:\peter\Master Thesis\Datareduction\Data
         datafiles.append(b)
     sortednewlist = sorted(datafiles,key=lambda x: x.i)
     return sortednewlist
+
+def open_linelist(path):
+    a = open(path, 'r')
+    b = pickle.load(a)
+    a.close()
+    return b

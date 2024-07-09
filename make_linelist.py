@@ -1,6 +1,14 @@
 import pickle
+import airmass
 
-linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
+
+def make_linelist(list,filepath):
+     workfileresource = open(filepath, 'wb')
+     pickle.dump(list, workfileresource)
+     workfileresource.close()
+
+
+linelist_apo = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
      ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
      ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
      ['He_I', 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5875'],
@@ -13,7 +21,6 @@ linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-test_file = r'D:\peter\Master_Thesis\Master_Thesis\Other\testlist2.txt'
-workfileresource = open(test_file, 'wb')
-pickle.dump(linelist, workfileresource)
-workfileresource.close()
+test_file = r'D:\peter\Master_Thesis\Master_Thesis\Other\testlist3.txt'
+
+make_linelist(linelist_apo,test_file)

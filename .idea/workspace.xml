@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
-      <change afterPath="$PROJECT_DIR$/make_linelist.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datafile_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExecuteDataReduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExecuteDataReduc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Make_Plots.py" beforeDir="false" afterPath="$PROJECT_DIR$/Make_Plots.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/make_linelist.py" beforeDir="false" afterPath="$PROJECT_DIR$/make_linelist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/open datafiles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open_masterfiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/open_masterfiles.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testttt.py" beforeDir="false" afterPath="$PROJECT_DIR$/testttt.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -183,7 +181,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.make_linelist">
+  <component name="RunManager" selected="Python.ExecuteDataReduc">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -317,9 +315,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.make_linelist" />
-        <item itemvalue="Python.testttt" />
         <item itemvalue="Python.ExecuteDataReduc" />
+        <item itemvalue="Python.testttt" />
+        <item itemvalue="Python.make_linelist" />
         <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.testfile" />
       </list>
@@ -568,7 +566,14 @@
       <option name="project" value="LOCAL" />
       <updated>1719784446506</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="changes">
+      <created>1720531360618</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1720531360618</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -653,7 +658,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/testttt.py</url>
-          <line>198</line>
+          <line>200</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>

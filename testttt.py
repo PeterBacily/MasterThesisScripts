@@ -12,6 +12,7 @@ import airmass
 from scipy.optimize import *
 from scipy.stats import chi2
 from PyAstronomy import pyasl
+import open_masterfiles
 matplotlib.style.use('classic')
 vsini =127
 c_light = 299792.458
@@ -176,13 +177,14 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 # header=a[0].header
 # print(header)
 # print(airmass.timeanddate2(header['DATE-OBS']))
-def openlinelistfile(listpath):
-    myfile=open(listpath, 'r')
-    b=myfile.read()
-    myfile.close()
+# def openlinelistfile(listpath):
+#     myfile=open(listpath, 'r')
+#     b=myfile.read()
+#     myfile.close()
+testlist = open_masterfiles.open_linelist(r'D:\peter\Master_Thesis\Master_Thesis\Other\testlist3.txt')
+print(testlist)
 
-
-openlinelistfile(r'D:\peter\Master_Thesis\Master_Thesis\Other\testlist.txt')
+# openlinelistfile(r'D:\peter\Master_Thesis\Master_Thesis\Other\testlist.txt')
 # v_rad = 18.5
 # naxis1 = header['NAXIS1']
 # crval1 = header['CRVAL1']

@@ -77,3 +77,9 @@ def apo_demetra(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\tes
         return sortednewlist
     else:
         return datafiles
+
+def open_linelist(path):
+    a = open(path, 'rb')
+    b = pickle.load(a)
+    a.close()
+    return b

@@ -62,6 +62,7 @@ def velocity_to_wl(velocities,linecenter):
         wls.append(wl)
     return np.array(wls)
 
+
 def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',datafilefolder=None,datareductionprogram='Demetra',norm_boundaries='on'):
     # print datafile_folder
     if datareductionprogram == 'AudeLA':

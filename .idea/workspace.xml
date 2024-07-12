@@ -7,6 +7,8 @@
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Normalization.py" beforeDir="false" afterPath="$PROJECT_DIR$/Normalization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/make_linelist.py" beforeDir="false" afterPath="$PROJECT_DIR$/make_linelist.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +180,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Normalization">
+  <component name="RunManager" selected="Python.airmass">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -240,7 +242,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="create_datafiles" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="airmass" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -252,7 +254,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/create_datafiles.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/airmass.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -304,19 +306,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.airmass" />
       <item itemvalue="Python.Normalization" />
       <item itemvalue="Python.make_linelist" />
       <item itemvalue="Python.ExecuteDataReduc" />
-      <item itemvalue="Python.create_datafiles" />
       <item itemvalue="Python.testttt" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.airmass" />
         <item itemvalue="Python.Normalization" />
         <item itemvalue="Python.ExecuteDataReduc" />
         <item itemvalue="Python.testttt" />
         <item itemvalue="Python.make_linelist" />
-        <item itemvalue="Python.create_datafiles" />
       </list>
     </recent_temporary>
   </component>
@@ -584,7 +586,14 @@
       <option name="project" value="LOCAL" />
       <updated>1720698089289</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="changes">
+      <created>1720700056356</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1720700056356</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="ToolWindowManager">

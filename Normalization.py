@@ -1,4 +1,5 @@
 from __future__ import division
+import time
 import matplotlib.pyplot as plt
 import glob
 import warnings
@@ -7,22 +8,10 @@ from astropy.time import Time
 import math
 import calendar
 import numpy as np
-from scipy import interpolate
-from scipy.optimize import *
-from PyAstronomy import pyasl
-import scipy.stats as ss
-with warnings.catch_warnings():
-    warnings.filterwarnings("ignore",category=DeprecationWarning)
-    import SavitzkyGolay
-warnings.simplefilter('ignore')
-from SavitzkyGolay import savitzky_golay
-from pysynphot import observation
-from pysynphot import spectrum
-warnings.resetwarnings()
 import airmass
+stop3 = time.time()
+
 import open_masterfiles
-
-
 
 def overplot_masterfiles_with_wl(filelist,line,separate_lines=False):
     vsini = 127
@@ -63,7 +52,7 @@ def velocity_to_wl(velocities,linecenter):
     return np.array(wls)
 
 
-def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',datafilefolder=None,datareductionprogram='Demetra',norm_boundaries='on'):
+def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='on',save='off',datafilefolder=None,datareductionprogram='Demetra',norm_boundaries='on'):
     # print datafile_folder
     if datareductionprogram == 'AudeLA':
         k=1
@@ -82,19 +71,19 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',da
         # print filelist
         # swl = line[3]-40
         # ewl = line[6]+40
-        lw,TVS,v,n =airmass.TVS_masterfiles(filelist,line)
+        # lw,TVS,v,n =airmass.TVS_masterfiles(filelist,line)
         sgn = 101  # window size for SavitzkyGolay (must be odd integer)
-        TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
+        # TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
         # print(v[sgn] - v[0])
-        wls,vs,lws = overplot_masterfiles_with_wl(filelist,line)
+        wls,vs,lfs = overplot_masterfiles_with_wl(filelist,line)
         f, (ax1, ax2) = plt.subplots(2)
-        for i,spec in enumerate(lws):
+        for i,spec in enumerate(lfs):
             ax1.plot(vs[i],spec,linewidth=1.0 )
             ax2.plot(wls[i],spec,linewidth=1.0)
         ax1.set_title(lineinfo[6+k])
         # ax1.legend()
         # ax1.set_xlim([-600,600])
-        spec2 = spec[(v>-300)& (v<300)]
+        spec2 = spec[(vs>-300)& (vs<300)]
         mini = np.floor(10*0.9*np.amin(spec2))/10
         maxi = np.ceil(10*1.01*np.amax(spec2))/10
         ax1.set_ylim([mini,maxi])
@@ -137,9 +126,31 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',da
         ax2.set_xlabel('V (km/s)')
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel('Normlized Flux',size=16)
-        ax2.set_xlim([normv_1-200,normv_4+200])
+        vlim1,vlim2 =normv_1-200,normv_4+200
+        ax2.set_xlim([vlim1,vlim2])
+        [wl_lim1,wl_lim2] = velocity_to_wl([vlim1,vlim2])
+        ax1.setxlim([wl_lim1,wl_lim2])
         if save =='on':
             plt.savefig(plot_save_folder + r'\\APO_'+datareductionprogram+'_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_TVS.pdf',format='pdf', dpi=1200)
         if show =='on':
             plt.show()
         plt.close()
+
+linelist_apo = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
+     ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
+     ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
+     ['He_I', 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5875'],
+     ['He_II', 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4541'],
+     ['He_II', 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4685'],
+     ['He_II', 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5411'],
+     ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'],
+     ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4921'],
+     ['He_I', 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'],
+     ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
+     ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
+
+linelist_apo2 = [['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861']]
+apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
+             'line4861', 'line4921', 'line6678', 'line4471']
+apo_lines2 = ['line4861']
+plot_TVS_eShel_masterfile(apo_lines2,r'D:\peter\Master_Thesis\Datareduction\Plots\normalization\test\apo\demetra')

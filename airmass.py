@@ -1,6 +1,5 @@
 from __future__ import division
 import time
-start = time.time()
 import matplotlib.pyplot as plt
 import glob
 import warnings
@@ -15,10 +14,7 @@ from PyAstronomy import pyasl
 import scipy.stats as ss
 warnings.simplefilter('ignore')
 from SavitzkyGolay import savitzky_golay
-
 from pysynphot import observation
-stop1 = time.time()
-print('A',str(stop1-start))
 from pysynphot import spectrum
 warnings.resetwarnings()
 import Datafile_class

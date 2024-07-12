@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datafile_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Normalization.py" beforeDir="false" afterPath="$PROJECT_DIR$/Normalization.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/make_linelist.py" beforeDir="false" afterPath="$PROJECT_DIR$/make_linelist.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,7 +180,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.airmass">
+  <component name="RunManager" selected="Python.Normalization">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -314,8 +314,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.airmass" />
         <item itemvalue="Python.Normalization" />
+        <item itemvalue="Python.airmass" />
         <item itemvalue="Python.ExecuteDataReduc" />
         <item itemvalue="Python.testttt" />
         <item itemvalue="Python.make_linelist" />
@@ -593,7 +593,14 @@
       <option name="project" value="LOCAL" />
       <updated>1720700056356</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="changes">
+      <created>1720789167723</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1720789167723</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="ToolWindowManager">

@@ -15,8 +15,10 @@ import pickle
 import os
 
 class Line:
-    def __init__(self, li,lc,wave,fl,velo,nf,vsini,snr,barcor,vrad):
+    def __init__(self, li,lc,wave,fl,velo,nf,vsini,snr,barcor,vrad,norm_boundaries):
         self.lineinfo = li
+        self.normalization_boundaries_wl=norm_boundaries[0]
+        self.normalization_boundaries_v = norm_boundaries[1]
         self.wl = wave
         self.v = velo
         self.v_cor = np.array(velo)+(barcor+vrad)
@@ -43,7 +45,7 @@ def line_data(line,wl,flux,observatory,snr,bccor,vrad):
     v, vsini = airmass.wl_to_velocity(lw, line[k])
     normalization_wl= [line[k+1],line[k+2],line[k+3],line[k+4]]
     normalization_v = airmass.wl_to_velocity(normalization_wl, line[k])
-    return Line(line,line[k],lw,lf,v,nf,vsini,snr, barcor,vrad),'line'+str(center_wl)
+    return Line(line,line[k],lw,lf,v,nf,vsini,snr, barcor,vrad,[normalization_wl,normalization_v]),'line'+str(center_wl)
 
 def linecenters(linelist,observatory):
     lcs = []

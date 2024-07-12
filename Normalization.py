@@ -83,7 +83,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='on',save='off',da
         ax1.set_title(lineinfo[6+k])
         # ax1.legend()
         # ax1.set_xlim([-600,600])
-        spec2 = spec[(vs>-300)& (vs<300)]
+        spec2 = spec[(vs[0]>-300)& (vs[0]<300)]
         mini = np.floor(10*0.9*np.amin(spec2))/10
         maxi = np.ceil(10*1.01*np.amax(spec2))/10
         ax1.set_ylim([mini,maxi])
@@ -127,9 +127,9 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='on',save='off',da
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel('Normlized Flux',size=16)
         vlim1,vlim2 =normv_1-200,normv_4+200
-        ax2.set_xlim([vlim1,vlim2])
-        [wl_lim1,wl_lim2] = velocity_to_wl([vlim1,vlim2])
-        ax1.setxlim([wl_lim1,wl_lim2])
+        [wl_lim1,wl_lim2] = velocity_to_wl([vlim1,vlim2],lineinfo[1])
+        ax2.set_xlim([wl_lim1,wl_lim2])
+        ax1.set_xlim([vlim1, vlim2])
         if save =='on':
             plt.savefig(plot_save_folder + r'\\APO_'+datareductionprogram+'_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_TVS.pdf',format='pdf', dpi=1200)
         if show =='on':

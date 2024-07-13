@@ -12,6 +12,7 @@ import airmass
 stop3 = time.time()
 
 import open_masterfiles
+import Datafile_class
 
 def overplot_masterfiles_with_wl(filelist,line,separate_lines=False):
     vsini = 127
@@ -44,15 +45,15 @@ def wl_to_velocity(wavelengths, linecenter):
         v.append(velo)
     return np.array(v)
 
-def velocity_to_wl(velocities,linecenter):
+def velocity_to_wl(velocities,linecenter,voff):
     wls = []
     for v in velocities:
-        wl=linecenter*(1+(v/299792.5))
+        wl=linecenter*(1+((v+voff)/299792.5))
         wls.append(wl)
     return np.array(wls)
 
 
-def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='on',save='off',datafilefolder=None,datareductionprogram='Demetra',norm_boundaries='on'):
+def plot_TVS_eShel_masterfile(linelist, plot_save_folder, custom_class_object_list=None,show='on',save='off',datafilefolder=None,datareductionprogram='Demetra',norm_boundaries='on'):
     # print datafile_folder
     if datareductionprogram == 'AudeLA':
         k=1
@@ -66,6 +67,13 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='on',save='off',da
             filelist = open_masterfiles.apo_demetra()
         else:
             filelist = open_masterfiles.apo_demetra(path=datafilefolder)
+    if custom_class_object_list == None:
+        pass
+    elif isinstance(custom_class_object_list, list):
+        filelist=custom_class_object_list
+    vrad=18.5
+    v_offset = 0
+    print(v_offset)
     for line in linelist:
         lineinfo = getattr(filelist[0], line).lineinfo
         # print filelist
@@ -85,11 +93,11 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='on',save='off',da
         # ax1.set_xlim([-600,600])
         spec2 = spec[(vs[0]>-300)& (vs[0]<300)]
         mini = np.floor(10*0.9*np.amin(spec2))/10
-        maxi = np.ceil(10*1.01*np.amax(spec2))/10
+        maxi = np.ceil(10*1.1*np.amax(spec2))/10
         ax1.set_ylim([mini,maxi])
         ax2.set_ylim([mini, maxi])
         if norm_boundaries == 'on':
-            [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            [normv_1,normv_2,normv_3,normv_4] = airmass.wl_to_velocity_2([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k],v_offset)
             ax1.axvline(normv_1, color='k', linestyle='dashed', linewidth=1)
             ax1.axvline(normv_2, color='k', linestyle='dashed', linewidth=1)
             ax1.axvline(normv_3, color='k', linestyle='dashed', linewidth=1)
@@ -127,7 +135,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='on',save='off',da
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel('Normlized Flux',size=16)
         vlim1,vlim2 =normv_1-200,normv_4+200
-        [wl_lim1,wl_lim2] = velocity_to_wl([vlim1,vlim2],lineinfo[1])
+        [wl_lim1,wl_lim2] = velocity_to_wl([vlim1,vlim2],lineinfo[1],v_offset)
         ax2.set_xlim([wl_lim1,wl_lim2])
         ax1.set_xlim([vlim1, vlim2])
         if save =='on':
@@ -136,6 +144,16 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='on',save='off',da
             plt.show()
         plt.close()
 
+
+def generate_custom_class_object_list(datafilefolder,linelist):
+    filelist = glob.glob(datafilefolder+r'*.fit')
+    class_object_list=[]
+    for file in filelist:
+        a = Datafile_class.Datafile_apo_demetra(file,ll=linelist,mark='Normalization_object_custom')
+        class_object_list.append(a)
+    return class_object_list
+
+demetra_file_dir = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Zet_Ori_Response\final_spectra\good\\'
 linelist_apo = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
      ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
      ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
@@ -149,8 +167,24 @@ linelist_apo = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-linelist_apo2 = [['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861']]
+linelist_apo_new = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
+     ['Hb', 4861.333, 4838.0, 4839.0, 4890.0, 4891.0, r'H$\beta$ 4861'],
+     ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
+     ['He_I', 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5875'],
+     ['He_II', 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4541'],
+     ['He_II', 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4685'],
+     ['He_II', 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5411'],
+     ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'],
+     ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4921'],
+     ['He_I', 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'],
+     ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
+     ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
+
+
+linelist_apo2 = [['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861']]
 apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
              'line4861', 'line4921', 'line6678', 'line4471']
-apo_lines2 = ['line4861']
-plot_TVS_eShel_masterfile(apo_lines2,r'D:\peter\Master_Thesis\Datareduction\Plots\normalization\test\apo\demetra')
+apo_lines2 = ['line6562']
+objectlist = generate_custom_class_object_list(demetra_file_dir,linelist_apo_new)
+
+plot_TVS_eShel_masterfile(apo_lines2,r'D:\peter\Master_Thesis\Datareduction\Plots\normalization\test\apo\demetra',custom_class_object_list=objectlist)

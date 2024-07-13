@@ -21,7 +21,7 @@ class Line:
         self.normalization_boundaries_v = norm_boundaries[1]
         self.wl = wave
         self.v = velo
-        self.v_cor = np.array(velo)+(barcor+vrad)
+        self.v_cor = np.array(velo)+(barcor-vrad)
         self.flux = fl
         self.normalizationflux = nf
         self.vsini = vsini
@@ -185,14 +185,14 @@ class Datafile_apo_demetra:
         if ll == None:
             pass
         else:
-            linelist = 'invullen'
+            self.linelist = ll
 
         fn = os.path.basename(file)
         data = pf.open(file)
         self.original_filepath = file
         self.i =i
         self.mark = mark
-        self.mark_explanation = '0 = no weird stuff,      1 = not usable due to very poor SNR,    2 = Not usable for EW, TVS, Quotient due to insufficient SNR,   3 =   Shows weird feature in Halpha'
+        # self.mark_explanation = '0 = no weird stuff,      1 = not usable due to very poor SNR,    2 = Not usable for EW, TVS, Quotient due to insufficient SNR,   3 =   Shows weird feature in Halpha'
         self.filename = fn[:fn.rfind(".")]
         self.header = data[0].header
         self.time_and_date = airmass.timeanddate2(self.header['DATE-OBS'])

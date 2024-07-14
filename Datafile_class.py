@@ -21,7 +21,7 @@ class Line:
         self.normalization_boundaries_v = norm_boundaries[1]
         self.wl = wave
         self.v = velo
-        self.v_cor = np.array(velo)+(barcor-vrad)
+        self.v_cor = np.array(velo)+(barcor+vrad)
         self.flux = fl
         self.normalizationflux = nf
         self.vsini = vsini
@@ -62,7 +62,11 @@ def linecenters(linelist,observatory):
     return lcs
 # def save(object)
 
-
+def open_linelist(path):
+    a = open(path, 'rb')
+    b = pickle.load(a)
+    a.close()
+    return b
 
 class Datafile_mercator:
     observatory = 'MERC'
@@ -168,7 +172,7 @@ class Datafile_apo:
 class Datafile_apo_demetra:
     observatory = 'APO_DEMETRA'
     # linelist = [['Ha', 35, 6562.819, 6554, 6556, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 35, 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['He_I', 35, 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 35, 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5876'], ['He_II', 35, 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4542'], ['He_II', 35, 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4686'], ['He_II', 35, 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5412'], ['He_I', 35,4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'] , ['He_I',35, 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'] , ['He_I', 35, 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'] ,['O_III', 35, 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'], ['C_IV', 35, 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
-    linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
+    linelist_standard = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
      ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
      ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
      ['He_I', 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5875'],
@@ -181,11 +185,11 @@ class Datafile_apo_demetra:
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-    def __init__(self, file,ll=None,v_rad = 18.5,i='n/a',mark = 0):
-        if ll == None:
-            pass
+    def __init__(self, file,ll_file=None,v_rad = 18.5,i='n/a',mark = 0):
+        if ll_file == None:
+            self.linelist = self.linelist_standard
         else:
-            self.linelist = ll
+            self.linelist = open_linelist(ll_file)
 
         fn = os.path.basename(file)
         data = pf.open(file)

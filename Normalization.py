@@ -9,15 +9,16 @@ import math
 import calendar
 import numpy as np
 import airmass
-stop3 = time.time()
-
+from scipy.stats import *
+from scipy.optimize import *
 import open_masterfiles
 import Datafile_class
 
 def overplot_masterfiles_with_wl(filelist,line,separate_lines=False):
     vsini = 127
     lfs = []
-    vs = []
+    v_cors = []
+    vs=[]
     wls=[]
     a = 0.0
     if separate_lines:
@@ -30,12 +31,14 @@ def overplot_masterfiles_with_wl(filelist,line,separate_lines=False):
         linedata = getattr(file, line)
         flux = linedata.flux
         wl = linedata.wl
-        v = linedata.v_cor
+        v_cor = linedata.v_cor
+        v= linedata.v
         wls.append(wl)
         lfs.append(np.array(flux) + a)
+        v_cors.append(v_cor)
         vs.append(v)
         a+=ap
-    return wls,vs, lfs
+    return wls,vs, v_cors,lfs
 
 
 def wl_to_velocity(wavelengths, linecenter):
@@ -83,7 +86,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder, custom_class_object_li
         sgn = 101  # window size for SavitzkyGolay (must be odd integer)
         # TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
         # print(v[sgn] - v[0])
-        wls,vs,lfs = overplot_masterfiles_with_wl(filelist,line)
+        wls,vs, v_cors,lfs = overplot_masterfiles_with_wl(filelist,line)
         f, (ax1, ax2) = plt.subplots(2)
         for i,spec in enumerate(lfs):
             ax1.plot(vs[i],spec,linewidth=1.0 )
@@ -149,9 +152,42 @@ def generate_custom_class_object_list(datafilefolder,linelist):
     filelist = glob.glob(datafilefolder+r'*.fit')
     class_object_list=[]
     for file in filelist:
-        a = Datafile_class.Datafile_apo_demetra(file,ll=linelist,mark='Normalization_object_custom')
+        a = Datafile_class.Datafile_apo_demetra(file,ll_file=linelist,mark='Normalization_object_custom')
         class_object_list.append(a)
     return class_object_list
+def line(x,x0,a1,b1,tau1):
+    return a1*np.exp(-tau1*np.exp(-((x-x0)/2*b1)**2))
+def line2(x,x0,a1,b1,tau1):
+    return a1*np.exp(-tau1*np.exp(-((x-x0)/2*b1)**2))
+
+def line3(x, x0,y0, a, sigma):
+    return y0 + a * np.exp(-(x - x0)**2 / (2 * sigma**2))
+
+
+def wl_shift(objectlist,line):
+    vshiftlist =[]
+    for object in objectlist:
+        linedata = getattr(object, line)
+        lineinfo = linedata.lineinfo
+        lc =lineinfo[1]
+        flux = linedata.flux
+        wl = linedata.wl
+        v = linedata.v_cor
+
+        parms, pcov = curve_fit(line3,v,flux,p0 = (0, 0.9, 0.1, 10))
+        plt.plot(v,flux)
+        plt.plot(v,line3(v,*parms))
+        vshift = parms[0]
+        vshiftlist.append(vshift)
+    avg_vshift=np.average(vshiftlist)
+    std_vshift = np.std(vshiftlist)
+    print(line,avg_vshift,std_vshift)
+    plt.show()
+    plt.close()
+        # return parms,pcov
+
+
+
 
 demetra_file_dir = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Zet_Ori_Response\final_spectra\good\\'
 linelist_apo = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
@@ -167,24 +203,26 @@ linelist_apo = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-linelist_apo_new = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
-     ['Hb', 4861.333, 4838.0, 4839.0, 4890.0, 4891.0, r'H$\beta$ 4861'],
-     ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
-     ['He_I', 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5875'],
-     ['He_II', 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4541'],
-     ['He_II', 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4685'],
-     ['He_II', 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5411'],
-     ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'],
-     ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4921'],
-     ['He_I', 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'],
-     ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
-     ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
+linelist_apo_new = [['Ha', 6562.819, 6550.2, 6551.2, 6578, 6579, r'H$\alpha$ 6563'],
+     ['Hb', 4861.333, 4848.0, 4849.0, 4877.0, 4878.0, r'H$\beta$ 4861'],
+     ['He_I', 4713.1457, 4708.3, 4709.3, 4718, 4719, 'He I 4713'],
+     ['He_I', 5875.621, 5867, 5868, 5881.7, 5882.7, 'He I 5875'],
+     ['He_II', 4541.6, 4537.5, 4538.5, 4546.6, 4547.6, 'He II 4541'],
+     ['He_II', 4685.804, 4682.3, 4683.3, 4690.5, 4691.5, 'He II 4685'],
+     ['He_II', 5411.521, 5405.2, 5406.2, 5417.0, 5418.2, 'He II 5411'],
+     ['He_I', 4471.4802, 4463.0, 4464, 4476.2, 4477.2, 'He I 4471'],
+     ['He_I', 4921.93, 4914.2, 4915.2, 4928.2, 4929.2, 'He I 4921'],
+     ['He_I', 6678.15, 6670, 6671, 6685, 6686, 'He I 6678'],
+     ['O_III', 5592.37, 5588.3, 5589.3, 5597.5, 5598.5, 'O III 5592'],
+     ['C_IV', 5801.33, 5793.8, 5794.8, 5817.1, 5818.1, 'C IV 5801']]
 
 
 linelist_apo2 = [['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861']]
 apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
              'line4861', 'line4921', 'line6678', 'line4471']
 apo_lines2 = ['line6562']
-objectlist = generate_custom_class_object_list(demetra_file_dir,linelist_apo_new)
+objectlist = generate_custom_class_object_list(demetra_file_dir,r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
+# for line in apo_lines:
+#     wl_shift(objectlist,line)
 
-plot_TVS_eShel_masterfile(apo_lines2,r'D:\peter\Master_Thesis\Datareduction\Plots\normalization\test\apo\demetra',custom_class_object_list=objectlist)
+plot_TVS_eShel_masterfile(apo_lines,r'D:\peter\Master_Thesis\Datareduction\Plots\normalization\test\apo\demetra',custom_class_object_list=objectlist)

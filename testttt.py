@@ -121,7 +121,6 @@ def aphase(filetime):
 #     snr = airmass.snr(file, 4838.0, 4839.0)
 #     print i,'  ',phase,'  ',dd,'  ',HJD
 #     i+=1
-
 # print 1/3
 
 
@@ -169,7 +168,7 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 # #
 # filelist = glob.glob(folder+'\*.fit')
 # print(filelist)
-#
+
 # # fp = r'D:\peter\Master_Thesis\Master_Thesis\Other\demetra_test_2\20160304\archive\20160304-225457-Zeta_Ori-600s-1.fit'
 # a=pf.open(filelist[0])
 # a.info()
@@ -181,8 +180,8 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 #     myfile=open(listpath, 'r')
 #     b=myfile.read()
 #     myfile.close()
-testlist = open_masterfiles.open_linelist(r'D:\peter\Master_Thesis\Master_Thesis\Other\testlist3.txt')
-print(testlist)
+# testlist = open_masterfiles.open_linelist(r'D:\peter\Master_Thesis\Master_Thesis\Other\testlist3.txt')
+# print(testlist)
 
 # openlinelistfile(r'D:\peter\Master_Thesis\Master_Thesis\Other\testlist.txt')
 # v_rad = 18.5
@@ -206,3 +205,21 @@ print(testlist)
 
 # a =pf.open(fp)
 # a.close()
+
+
+
+path_fl = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\zo_good'
+fl = open_masterfiles.apo_demetra()
+testfile = fl[2]
+line ='line4713'
+
+linedata = getattr(testfile, line)
+lineinfo = linedata.lineinfo
+flux = linedata.flux
+wl = linedata.wl
+v = linedata.v_cor
+lw,TVS,v,n =airmass.TVS_masterfiles(fl,line)
+print(lineinfo)
+# plt.plot(v,flux)
+# plt.show()
+# plt.close()

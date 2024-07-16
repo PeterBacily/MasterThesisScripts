@@ -67,6 +67,9 @@ test_datafile_folder = str(converted_Data_folder)+r'\test\\'
 fl_demetra_all = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Zet_Ori_Response\final_spectra\*.fit')
 fl_demetra_good = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Zet_Ori_Response\final_spectra\good\*.fit')
 
+fl_demetra_all_alt = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\final_spectra\*.fit')
+fl_demetra_good_alt = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\final_spectra\good\*.fit')
+
 def bjd(file):
     fits = pf.open(file)
     header = fits[0].header
@@ -79,10 +82,10 @@ def bjd(file):
 sortedfl_lapalma = sorted(filelist_lapalma, key=lambda x: bjd(x), reverse=False)
 k = 1
 
-def create_datafiles_demetra(filelist=fl_eshel_demetra,savefolder=datafile_folder_demetra_test):
+def create_datafiles_demetra(filelist=fl_eshel_demetra,savefolder=datafile_folder_demetra_test,linelist_file_path=None):
     i=0
     for file in filelist:
-        a = Datafile_apo_demetra(file)
+        a = Datafile_apo_demetra(file,ll_file=linelist_file_path)
         dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
         savename = savefolder+a.observatory+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
         workfileresource = open(savename, 'wb')
@@ -126,7 +129,7 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,i=0):
         k+=1
 
 
-create_datafiles_demetra(filelist=fl_demetra_good,savefolder=datafile_folder_demetra_test+r'\good\\')
+create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
 # testfile_apo = fl_clean[12]
 # a = Datafile_class.Datafile_apo(testfile_apo)
 # testfile_merc = filelist_lapalma[3]

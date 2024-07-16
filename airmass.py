@@ -2,6 +2,7 @@ from __future__ import division
 import time
 import matplotlib.pyplot as plt
 import glob
+import pickle
 import warnings
 import astropy.io.fits as pf
 from astropy.time import Time
@@ -1086,3 +1087,16 @@ def TVS_significance_level(Nfiles, p):
     degfree = Nfiles-1
     siglvl = np.sqrt(ss.distributions.chi2.ppf(1-p, df=degfree)/degfree)
     return siglvl
+
+
+def open_linelist(filepath):
+    workfileresource = open(filepath, 'rb')
+    list = pickle.load(workfileresource)
+    workfileresource.close()
+    return list
+
+
+def make_linelist(list, filepath):
+    workfileresource = open(filepath, 'wb')
+    pickle.dump(list, workfileresource)
+    workfileresource.close()

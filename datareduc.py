@@ -539,6 +539,10 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
             filelist = open_masterfiles.apo_demetra()
         else:
             filelist = open_masterfiles.apo_demetra(path=datafilefolder)
+
+    bccor = filelist[0].baricentric_correction
+    vrad= -18.5
+    velo_shift = bccor+vrad
     for line in linelist:
         lineinfo = getattr(filelist[0], line).lineinfo
         # print filelist
@@ -561,10 +565,10 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         ax1.set_ylim([mini,maxi])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
-            ax1.axvline(normv_1, color='k', linestyle='dashed', linewidth=1)
-            ax1.axvline(normv_2, color='k', linestyle='dashed', linewidth=1)
-            ax1.axvline(normv_3, color='k', linestyle='dashed', linewidth=1)
-            ax1.axvline(normv_4, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)
 
         ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
         ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
@@ -584,10 +588,10 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         #     ax2.plot(v,TVS)
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
-            ax2.axvline(normv_1, color='k', linestyle='dashed', linewidth=1)
-            ax2.axvline(normv_2, color='k', linestyle='dashed', linewidth=1)
-            ax2.axvline(normv_3, color='k', linestyle='dashed', linewidth=1)
-            ax2.axvline(normv_4, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)
         ax2.axvline(vsini, color='k', linestyle=':', linewidth=1)
         ax2.axvline(-vsini, color='k', linestyle=':', linewidth=1)
         # ax2.plot([v[0],v[-1]],[1,1],linestyle='dashed', linewidth=1,c='g')

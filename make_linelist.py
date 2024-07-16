@@ -1,6 +1,11 @@
 import pickle
 import airmass
 
+def open_linelist(filepath):
+     workfileresource = open(filepath, 'rb')
+     list = pickle.load(workfileresource)
+     workfileresource.close()
+     return list
 
 def make_linelist(list,filepath):
      workfileresource = open(filepath, 'wb')
@@ -51,4 +56,7 @@ linelist_apo_new = [['Ha', 6562.819, 6550.2, 6551.2, 6578, 6579, r'H$\alpha$ 656
 
 test_file = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt'
 
-make_linelist(linelist_apo_new,test_file)
+# make_linelist(linelist_apo_new,test_file)
+
+mylist = open_linelist(test_file)
+print(mylist)

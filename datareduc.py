@@ -20,6 +20,7 @@ import ast
 import os
 import Path_check
 import open_masterfiles
+import pickle
 folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
 Path_check.dir_check(folder_of_this_file)
 
@@ -560,8 +561,8 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         # ax1.legend()
         # ax1.set_xlim([-600,600])
         spec2 = spec[(v>-300)& (v<300)]
-        mini = np.floor(10*0.9*np.amin(spec2))/10
-        maxi = np.ceil(10*1.01*np.amax(spec2))/10
+        mini = np.floor(100*0.98*np.amin(spec2))/100
+        maxi = np.ceil(100*1.02*np.amax(spec2))/100
         ax1.set_ylim([mini,maxi])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
@@ -673,6 +674,7 @@ def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',
         if show =='on':
             plt.show()
         plt.close()
+
 
 # plot_TVS_Lapalma('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 # D:\Peter\Master Thesis\Data\eShelData\data\clean

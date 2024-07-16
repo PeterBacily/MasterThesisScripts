@@ -59,7 +59,7 @@ filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr\both',             ll_TVS_eshel,show='off', save = 'on', sg='on',  oneline='on')
 
 # TVS eShel Demetra
-datareduc.plot_TVS_eShel_masterfile(apo_lines, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\test\demetra_tvs',show='on',save='off',sg='off',oneline='on', siglvlline=0.01,datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\zo_good\\',datareductionprogram='Demetra')
+datareduc.plot_TVS_eShel_masterfile(apo_lines, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\apo\demetra_altair_snr100',show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\snr100\\',datareductionprogram='Demetra', norm_boundaries='on')
 
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data\clean',r'D:\Peter\Master Thesis\figures\TVS\eShel\cleanonly\reference_line',ll_TVS_eshel,show='off', save = 'on',sg='on',oneline='on')
 

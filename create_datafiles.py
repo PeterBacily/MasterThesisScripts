@@ -129,6 +129,10 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,i=0):
         k+=1
 
 
+
+
+
+
 create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
 # testfile_apo = fl_clean[12]
 # a = Datafile_class.Datafile_apo(testfile_apo)

@@ -895,6 +895,20 @@ def compare_average(save = 'off',show = 'on',plot_save_folder = r'D:\peter\Maste
             plt.show()
         plt.close()
 
+def filter_snr(input_filefolder, output_filefolder=None, snrlimit=None):
+    filelist = open_masterfiles.apo(path=input_filefolder)
+    for file in filelist:
+        snr1 = file.snr_original
+        if snr1 > snrlimit:
+            dl, dl2 = airmass.split_date(file.header['DATE-OBS'])
+            savename = output_filefolder + file.observatory + '_' + dl[0] + dl[1] + dl[2] + dl[3] + '.txt'
+            workfileresource = open(savename, 'wb')
+            pickle.dump(file, workfileresource)
+            workfileresource.close()
+
+
+
+
 # a = sorted_ew_correlation_lists()
 # i=1
 # for line in a[1][:15]:
@@ -913,7 +927,8 @@ def compare_average(save = 'off',show = 'on',plot_save_folder = r'D:\peter\Maste
 # plot_TVS(obs = 'MERCATOR',oneline='on',plot_save_folder=r'D:\Peter\School\Master Thesis\figures\TVS\LaPalma\from_masterfiles',save='on',show='off')
 # plot_EW(obs='MERCATOR',apowantedmarks = None)
 # plot_EW(obs='APO',apowantedmarks = None)
-plot_TVS_together(plot_save_folder= r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\combined\no_sg', save = 'off', show='on',sg='off', oneline='on')
+filter_snr(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',output_filefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\snr100\\',snrlimit=100)
+# plot_TVS_together(plot_save_folder= r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\combined\no_sg', save = 'off', show='on',sg='off', oneline='on')
 # plot_EW_together(plot_save_folder= r'D:\Peter\School\Master Thesis\figures\EWs\verslag\half_period\EW_', save = 'off', show='off', oneline='on', bad='off',fx2='on')
 # compare_average(save = 'on',show = 'off')
 

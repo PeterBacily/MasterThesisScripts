@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExecuteDataReduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExecuteDataReduc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Make_Plots.py" beforeDir="false" afterPath="$PROJECT_DIR$/Make_Plots.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testttt.py" beforeDir="false" afterPath="$PROJECT_DIR$/testttt.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +181,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.ExecuteDataReduc">
+  <component name="RunManager" selected="Python.testttt">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -246,27 +243,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Normalization" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="MasterThesis" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Normalization.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="datareduc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -309,20 +285,41 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="testttt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MasterThesis" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testttt.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="Python.testttt" />
       <item itemvalue="Python.Make_Plots" />
       <item itemvalue="Python.datareduc" />
-      <item itemvalue="Python.Normalization" />
       <item itemvalue="Python.make_linelist" />
       <item itemvalue="Python.ExecuteDataReduc" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.testttt" />
         <item itemvalue="Python.ExecuteDataReduc" />
         <item itemvalue="Python.Make_Plots" />
         <item itemvalue="Python.datareduc" />
         <item itemvalue="Python.make_linelist" />
-        <item itemvalue="Python.Normalization" />
       </list>
     </recent_temporary>
   </component>
@@ -632,7 +629,14 @@
       <option name="project" value="LOCAL" />
       <updated>1721147533902</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="changes">
+      <created>1721153001721</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1721153001721</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -717,7 +721,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/testttt.py</url>
-          <line>199</line>
+          <line>201</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>

@@ -290,7 +290,7 @@ class Datafile_apo_demetra:
         data.close()
 
 class single_order:
-    def __init__(self, file, ll):
+    def __init__(self, file):
         a = pf.open(file)
         header = a[0].header
         naxis1 = header['NAXIS1']

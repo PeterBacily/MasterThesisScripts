@@ -225,13 +225,49 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 # plt.plot(v,flux)
 # plt.show()
 # plt.close()
+
+class Line:
+    def __init__(self, li,lc,wave,fl,velo,nf,vsini,snr,barcor,vrad,norm_boundaries):
+        self.lineinfo = li
+        self.normalization_boundaries_wl=norm_boundaries[0]
+        self.normalization_boundaries_v = norm_boundaries[1]
+        self.wl = wave
+        self.v = velo
+        self.v_cor = np.array(velo)+(barcor+vrad)
+        self.flux = fl
+        self.normalizationflux = nf
+        self.vsini = vsini
+        self.ew_error, self.ew = airmass.equivalent_width(self.v_cor,wave,fl,lc,snr)
+
+
+def line_data(line,wl,flux,observatory,snr,bccor,vrad):
+    if observatory == 'MERC':
+        k = 1
+        barcor = 0
+    elif observatory == 'APO':
+        k = 2
+        barcor = bccor
+    elif observatory == 'APO_DEMETRA':
+        barcor = bccor
+        k = 1
+    else:
+        print('observatory needs to be APO or MERC')
+    center_wl = int(line[k])
+    lw, lf, nf, _,_ = airmass.normalize(wl,flux,line[k+1],line[k+2],line[k+3],line[k+4],line[k+1]-20,line[k+4]+20)
+    v, vsini = airmass.wl_to_velocity(lw, line[k])
+    normalization_wl= [line[k+1],line[k+2],line[k+3],line[k+4]]
+    normalization_v = airmass.wl_to_velocity(normalization_wl, line[k])
+    return Line(line,line[k],lw,lf,v,nf,vsini,snr, barcor,vrad,[normalization_wl,normalization_v]),'line'+str(center_wl)
+
+
+
 def open_linelist(path):
     a = open(path, 'rb')
     b = pickle.load(a)
     a.close()
     return b
 linelist=open_linelist(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
-class Datafile_apo_demetra:
+class Datafile_apo_demetra_with_orders:
     observatory = 'APO_DEMETRA'
     # linelist = [['Ha', 35, 6562.819, 6554, 6556, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 35, 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['He_I', 35, 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 35, 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5876'], ['He_II', 35, 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4542'], ['He_II', 35, 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4686'], ['He_II', 35, 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5412'], ['He_I', 35,4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'] , ['He_I',35, 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'] , ['He_I', 35, 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'] ,['O_III', 35, 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'], ['C_IV', 35, 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
     linelist_standard = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
@@ -252,7 +288,7 @@ class Datafile_apo_demetra:
             self.linelist = self.linelist_standard
         else:
             self.linelist = open_linelist(ll_file)
-
+        self.orders=orderfilelist
         fn = os.path.basename(file)
         data = pf.open(fullspecfile)
         self.original_filepath = file
@@ -284,13 +320,16 @@ class Datafile_apo_demetra:
         for line in self.linelist:
             linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr, self.baricentric_correction,-18.5)
             linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,0,0)
+            ol = sorted(self.orders, key=lambda x: np.abs(x.wl_avg-line[1]))
+            linedata_order =
             setattr(self,linekey , linedata)
             setattr(self,linekey+'_original',linedata_original)
             self.available_lines.append(linekey)
         data.close()
 
 class single_order:
-    def __init__(self, filepath,order_number):
+    def __init__(self, filepath,order_number,order_number_demetra):
+        self.order_number_demetra =order_number_demetra
         self.order_number = order_number
         a = pf.open(filepath)
         self.header = a[0].header
@@ -330,15 +369,25 @@ orders = []
 filefolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\\'
 filelist=glob.glob(filefolder+r'*.fit')
 i=1
+
+filelist.sort(key=lambda x: os.path.splitext(os.path.basename(x))[-2:])
+orders=[]
 for file in filelist:
-    od = single_order(file,order_number=i)
+    file_name = os.path.basename(file)
+    fn2 = os.path.splitext(file_name)[0]
+    order_number_demetra = fn2[-2:]
+    print(fn2, fn2[-2:])
+    od = single_order(file,order_number=i,order_number_demetra=order_number_demetra)
     orders.append(od)
     i+=1
 
+
+
 testwl=4861.333
 orders.sort(key=lambda x: np.abs(x.wl_avg-testwl))
+orders.sort(key=lambda x: x.wl_start)
 for order in orders:
-    print(order.order_number,'@@@@', order.wl_avg,'@@@@',order.header)
+    print(order.order_number,order.order_number_demetra,'@@@@', order.wl_avg,'@@@@',order.header)
 # file1path=r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\ZetOri20160325-2_20160325210354_40.fit'
 # a = single_order(file1path)
 # header = a.header

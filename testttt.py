@@ -259,7 +259,21 @@ def line_data(line,wl,flux,observatory,snr,bccor,vrad):
     normalization_v = airmass.wl_to_velocity(normalization_wl, line[k])
     return Line(line,line[k],lw,lf,v,nf,vsini,snr, barcor,vrad,[normalization_wl,normalization_v]),'line'+str(center_wl)
 
-
+class single_order:
+    def __init__(self, filepath,order_number,order_number_demetra):
+        self.order_number_demetra =order_number_demetra
+        self.order_number = order_number
+        a = pf.open(filepath)
+        self.header = a[0].header
+        naxis1 = self.header['NAXIS1']
+        crval1 = self.header['CRVAL1']
+        cdelt1 = self.header['CDELT1']
+        self.wl_original = np.arange(naxis1) * cdelt1 + crval1
+        self.flux_original = a[0].data
+        self.wl_start = self.wl_original[0]
+        self.wl_end = self.wl_original[-1]
+        self.wl_avg = np.average([self.wl_start, self.wl_end])
+        a.close()
 
 def open_linelist(path):
     a = open(path, 'rb')
@@ -288,22 +302,23 @@ class Datafile_apo_demetra_with_orders:
             self.linelist = self.linelist_standard
         else:
             self.linelist = open_linelist(ll_file)
-        self.orders=orderfilelist
-        fn = os.path.basename(file)
+
+        fn = os.path.basename(fullspecfile)
         data = pf.open(fullspecfile)
-        self.original_filepath = file
+        self.original_filepath = fullspecfile
         self.i =i
+        self.k=1
         self.mark = mark
         # self.mark_explanation = '0 = no weird stuff,      1 = not usable due to very poor SNR,    2 = Not usable for EW, TVS, Quotient due to insufficient SNR,   3 =   Shows weird feature in Halpha'
         self.filename = fn[:fn.rfind(".")]
         self.header = data[0].header
         self.time_and_date = airmass.timeanddate2(self.header['DATE-OBS'])
-        self.baricentric_correction, self.HJD = airmass.barcor(file,JDOBS=self.header['JD-MID'])
+        self.baricentric_correction, self.HJD = airmass.barcor(fullspecfile,JDOBS=self.header['JD-MID'])
         self.phase =  airmass.aphase(self.HJD)
-        self.exptime = airmass.exposuretime(file)
-        self.airmass, self.alt, JD = airmass.airmass(file,JDOBS=self.header['JD-MID'])
+        self.exptime = airmass.exposuretime(fullspecfile)
+        self.airmass, self.alt, JD = airmass.airmass(fullspecfile,JDOBS=self.header['JD-MID'])
         try:
-            frwl = airmass.fitfraun_demetra(file)
+            frwl = airmass.fitfraun_demetra(fullspecfile)
         except RuntimeError:
             frwl = 5895.92
         self.fwl = frwl
@@ -317,31 +332,32 @@ class Datafile_apo_demetra_with_orders:
         self.available_lines = []
         self.snr_original =airmass.snr(self.wl_original,self.flux_original)
         self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
+        onr = 1
+        ords = []
+        for file in orderfilelist:
+            file_name = os.path.basename(file)
+            order_number_demetra= os.path.splitext(file_name)[0][-2:]
+            od = single_order(file, order_number=onr, order_number_demetra=order_number_demetra)
+            ords.append(od)
+            onr += 1
+        self.orders = ords
         for line in self.linelist:
             linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr, self.baricentric_correction,-18.5)
             linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,0,0)
             ol = sorted(self.orders, key=lambda x: np.abs(x.wl_avg-line[1]))
-            linedata_order =
+            line_order = ol[0]
+            normalization_wl = [line[self.k + 1], line[self.k + 2], line[self.k + 3], line[self.k + 4]]
+            if line_order.wl_start<normalization_wl[0] and line_order.wl_end>normalization_wl[-1]:
+                linedata_order,lk = line_data(line,line_order.wl_original,line_order.flux_original,self.observatory,self.snr, self.baricentric_correction,-18.5)
+                setattr(self,linekey+'_order',linedata_order)
+            else:
+                print('line out of order bounds, no order line was made for',line[0],self.filename)
             setattr(self,linekey , linedata)
             setattr(self,linekey+'_original',linedata_original)
             self.available_lines.append(linekey)
         data.close()
 
-class single_order:
-    def __init__(self, filepath,order_number,order_number_demetra):
-        self.order_number_demetra =order_number_demetra
-        self.order_number = order_number
-        a = pf.open(filepath)
-        self.header = a[0].header
-        naxis1 = self.header['NAXIS1']
-        crval1 = self.header['CRVAL1']
-        cdelt1 = self.header['CDELT1']
-        self.wl_original = np.arange(naxis1) * cdelt1 + crval1
-        self.flux_original = a[0].data
-        self.wl_start = self.wl_original[0]
-        self.wl_end = self.wl_original[-1]
-        self.wl_avg = np.average([self.wl_start, self.wl_end])
-        a.close()
+
 
 class Datafile_apo_demetra_orders:
     observatory = 'APO_DEMETRA'
@@ -360,34 +376,43 @@ class Datafile_apo_demetra_orders:
             wl_end = wl_original[-1]
             wl_avg = np.avg([wl_start,wl_end])
 
-orders = []
 
 
 # new_list = sorted(orig_list, key=lambda x: x.count, reverse=True)
 
 
 filefolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\\'
+filefolder_main= r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\full\\'
 filelist=glob.glob(filefolder+r'*.fit')
-i=1
+fullspec = glob.glob(filefolder_main+r'*.fit')[0]
 
-filelist.sort(key=lambda x: os.path.splitext(os.path.basename(x))[-2:])
-orders=[]
-for file in filelist:
-    file_name = os.path.basename(file)
-    fn2 = os.path.splitext(file_name)[0]
-    order_number_demetra = fn2[-2:]
-    print(fn2, fn2[-2:])
-    od = single_order(file,order_number=i,order_number_demetra=order_number_demetra)
-    orders.append(od)
-    i+=1
+a =Datafile_apo_demetra_with_orders(filelist,fullspec)
 
+lwl = a.line6562_order.wl
+lfl =a.line6562_order.flux
+plt.plot(lwl,lfl)
+plt.show()
+plt.close()
 
-
-testwl=4861.333
-orders.sort(key=lambda x: np.abs(x.wl_avg-testwl))
-orders.sort(key=lambda x: x.wl_start)
-for order in orders:
-    print(order.order_number,order.order_number_demetra,'@@@@', order.wl_avg,'@@@@',order.header)
+# filelist.sort(key=lambda x: os.path.splitext(os.path.basename(x))[-2:])
+# i=1
+# orders=[]
+# for file in filelist:
+#     file_name = os.path.basename(file)
+#     fn2 = os.path.splitext(file_name)[0]
+#     order_number_demetra = fn2[-2:]
+#     print(fn2, fn2[-2:])
+#     od = single_order(file,order_number=i,order_number_demetra=order_number_demetra)
+#     orders.append(od)
+#     i+=1
+#
+#
+#
+# testwl=4861.333
+# orders.sort(key=lambda x: np.abs(x.wl_avg-testwl))
+# orders.sort(key=lambda x: x.wl_start)
+# for order in orders:
+#     print(order.order_number,order.order_number_demetra,'@@@@', order.wl_avg,'@@@@',order.header)
 # file1path=r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\ZetOri20160325-2_20160325210354_40.fit'
 # a = single_order(file1path)
 # header = a.header

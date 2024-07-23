@@ -70,6 +70,8 @@ fl_demetra_good = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\
 fl_demetra_all_alt = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\final_spectra\*.fit')
 fl_demetra_good_alt = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\final_spectra\good\*.fit')
 
+
+
 def bjd(file):
     fits = pf.open(file)
     header = fits[0].header

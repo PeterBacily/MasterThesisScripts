@@ -13,6 +13,7 @@ import numpy as np
 import airmass
 from scipy.optimize import *
 from scipy.stats import chi2
+import zipfile
 from PyAstronomy import pyasl
 import open_masterfiles
 matplotlib.style.use('classic')
@@ -260,10 +261,15 @@ def line_data(line,wl,flux,observatory,snr,bccor,vrad):
     return Line(line,line[k],lw,lf,v,nf,vsini,snr, barcor,vrad,[normalization_wl,normalization_v]),'line'+str(center_wl)
 
 class single_order:
-    def __init__(self, filepath,order_number,order_number_demetra):
+    def __init__(self, filepath,order_number,order_number_demetra,zip=True,fullzipfile=None):
         self.order_number_demetra =order_number_demetra
         self.order_number = order_number
-        a = pf.open(filepath)
+        if zip==True:
+            filefolder = zipfile.ZipFile(fullzipfile, "r")
+            a=filefolder.read(filepath)
+
+        else:
+            a = pf.open(filepath)
         self.header = a[0].header
         naxis1 = self.header['NAXIS1']
         crval1 = self.header['CRVAL1']
@@ -297,7 +303,7 @@ class Datafile_apo_demetra_with_orders:
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-    def __init__(self, orderfilelist,fullspecfile,ll_file=None,v_rad = 18.5,i='n/a',mark = 0):
+    def __init__(self, orderfiles,fullspecfile,ll_file=None,v_rad = 18.5,i='n/a',mark = 0,zip=True):
         if ll_file == None:
             self.linelist = self.linelist_standard
         else:
@@ -334,10 +340,18 @@ class Datafile_apo_demetra_with_orders:
         self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
         onr = 1
         ords = []
-        for file in orderfilelist:
-            file_name = os.path.basename(file)
+        if zip==True:
+            filefolder = zipfile.ZipFile(orderfiles, "r")
+            fzf = orderfiles
+            orderfilelist = filefolder.namelist()
+        else:
+            orderfilelist=orderfiles
+            fzf = None
+
+        for filename in orderfilelist:
+            file_name = os.path.basename(filename)
             order_number_demetra= os.path.splitext(file_name)[0][-2:]
-            od = single_order(file, order_number=onr, order_number_demetra=order_number_demetra)
+            od = single_order(filename, order_number=onr, order_number_demetra=order_number_demetra,zip=zip,fullzipfile=fzf)
             ords.append(od)
             onr += 1
         self.orders = ords
@@ -359,25 +373,32 @@ class Datafile_apo_demetra_with_orders:
 
 
 
-class Datafile_apo_demetra_orders:
-    observatory = 'APO_DEMETRA'
+# class Datafile_apo_demetra_orders:
+#     observatory = 'APO_DEMETRA'
+#
+#     def __init__(self, filelist, ll_file):
+#         self.linelist = open_linelist(ll_file)
+#         for i,order_file in enumerate(filelist):
+#             a = pf.open(order_file)
+#             header = a[0].header
+#             naxis1 = header['NAXIS1']
+#             crval1 = header['CRVAL1']
+#             cdelt1 = header['CDELT1']
+#             wl_original = np.arange(naxis1) * cdelt1 + crval1
+#             flux_original = a[0].data
+#             wl_start = wl_original[0]
+#             wl_end = wl_original[-1]
+#             wl_avg = np.avg([wl_start,wl_end])
 
-    def __init__(self, filelist, ll_file):
-        self.linelist = open_linelist(ll_file)
-        for i,order_file in enumerate(filelist):
-            a = pf.open(order_file)
-            header = a[0].header
-            naxis1 = header['NAXIS1']
-            crval1 = header['CRVAL1']
-            cdelt1 = header['CDELT1']
-            wl_original = np.arange(naxis1) * cdelt1 + crval1
-            flux_original = a[0].data
-            wl_start = wl_original[0]
-            wl_end = wl_original[-1]
-            wl_avg = np.avg([wl_start,wl_end])
 
+file = zipfile.ZipFile("zipfile.zip", "r")
+for name in file.namelist():
+    data = file.read(name)
 
+with zipfile.ZipFile("sample.zip", mode="r") as archive:
+    archive.extractall(path="output_dir/")
 
+from pathlib import Path
 # new_list = sorted(orig_list, key=lambda x: x.count, reverse=True)
 
 
@@ -385,8 +406,13 @@ filefolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\si
 filefolder_main= r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\full\\'
 filelist=glob.glob(filefolder+r'*.fit')
 fullspec = glob.glob(filefolder_main+r'*.fit')[0]
-
+filefolder_zip = r"D:\peter\Master_Thesis\Datareduction\Data\Demetra\final_spectra\back_to_back_stacked\ZetOri20160325-2_20160325T210354.zip"
 a =Datafile_apo_demetra_with_orders(filelist,fullspec)
+
+
+filename = Path('/some/path/somefile.txt')
+from pathlib import Path
+filename_wo_ext = filename.with_suffix('')
 
 lwl = a.line6562_order.wl
 lfl =a.line6562_order.flux

@@ -228,6 +228,128 @@ class Datafile_apo_demetra:
         data.close()
 
 
+class single_order:
+    def __init__(self, filepath,order_number,order_number_demetra):
+        self.order_number_demetra =order_number_demetra
+        self.order_number = order_number
+        a = pf.open(filepath)
+        self.header = a[0].header
+        naxis1 = self.header['NAXIS1']
+        crval1 = self.header['CRVAL1']
+        cdelt1 = self.header['CDELT1']
+        self.wl_original = np.arange(naxis1) * cdelt1 + crval1
+        self.flux_original = a[0].data
+        self.wl_start = self.wl_original[0]
+        self.wl_end = self.wl_original[-1]
+        self.wl_avg = np.average([self.wl_start, self.wl_end])
+        a.close()
+
+def open_linelist(path):
+    a = open(path, 'rb')
+    b = pickle.load(a)
+    a.close()
+    return b
+linelist=open_linelist(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
+class Datafile_apo_demetra_with_orders:
+    observatory = 'APO_DEMETRA'
+    # linelist = [['Ha', 35, 6562.819, 6554, 6556, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 35, 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['He_I', 35, 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 35, 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5876'], ['He_II', 35, 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4542'], ['He_II', 35, 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4686'], ['He_II', 35, 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5412'], ['He_I', 35,4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'] , ['He_I',35, 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'] , ['He_I', 35, 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'] ,['O_III', 35, 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'], ['C_IV', 35, 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
+    linelist_standard = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
+     ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
+     ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
+     ['He_I', 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5875'],
+     ['He_II', 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4541'],
+     ['He_II', 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4685'],
+     ['He_II', 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5411'],
+     ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'],
+     ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4921'],
+     ['He_I', 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'],
+     ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
+     ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
+
+    def __init__(self, orderfilelist,fullspecfile,ll_file=None,v_rad = 18.5,i='n/a',mark = 0):
+        if ll_file == None:
+            self.linelist = self.linelist_standard
+        else:
+            self.linelist = open_linelist(ll_file)
+
+        fn = os.path.basename(fullspecfile)
+        data = pf.open(fullspecfile)
+        self.original_filepath = fullspecfile
+        self.i =i
+        self.k=1
+        self.mark = mark
+        # self.mark_explanation = '0 = no weird stuff,      1 = not usable due to very poor SNR,    2 = Not usable for EW, TVS, Quotient due to insufficient SNR,   3 =   Shows weird feature in Halpha'
+        self.filename = fn[:fn.rfind(".")]
+        self.header = data[0].header
+        self.time_and_date = airmass.timeanddate2(self.header['DATE-OBS'])
+        self.baricentric_correction, self.HJD = airmass.barcor(fullspecfile,JDOBS=self.header['JD-MID'])
+        self.phase =  airmass.aphase(self.HJD)
+        self.exptime = airmass.exposuretime(fullspecfile)
+        self.airmass, self.alt, JD = airmass.airmass(fullspecfile,JDOBS=self.header['JD-MID'])
+        try:
+            frwl = airmass.fitfraun_demetra(fullspecfile)
+        except RuntimeError:
+            frwl = 5895.92
+        self.fwl = frwl
+        self.velshift = 299792.458*(self.fwl-5895.92)/5895.92
+        naxis1 = self.header['NAXIS1']
+        crval1 = self.header['CRVAL1']
+        cdelt1 = self.header['CDELT1']
+        self.wl_original = np.arange(naxis1) * cdelt1 + crval1 - v_rad / 299792.458
+        self.flux_original = data[0].data
+        self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original)
+        self.available_lines = []
+        self.snr_original =airmass.snr(self.wl_original,self.flux_original)
+        self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
+        onr = 1
+        ords = []
+        for file in orderfilelist:
+            file_name = os.path.basename(file)
+            order_number_demetra= os.path.splitext(file_name)[0][-2:]
+            od = single_order(file, order_number=onr, order_number_demetra=order_number_demetra)
+            ords.append(od)
+            onr += 1
+        self.orders = ords
+        for line in self.linelist:
+            linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr, self.baricentric_correction,-18.5)
+            linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,0,0)
+            ol = sorted(self.orders, key=lambda x: np.abs(x.wl_avg-line[1]))
+            line_order = ol[0]
+            normalization_wl = [line[self.k + 1], line[self.k + 2], line[self.k + 3], line[self.k + 4]]
+            if line_order.wl_start<normalization_wl[0] and line_order.wl_end>normalization_wl[-1]:
+                linedata_order,lk = line_data(line,line_order.wl_original,line_order.flux_original,self.observatory,self.snr, self.baricentric_correction,-18.5)
+                setattr(self,linekey+'_order',linedata_order)
+            else:
+                print('line out of order bounds, no order line was made for',line[0],self.filename)
+            setattr(self,linekey , linedata)
+            setattr(self,linekey+'_original',linedata_original)
+            self.available_lines.append(linekey)
+        data.close()
+
+
+
+# class Datafile_apo_demetra_orders:
+#     observatory = 'APO_DEMETRA'
+#
+#     def __init__(self, filelist, ll_file):
+#         self.linelist = open_linelist(ll_file)
+#         for i,order_file in enumerate(filelist):
+#             a = pf.open(order_file)
+#             header = a[0].header
+#             naxis1 = header['NAXIS1']
+#             crval1 = header['CRVAL1']
+#             cdelt1 = header['CDELT1']
+#             wl_original = np.arange(naxis1) * cdelt1 + crval1
+#             flux_original = a[0].data
+#             wl_start = wl_original[0]
+#             wl_end = wl_original[-1]
+#             wl_avg = np.avg([wl_start,wl_end])
+
+
+
+
+
+
 
 # class datafile_stack_apo:
 #     observatory = 'APO'

@@ -15,6 +15,7 @@ from scipy.optimize import *
 from scipy.stats import chi2
 import zipfile
 from pathlib import Path
+import shutil
 from PyAstronomy import pyasl
 import open_masterfiles
 matplotlib.style.use('classic')
@@ -282,13 +283,19 @@ class single_order:
         self.wl_avg = np.average([self.wl_start, self.wl_end])
         a.close()
 def zip_to_list(filepath):
-    filename_wo_ext = filepath.with_suffix('')
-    Path(filename_wo_ext).mkdir(parents=True, exist_ok=True)
+    zipfilepath = Path(filepath)
+    tempfolder = zipfilepath.parents[0].joinpath('temp').joinpath(zipfilepath.stem)
+    print(tempfolder)
+    preexists = tempfolder.exists()
+    Path(tempfolder).mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(filepath, 'r') as zip_ref:
-        zip_ref.extractall(filename_wo_ext)
-    filelist=glob.glob(filename_wo_ext+r'*.fit')
-    return filelist
+        zip_ref.extractall(tempfolder)
+    filelist=glob.glob(str(tempfolder)+r'\*.fit')
+    return filelist,preexists,tempfolder
 
+def remove_temp_folder(tempfolder,preexists=False):
+    if preexists==False:
+        shutil.rmtree(tempfolder)
 
 def open_linelist(path):
     a = open(path, 'rb')
@@ -380,8 +387,19 @@ class Datafile_apo_demetra_with_orders:
             self.available_lines.append(linekey)
         data.close()
 
+# bla = r"D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\ZetOri20160317-2_20160317T194557.zip"
+# print(zipfile.is_zipfile(bla))
+# filelist,preexist,tempfoldername = zip_to_list(bla)
+# print(filelist)
+# print(preexist)
+# print(tempfoldername)
+# bla2=bla.parents[0]
+# bla3 =bla.stem
+# bla4 = bla.parents[0].joinpath('temp').joinpath(bla.stem)
+# print(bla4)
 
-
+# print(bla.stem)
+# parents[]
 # class Datafile_apo_demetra_orders:
 #     observatory = 'APO_DEMETRA'
 #

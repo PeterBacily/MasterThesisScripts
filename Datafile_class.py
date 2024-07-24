@@ -13,7 +13,9 @@ from PyAstronomy import pyasl
 import matplotlib.style
 import pickle
 import os
-
+import zipfile
+from pathlib import Path
+import shutil
 class Line:
     def __init__(self, li,lc,wave,fl,velo,nf,vsini,snr,barcor,vrad,norm_boundaries):
         self.lineinfo = li
@@ -39,7 +41,7 @@ def line_data(line,wl,flux,observatory,snr,bccor,vrad):
         barcor = bccor
         k = 1
     else:
-        print('observatory needs to be APO or MERC')
+        raise Exception('observatory needs to be APO or MERC or APO_DEMETRA')
     center_wl = int(line[k])
     lw, lf, nf, _,_ = airmass.normalize(wl,flux,line[k+1],line[k+2],line[k+3],line[k+4],line[k+1]-20,line[k+4]+20)
     v, vsini = airmass.wl_to_velocity(lw, line[k])
@@ -56,11 +58,26 @@ def linecenters(linelist,observatory):
     elif observatory == 'APO_DEMETRA':
         k=1
     else:
-        print('observatory needs to be APO or MERC or APO_DEMETRA')
+        raise Exception('observatory needs to be APO or MERC or APO_DEMETRA')
     for line in linelist:
         lcs.append(int(line[k]))
     return lcs
 # def save(object)
+
+def zip_to_list(filepath):
+    zipfilepath = Path(filepath)
+    tempfolder = zipfilepath.parents[0].joinpath('temp').joinpath(zipfilepath.stem)
+    print(tempfolder)
+    preexists = tempfolder.exists()
+    Path(tempfolder).mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(filepath, 'r') as zip_ref:
+        zip_ref.extractall(tempfolder)
+    filelist=glob.glob(str(tempfolder)+r'\*.fit')
+    return filelist,preexists,tempfolder
+
+def remove_temp_folder(tempfolder,preexists=False):
+    if preexists==False:
+        shutil.rmtree(tempfolder)
 
 def open_linelist(path):
     a = open(path, 'rb')
@@ -266,11 +283,19 @@ class Datafile_apo_demetra_with_orders:
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-    def __init__(self, orderfilelist,fullspecfile,ll_file=None,v_rad = 18.5,i='n/a',mark = 0):
+    def __init__(self, orderfiles,fullspecfile,ll_file=None,v_rad = 18.5,i='n/a',mark = 0):
         if ll_file == None:
             self.linelist = self.linelist_standard
         else:
             self.linelist = open_linelist(ll_file)
+
+        if isinstance(orderfiles, list):
+            orderfilelist = orderfiles
+        elif zipfile.is_zipfile(orderfiles)==True:
+            orderfilelist, preexists, tempfolder = zip_to_list(orderfiles)
+        else:
+            raise Exception('orderfiles needs to be list of files or zip-archive')
+
 
         fn = os.path.basename(fullspecfile)
         data = pf.open(fullspecfile)
@@ -325,6 +350,8 @@ class Datafile_apo_demetra_with_orders:
             setattr(self,linekey+'_original',linedata_original)
             self.available_lines.append(linekey)
         data.close()
+        if zipfile.is_zipfile(orderfiles)==True:
+            remove_temp_folder(tempfolder,preexists=preexists)
 
 
 

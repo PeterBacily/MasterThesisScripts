@@ -14,6 +14,7 @@ import airmass
 from scipy.optimize import *
 from scipy.stats import chi2
 import zipfile
+from pathlib import Path
 from PyAstronomy import pyasl
 import open_masterfiles
 matplotlib.style.use('classic')
@@ -280,13 +281,21 @@ class single_order:
         self.wl_end = self.wl_original[-1]
         self.wl_avg = np.average([self.wl_start, self.wl_end])
         a.close()
+def zip_to_list(filepath):
+    filename_wo_ext = filepath.with_suffix('')
+    Path(filename_wo_ext).mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(filepath, 'r') as zip_ref:
+        zip_ref.extractall(filename_wo_ext)
+    filelist=glob.glob(filename_wo_ext+r'*.fit')
+    return filelist
+
 
 def open_linelist(path):
     a = open(path, 'rb')
     b = pickle.load(a)
     a.close()
     return b
-linelist=open_linelist(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
+
 class Datafile_apo_demetra_with_orders:
     observatory = 'APO_DEMETRA'
     # linelist = [['Ha', 35, 6562.819, 6554, 6556, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 35, 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['He_I', 35, 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 35, 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5876'], ['He_II', 35, 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4542'], ['He_II', 35, 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4686'], ['He_II', 35, 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5412'], ['He_I', 35,4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'] , ['He_I',35, 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'] , ['He_I', 35, 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'] ,['O_III', 35, 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'], ['C_IV', 35, 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
@@ -390,35 +399,35 @@ class Datafile_apo_demetra_with_orders:
 #             wl_end = wl_original[-1]
 #             wl_avg = np.avg([wl_start,wl_end])
 
-
-file = zipfile.ZipFile("zipfile.zip", "r")
-for name in file.namelist():
-    data = file.read(name)
-
-with zipfile.ZipFile("sample.zip", mode="r") as archive:
-    archive.extractall(path="output_dir/")
-
-from pathlib import Path
-# new_list = sorted(orig_list, key=lambda x: x.count, reverse=True)
-
-
-filefolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\\'
-filefolder_main= r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\full\\'
-filelist=glob.glob(filefolder+r'*.fit')
-fullspec = glob.glob(filefolder_main+r'*.fit')[0]
-filefolder_zip = r"D:\peter\Master_Thesis\Datareduction\Data\Demetra\final_spectra\back_to_back_stacked\ZetOri20160325-2_20160325T210354.zip"
-a =Datafile_apo_demetra_with_orders(filelist,fullspec)
-
-
-filename = Path('/some/path/somefile.txt')
-from pathlib import Path
-filename_wo_ext = filename.with_suffix('')
-
-lwl = a.line6562_order.wl
-lfl =a.line6562_order.flux
-plt.plot(lwl,lfl)
-plt.show()
-plt.close()
+# linelist=open_linelist(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
+# file = zipfile.ZipFile("zipfile.zip", "r")
+# for name in file.namelist():
+#     data = file.read(name)
+#
+# with zipfile.ZipFile("sample.zip", mode="r") as archive:
+#     archive.extractall(path="output_dir/")
+#
+#
+# # new_list = sorted(orig_list, key=lambda x: x.count, reverse=True)
+#
+#
+# filefolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\\'
+# filefolder_main= r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\single_order_test\full\\'
+# filelist=glob.glob(filefolder+r'*.fit')
+# fullspec = glob.glob(filefolder_main+r'*.fit')[0]
+# filefolder_zip = r"D:\peter\Master_Thesis\Datareduction\Data\Demetra\final_spectra\back_to_back_stacked\ZetOri20160325-2_20160325T210354.zip"
+# a =Datafile_apo_demetra_with_orders(filelist,fullspec)
+#
+#
+# filename = Path('/some/path/somefile.txt')
+# from pathlib import Path
+# filename_wo_ext = filename.with_suffix('')
+#
+# lwl = a.line6562_order.wl
+# lfl =a.line6562_order.flux
+# plt.plot(lwl,lfl)
+# plt.show()
+# plt.close()
 
 # filelist.sort(key=lambda x: os.path.splitext(os.path.basename(x))[-2:])
 # i=1

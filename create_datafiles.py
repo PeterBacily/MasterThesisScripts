@@ -10,9 +10,9 @@ import Path_check
 import pathlib
 import sys
 from Datafile_class import *
-sys.modules['Line'] = Line
-sys.modules['Datafile_mercator'] = Datafile_mercator
-sys.modules['Datafile_apo'] = Datafile_apo
+# sys.modules['Line'] = Line
+# sys.modules['Datafile_mercator'] = Datafile_mercator
+# sys.modules['Datafile_apo'] = Datafile_apo
 # import matplotlib.pyplot as plt
 # from astropy.time import Time
 # import math

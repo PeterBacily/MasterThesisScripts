@@ -391,20 +391,40 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 test_zip_archive = r"D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\ZetOri20160317-2_20160317T194557.zip"
 test_full_spec = r"D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\ZetOri_03_17_2_20160317T194557.fit"
 llfile = "D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt"
-test_demetra_order_object = Datafile_class.Datafile_apo_demetra_with_orders(test_zip_archive,test_full_spec,ll_file=llfile)
-apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
-             'line4861', 'line4921', 'line6678', 'line4471']
 
-order_line_ha =test_demetra_order_object.line6562_order
-full_line_ha = test_demetra_order_object.line6562
-wlo=order_line_ha.wl
-fluxo=order_line_ha.flux
-wlf=full_line_ha.wl
-fluxf=full_line_ha.flux
-plt.plot(wlo,fluxo)
-plt.plot(wlf,fluxf)
-plt.show()
-plt.close
+testfolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\full_series_test\\'
+# zipfiles = glob.glob(testfolder+r'*.zip')
+# print(zipfiles)
+# full_spec_files = glob.glob(testfolder+r'*.fit')
+
+def time_from_filename(filename):
+    a = Path(filename)
+    b=str(a.stem)[-15:]
+    c=b[:8]+b[9:]
+    return(int(c))
+# time_from_filename(zipfiles[0])
+zipfiles = sorted(glob.glob(testfolder+r'*.zip'), key=lambda x: time_from_filename(x))
+full_spec_files = sorted(glob.glob(testfolder+r'*.fit'), key=lambda x: time_from_filename(x))
+for i in range(len(zipfiles)):
+    if str(Path(zipfiles[i]).stem)[-15:] ==str(Path(full_spec_files[i]).stem)[-15:]:
+        print('MATCH')
+    else:
+        print('YOU SUCK')
+
+# test_demetra_order_object = Datafile_class.Datafile_apo_demetra_with_orders(test_zip_archive,test_full_spec,ll_file=llfile)
+# apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
+#              'line4861', 'line4921', 'line6678', 'line4471']
+#
+# order_line_ha =test_demetra_order_object.line6562_order
+# full_line_ha = test_demetra_order_object.line6562
+# wlo=order_line_ha.wl
+# fluxo=order_line_ha.flux
+# wlf=full_line_ha.wl
+# fluxf=full_line_ha.flux
+# plt.plot(wlo,fluxo)
+# plt.plot(wlf,fluxf)
+# plt.show()
+# plt.close
 
 # print(zipfile.is_zipfile(bla))
 # filelist,preexist,tempfoldername = zip_to_list(bla)

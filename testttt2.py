@@ -405,9 +405,15 @@ def time_from_filename(filename):
 # time_from_filename(zipfiles[0])
 zipfiles = sorted(glob.glob(testfolder+r'*.zip'), key=lambda x: time_from_filename(x))
 full_spec_files = sorted(glob.glob(testfolder+r'*.fit'), key=lambda x: time_from_filename(x))
+savefolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\full_class_obj\\'
 for i in range(len(zipfiles)):
     if str(Path(zipfiles[i]).stem)[-15:] ==str(Path(full_spec_files[i]).stem)[-15:]:
-        print('MATCH')
+        orders_class_object=Datafile_class.Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=llfile)
+        dl, dl2 = airmass.split_date(orders_class_object.header['DATE-OBS'])
+        savename = savefolder + orders_class_object.observatory + '_' + dl[0] + dl[1] + dl[2] + dl[3] + '.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(orders_class_object, workfileresource)
+        workfileresource.close()
     else:
         print('YOU SUCK')
 

@@ -67,13 +67,12 @@ def linecenters(linelist,observatory):
 def zip_to_list(filepath):
     zipfilepath = Path(filepath)
     tempfolder = zipfilepath.parents[0].joinpath('temp').joinpath(zipfilepath.stem)
-    print(tempfolder)
     preexists = tempfolder.exists()
     Path(tempfolder).mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(filepath, 'r') as zip_ref:
         zip_ref.extractall(tempfolder)
     filelist=glob.glob(str(tempfolder)+r'\*.fit')
-    return filelist,preexists,tempfolder
+    return filelist,preexists,str(tempfolder)
 
 def remove_temp_folder(tempfolder,preexists=False):
     if preexists==False:
@@ -84,6 +83,23 @@ def open_linelist(path):
     b = pickle.load(a)
     a.close()
     return b
+
+class single_order:
+    def __init__(self, filepath,order_number,order_number_demetra):
+        self.order_number_demetra =order_number_demetra
+        self.order_number = order_number
+        with pf.open(filepath) as a:
+            self.header = a[0].header
+            naxis1 = self.header['NAXIS1']
+            crval1 = self.header['CRVAL1']
+            cdelt1 = self.header['CDELT1']
+            self.wl_original = np.arange(naxis1) * cdelt1 + crval1
+            self.flux_original = a[0].data
+            self.wl_start = self.wl_original[0]
+            self.wl_end = self.wl_original[-1]
+            self.wl_avg = np.average([self.wl_start, self.wl_end])
+
+
 
 class Datafile_mercator:
     observatory = 'MERC'
@@ -245,21 +261,7 @@ class Datafile_apo_demetra:
         data.close()
 
 
-class single_order:
-    def __init__(self, filepath,order_number,order_number_demetra):
-        self.order_number_demetra =order_number_demetra
-        self.order_number = order_number
-        a = pf.open(filepath)
-        self.header = a[0].header
-        naxis1 = self.header['NAXIS1']
-        crval1 = self.header['CRVAL1']
-        cdelt1 = self.header['CDELT1']
-        self.wl_original = np.arange(naxis1) * cdelt1 + crval1
-        self.flux_original = a[0].data
-        self.wl_start = self.wl_original[0]
-        self.wl_end = self.wl_original[-1]
-        self.wl_avg = np.average([self.wl_start, self.wl_end])
-        a.close()
+
 
 def open_linelist(path):
     a = open(path, 'rb')
@@ -298,14 +300,14 @@ class Datafile_apo_demetra_with_orders:
 
 
         fn = os.path.basename(fullspecfile)
-        data = pf.open(fullspecfile)
+        fullspecdata = pf.open(fullspecfile)
         self.original_filepath = fullspecfile
         self.i =i
         self.k=1
         self.mark = mark
         # self.mark_explanation = '0 = no weird stuff,      1 = not usable due to very poor SNR,    2 = Not usable for EW, TVS, Quotient due to insufficient SNR,   3 =   Shows weird feature in Halpha'
         self.filename = fn[:fn.rfind(".")]
-        self.header = data[0].header
+        self.header = fullspecdata[0].header
         self.time_and_date = airmass.timeanddate2(self.header['DATE-OBS'])
         self.baricentric_correction, self.HJD = airmass.barcor(fullspecfile,JDOBS=self.header['JD-MID'])
         self.phase =  airmass.aphase(self.HJD)
@@ -321,7 +323,7 @@ class Datafile_apo_demetra_with_orders:
         crval1 = self.header['CRVAL1']
         cdelt1 = self.header['CDELT1']
         self.wl_original = np.arange(naxis1) * cdelt1 + crval1 - v_rad / 299792.458
-        self.flux_original = data[0].data
+        self.flux_original = fullspecdata[0].data
         self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original)
         self.available_lines = []
         self.snr_original =airmass.snr(self.wl_original,self.flux_original)
@@ -349,9 +351,10 @@ class Datafile_apo_demetra_with_orders:
             setattr(self,linekey , linedata)
             setattr(self,linekey+'_original',linedata_original)
             self.available_lines.append(linekey)
-        data.close()
-        if zipfile.is_zipfile(orderfiles)==True:
-            remove_temp_folder(tempfolder,preexists=preexists)
+        fullspecdata.close()
+        self.tempfolderpath=tempfolder
+        # if zipfile.is_zipfile(orderfiles)==True:
+        #     remove_temp_folder(tempfolder,preexists=False)
 
 
 

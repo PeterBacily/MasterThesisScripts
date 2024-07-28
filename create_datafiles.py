@@ -94,6 +94,28 @@ def create_datafiles_demetra(filelist=fl_eshel_demetra,savefolder=datafile_folde
         pickle.dump(a, workfileresource)
         workfileresource.close()
         i+=1
+def time_from_filename(filename):
+    a = Path(filename)
+    b=str(a.stem)[-15:]
+    c=b[:8]+b[9:]
+    return(int(c))
+def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file):
+    zipfiles = sorted(glob.glob(datafolder+r'*.zip'), key=lambda x: time_from_filename(x))
+    print(zipfiles)
+    full_spec_files = sorted(glob.glob(datafolder+r'*.fit'), key=lambda x: time_from_filename(x))
+    print(full_spec_files)
+    for i in range(len(zipfiles)):
+        if str(Path(zipfiles[i]).stem)[-15:] ==str(Path(full_spec_files[i]).stem)[-15:]:
+            print(str(i))
+            orders_class_object=Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=linelist_file)
+            dl, dl2 = airmass.split_date(orders_class_object.header['DATE-OBS'])
+            savename = savefolder + orders_class_object.observatory + '_' + dl[0] + dl[1] + dl[2] + dl[3] + '.txt'
+            workfileresource = open(savename, 'wb')
+            pickle.dump(orders_class_object, workfileresource)
+            workfileresource.close()
+        else:
+            print('YOU SUCK')
+
 
 def create_datafile_eshel(filelist=fl_eshel_all,i=0):
     mark1 = [1, 37]
@@ -131,11 +153,16 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,i=0):
         k+=1
 
 
+def run_cddo():
+    datafolder = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\spectra_with_orders\\'
+    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\\'
+    linelist = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt'
+    create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist)
+run_cddo()
 
 
 
-
-create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
+# create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
 # testfile_apo = fl_clean[12]
 # a = Datafile_class.Datafile_apo(testfile_apo)
 # testfile_merc = filelist_lapalma[3]

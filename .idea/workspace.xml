@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datafile_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testttt2.py" beforeDir="false" afterPath="$PROJECT_DIR$/testttt2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +183,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.testttt2">
+  <component name="RunManager" selected="Python.create_datafiles">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -246,7 +245,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Make_Plots" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="create_datafiles" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -258,7 +257,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Make_Plots.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/create_datafiles.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -310,19 +309,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.create_datafiles" />
       <item itemvalue="Python.Datafile_class" />
       <item itemvalue="Python.testttt2" />
       <item itemvalue="Python.testttt" />
-      <item itemvalue="Python.Make_Plots" />
       <item itemvalue="Python.ExecuteDataReduc" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.testttt2" />
         <item itemvalue="Python.testttt" />
         <item itemvalue="Python.Datafile_class" />
         <item itemvalue="Python.ExecuteDataReduc" />
-        <item itemvalue="Python.Make_Plots" />
       </list>
     </recent_temporary>
   </component>
@@ -337,13 +336,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00006" summary="changes">
-      <created>1713345619605</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1713345619605</updated>
     </task>
     <task id="LOCAL-00007" summary="changes">
       <created>1713346388122</created>
@@ -681,7 +673,14 @@
       <option name="project" value="LOCAL" />
       <updated>1721905575377</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="changes">
+      <created>1721987897075</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1721987897075</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="ToolWindowManager">

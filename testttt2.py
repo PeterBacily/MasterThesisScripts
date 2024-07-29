@@ -182,8 +182,8 @@ for baseline in [masterfile_ll[0]]:
     flux=linedata.flux
 
     wl,tvs,v,n=airmass.TVS_masterfiles_order(testlist,line)
-    # print(len(wl))
-    # print(len(v))
+    print(len(wl))
+    print(len(v))
     # print(len(v_cor))
     # print(len(flux))
     print(len(tvs))

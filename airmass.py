@@ -491,12 +491,18 @@ def TVS_masterfiles_order(filelist,line):
     std_exp_weights = []
     wl_file_1 = getattr(filelist[0], line).wl
     wavenew = np.arange(wl_file_1[10], wl_file_1[-10], 0.05)
+    lineinfo = getattr(filelist[0], line).lineinfo
+    linecenter = lineinfo[1]
+    vrad = -18.5
+
+
     for file in filelist:
+        offset_v = file.baricentric_correction + vrad
+        v = wl_to_velocity_2(wavenew, linecenter, offset_v)
         linedata = getattr(file, line)
         flux = linedata.flux
         wl = linedata.wl
         flux_rebin = rebin_spec(wl,flux,wavenew)
-        v = linedata.v_cor
         nf = linedata.normalizationflux
         wls.append(wavenew)
         lfs.append(flux_rebin)
@@ -508,7 +514,7 @@ def TVS_masterfiles_order(filelist,line):
     # print(len( np.transpose(lfs)))
     for datapoint in np.transpose(lfs):
         TVS.append(np.std(datapoint)/std_expected)
-    return np.array(wl),np.array(TVS),np.array(v),len(filelist)
+    return np.array(wavenew),np.array(TVS),np.array(v),len(filelist)
 
 def average_masterfiles(filelist,line):
     wls = []
@@ -570,12 +576,42 @@ def overplot_masterfiles(filelist,line,separate_lines=False):
         linedata = getattr(file, line)
         flux = linedata.flux
         wl = linedata.wl
+
         v = linedata.v_cor
         lfs.append(np.array(flux) + a)
         vs.append(v)
-        a+=ap
+        a += ap
     return vs, lfs
 
+def overplot_masterfiles_order(filelist,line,separate_lines=False):
+    vsini = 127
+    lfs = []
+    vs = []
+    a = 0.0
+    wl_file_1 = getattr(filelist[0], line).wl
+    wavenew = np.arange(wl_file_1[10], wl_file_1[-10], 0.05)
+    lineinfo = getattr(filelist[0], line).lineinfo
+    linecenter = lineinfo[1]
+    vrad = -18.5
+    offset_v = filelist[0].baricentric_correction + vrad
+    v = wl_to_velocity_2(wavenew, linecenter, offset_v)
+    if separate_lines:
+        ap = 0.1
+    elif not separate_lines:
+        ap = 0.0
+    else:
+        raise SyntaxError('separate_lines needs to be Boolean')
+    for file in filelist:
+        offset_v = file.baricentric_correction + vrad
+        v = wl_to_velocity_2(wavenew, linecenter, offset_v)
+        linedata = getattr(file, line)
+        flux = linedata.flux
+        wl = linedata.wl
+        flux_rebin = rebin_spec(wl, flux, wavenew)
+        lfs.append(np.array(flux_rebin) + a)
+        vs.append(v)
+        a += ap
+    return vs, lfs
 
 # def plot_TVS(filelist, linelist ):
 #     for line in linelist:

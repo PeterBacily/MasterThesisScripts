@@ -638,7 +638,7 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='on',onel
         sgn = 101  # window size for SavitzkyGolay (must be odd integer)
         TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
         # print(v[sgn] - v[0])
-        vs,lws = airmass.overplot_masterfiles(filelist,line)
+        vs,lws = airmass.overplot_masterfiles_order(filelist,line)
         f, (ax1, ax2) = plt.subplots(2, sharex=True)
         for i,spec in enumerate(lws):
             ax1.plot(vs[i],spec,linewidth=1.0 )

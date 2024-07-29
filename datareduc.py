@@ -616,6 +616,92 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         plt.close()
 
 
+def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='off', siglvlline=0.01,datafilefolder=None,norm_boundaries='on'):
+    k=0
+    if datafilefolder == None:
+        filelist = open_masterfiles.apo_demetra_orders()
+    else:
+        filelist = open_masterfiles.apo_demetra_orders(path=datafilefolder)
+
+    bccor = filelist[0].baricentric_correction
+    vrad= -18.5
+    velo_shift = bccor+vrad
+    for baseline in linelist:
+        line=baseline+'_order'
+        lineinfo = getattr(filelist[0], line).lineinfo
+        # print filelist
+        # swl = line[3]-40
+        # ewl = line[6]+40
+        lw,TVS,v,n =airmass.TVS_masterfiles_order(filelist,line)
+        print(len(v))
+        print(len(TVS))
+        sgn = 101  # window size for SavitzkyGolay (must be odd integer)
+        TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
+        # print(v[sgn] - v[0])
+        vs,lws = airmass.overplot_masterfiles(filelist,line)
+        f, (ax1, ax2) = plt.subplots(2, sharex=True)
+        for i,spec in enumerate(lws):
+            ax1.plot(vs[i],spec,linewidth=1.0 )
+        ax1.set_title(lineinfo[6+k])
+        # ax1.legend()
+        # ax1.set_xlim([-600,600])
+        spec2 = spec[(v>-300)& (v<300)]
+        mini = np.floor(100*0.98*np.amin(spec2))/100
+        maxi = np.ceil(100*1.02*np.amax(spec2))/100
+        ax1.set_ylim([mini,maxi])
+        if norm_boundaries == 'on':
+            [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            ax1.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax1.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)
+
+        ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
+        ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
+        # if line[2]==5875.621:
+        #     TVS2 = np.array(TVS)*1.4
+
+        ax2.plot(v, TVS, color='b')
+        if sg == 'on':
+            ax2.plot(v,TVS_smoothed,color='r',linestyle='dashed')
+        if oneline == 'on':
+            ax2.axhline(y=1, color='gray', linestyle='--')
+        if isinstance(siglvlline, float):
+            Nfiles = len(filelist)
+            p = siglvlline
+            siglvl = airmass.TVS_significance_level(Nfiles, p)
+            ax2.axhline(y=siglvl, color='red', linestyle='--')
+        # else:
+        #     ax2.plot(v,TVS)
+        if norm_boundaries == 'on':
+            [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            ax2.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
+            ax2.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)
+        ax2.axvline(vsini, color='k', linestyle=':', linewidth=1)
+        ax2.axvline(-vsini, color='k', linestyle=':', linewidth=1)
+        # ax2.plot([v[0],v[-1]],[1,1],linestyle='dashed', linewidth=1,c='g')
+        # ax2.plot([v[0],v[-1]],[p,p], linewidth=1,c='g')
+        # print len(v)
+        # print len(TVS)
+        # print v
+        TVS2 = np.array(TVS)[(v>-200)& (v<200)]
+        # print TVS2
+        # print np.amax(TVS2)
+        maxi2 = np.ceil(np.amax(TVS2))
+        ax2.set_ylim([0,maxi2])
+        ax2.set_xlabel('V (km/s)')
+        ax1.set_ylabel('Normlized Flux')
+        ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
+        ax2.set_xlim([normv_1-200,normv_4+200])
+        if save =='on':
+            plt.savefig(plot_save_folder + r'\\APO_orders_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_TVS.pdf',format='pdf', dpi=1200)
+        if show =='on':
+            plt.show()
+        plt.close()
+
+
 def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='on', siglvlline=0.01,datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\'):
     filelist = open_masterfiles.mercator(path=datafilefolder)
     for line in linelist:

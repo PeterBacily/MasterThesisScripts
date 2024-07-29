@@ -480,10 +480,35 @@ def TVS_masterfiles(filelist,line):
         std_exp_weights.append(1/s**2)
     std_expected = np.average(std_exp_list, weights=std_exp_weights)
     TVS  = []
+    # print(len( np.transpose(lfs)))
     for datapoint in np.transpose(lfs):
         TVS.append(np.std(datapoint)/std_expected)
     return np.array(wl),np.array(TVS),np.array(v),len(filelist)
-
+def TVS_masterfiles_order(filelist,line):
+    wls = []
+    lfs = []
+    std_exp_list = []
+    std_exp_weights = []
+    wl_file_1 = getattr(filelist[0], line).wl
+    wavenew = np.arange(wl_file_1[10], wl_file_1[-10], 0.05)
+    for file in filelist:
+        linedata = getattr(file, line)
+        flux = linedata.flux
+        wl = linedata.wl
+        flux_rebin = rebin_spec(wl,flux,wavenew)
+        v = linedata.v_cor
+        nf = linedata.normalizationflux
+        wls.append(wavenew)
+        lfs.append(flux_rebin)
+        s = np.std(nf)
+        std_exp_list.append(s)
+        std_exp_weights.append(1/s**2)
+    std_expected = np.average(std_exp_list, weights=std_exp_weights)
+    TVS  = []
+    # print(len( np.transpose(lfs)))
+    for datapoint in np.transpose(lfs):
+        TVS.append(np.std(datapoint)/std_expected)
+    return np.array(wl),np.array(TVS),np.array(v),len(filelist)
 
 def average_masterfiles(filelist,line):
     wls = []

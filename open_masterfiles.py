@@ -78,6 +78,31 @@ def apo_demetra(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\tes
     else:
         return datafiles
 
+def apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\\',manual_filelist=None,sorted='off'):
+    if manual_filelist == None:
+        fl = glob.glob(path+r'*.txt')
+    else:
+        fl=manual_filelist
+    datafiles = []
+
+    for file in fl:
+        a = open(file, 'rb')
+        # for line in testfile:
+        #     print line
+        b = pickle.load(a)
+        # print b.line6562.ew
+        datafiles.append(b)
+        a.close()
+    if sorted == 'on':
+        sortednewlist = sorted(datafiles,key=lambda x: float(x.header['JD-MID']))
+        return sortednewlist
+    else:
+        return datafiles
+
+
+
+
+
 def open_linelist(path):
     a = open(path, 'rb')
     b = pickle.load(a)

@@ -167,6 +167,26 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
         plt.savefig(plot_save_folder + r'\\' + line[0] + str(int(np.round(line[1])))+'_TVS.pdf')
         plt.show()
         plt.close()
+testlist = open_masterfiles.apo_demetra_orders()
+import pathlib
+# testlist = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\\*.txt')
+masterfile_ll = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
+             'line4861', 'line4921', 'line6678', 'line4471']
+test_data_file = testlist[0]
+for baseline in [masterfile_ll[0]]:
+    line = baseline+'_order'
+    linedata = getattr(test_data_file,line)
+    wl =linedata.wl
+    v=linedata.v
+    v_cor=linedata.v_cor
+    flux=linedata.flux
+
+    wl,tvs,v,n=airmass.TVS_masterfiles_order(testlist,line)
+    # print(len(wl))
+    # print(len(v))
+    # print(len(v_cor))
+    # print(len(flux))
+    print(len(tvs))
 
 # plot_TVS_Lapalma('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 
@@ -388,34 +408,34 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 #             self.available_lines.append(linekey)
 #         data.close()
 
-test_zip_archive = r"D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\ZetOri20160317-2_20160317T194557.zip"
-test_full_spec = r"D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\ZetOri_03_17_2_20160317T194557.fit"
-llfile = "D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt"
-
-testfolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\full_series_test\\'
-# zipfiles = glob.glob(testfolder+r'*.zip')
-# print(zipfiles)
-# full_spec_files = glob.glob(testfolder+r'*.fit')
-
-def time_from_filename(filename):
-    a = Path(filename)
-    b=str(a.stem)[-15:]
-    c=b[:8]+b[9:]
-    return(int(c))
-# time_from_filename(zipfiles[0])
-zipfiles = sorted(glob.glob(testfolder+r'*.zip'), key=lambda x: time_from_filename(x))
-full_spec_files = sorted(glob.glob(testfolder+r'*.fit'), key=lambda x: time_from_filename(x))
-savefolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\full_class_obj\\'
-for i in range(len(zipfiles)):
-    if str(Path(zipfiles[i]).stem)[-15:] ==str(Path(full_spec_files[i]).stem)[-15:]:
-        orders_class_object=Datafile_class.Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=llfile)
-        dl, dl2 = airmass.split_date(orders_class_object.header['DATE-OBS'])
-        savename = savefolder + orders_class_object.observatory + '_' + dl[0] + dl[1] + dl[2] + dl[3] + '.txt'
-        workfileresource = open(savename, 'wb')
-        pickle.dump(orders_class_object, workfileresource)
-        workfileresource.close()
-    else:
-        print('YOU SUCK')
+# test_zip_archive = r"D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\ZetOri20160317-2_20160317T194557.zip"
+# test_full_spec = r"D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\ZetOri_03_17_2_20160317T194557.fit"
+# llfile = "D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt"
+#
+# testfolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\full_series_test\\'
+# # zipfiles = glob.glob(testfolder+r'*.zip')
+# # print(zipfiles)
+# # full_spec_files = glob.glob(testfolder+r'*.fit')
+#
+# def time_from_filename(filename):
+#     a = Path(filename)
+#     b=str(a.stem)[-15:]
+#     c=b[:8]+b[9:]
+#     return(int(c))
+# # time_from_filename(zipfiles[0])
+# zipfiles = sorted(glob.glob(testfolder+r'*.zip'), key=lambda x: time_from_filename(x))
+# full_spec_files = sorted(glob.glob(testfolder+r'*.fit'), key=lambda x: time_from_filename(x))
+# savefolder = r'D:\peter\Master_Thesis\Master_Thesis\Data\demetra\demetra_test\ziptest\full_class_obj\\'
+# for i in range(len(zipfiles)):
+#     if str(Path(zipfiles[i]).stem)[-15:] ==str(Path(full_spec_files[i]).stem)[-15:]:
+#         orders_class_object=Datafile_class.Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=llfile)
+#         dl, dl2 = airmass.split_date(orders_class_object.header['DATE-OBS'])
+#         savename = savefolder + orders_class_object.observatory + '_' + dl[0] + dl[1] + dl[2] + dl[3] + '.txt'
+#         workfileresource = open(savename, 'wb')
+#         pickle.dump(orders_class_object, workfileresource)
+#         workfileresource.close()
+#     else:
+#         print('YOU SUCK')
 
 # test_demetra_order_object = Datafile_class.Datafile_apo_demetra_with_orders(test_zip_archive,test_full_spec,ll_file=llfile)
 # apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',

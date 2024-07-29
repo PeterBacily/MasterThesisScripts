@@ -99,7 +99,7 @@ def time_from_filename(filename):
     b=str(a.stem)[-15:]
     c=b[:8]+b[9:]
     return(int(c))
-def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file):
+def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file,snrtreshhold=None):
     zipfiles = sorted(glob.glob(datafolder+r'*.zip'), key=lambda x: time_from_filename(x))
     print(zipfiles)
     full_spec_files = sorted(glob.glob(datafolder+r'*.fit'), key=lambda x: time_from_filename(x))
@@ -109,10 +109,19 @@ def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file):
             print(str(i))
             orders_class_object=Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=linelist_file)
             dl, dl2 = airmass.split_date(orders_class_object.header['DATE-OBS'])
+            snr=orders_class_object.snr_original
             savename = savefolder + orders_class_object.observatory + '_' + dl[0] + dl[1] + dl[2] + dl[3] + '.txt'
+            savefolder_snr=savefolder+r'snr_'+str(snrtreshhold)+r'\\'
+            savename_snr = savefolder_snr + orders_class_object.observatory + '_' + dl[0] + dl[1] + dl[2] + dl[3] + '.txt'
             workfileresource = open(savename, 'wb')
             pickle.dump(orders_class_object, workfileresource)
             workfileresource.close()
+            if snrtreshhold is not None:
+                Path(savefolder_snr).mkdir(parents=True, exist_ok=True)
+                if snr>snrtreshhold:
+                    workfileresource = open(savename_snr, 'wb')
+                    pickle.dump(orders_class_object, workfileresource)
+                    workfileresource.close()
         else:
             print('YOU SUCK')
 
@@ -153,12 +162,12 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,i=0):
         k+=1
 
 
-def run_cddo():
+def run_cddo(snr):
     datafolder = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\spectra_with_orders\\'
-    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\\'
-    linelist = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt'
-    create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist)
-run_cddo()
+    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\\'
+    linelist = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_oud.txt'
+    create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr)
+run_cddo(snr=100)
 
 
 

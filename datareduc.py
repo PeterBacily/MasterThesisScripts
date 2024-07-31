@@ -616,7 +616,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         plt.close()
 
 
-def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='off', siglvlline=0.01,datafilefolder=None,norm_boundaries='on'):
+def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='off', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None):
     k=0
     if datafilefolder == None:
         filelist = open_masterfiles.apo_demetra_orders()
@@ -694,7 +694,10 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='on',onel
         ax2.set_xlabel('V (km/s)')
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
-        ax2.set_xlim([normv_1-200,normv_4+200])
+        if vrange== None:
+            ax2.set_xlim([normv_1-200,normv_4+200])
+        else:
+            ax2.set_xlim([-vrange,vrange])
         if save =='on':
             plt.savefig(plot_save_folder + r'\\APO_orders_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_TVS.pdf',format='pdf', dpi=1200)
         if show =='on':

@@ -72,14 +72,14 @@ def sort_linelist(lines, obs='MERCATOR',apowantedmarks = None):
     print(outlist)
 
 
-def plot_EW(obs='BOTH',apowantedmarks = None, figsavefolder = r'D:\Peter\School\Master Thesis\figures\EWs\verslag\\',custom_lines = None, custom_files = None ):
+def plot_EW(obs='BOTH',apowantedmarks = None, figsavefolder = r'D:\Peter\School\Master Thesis\figures\EWs\verslag\\',custom_lines = None, custom_files = None, Chunklength=3 ):
     # apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592', 'line4861', 'line4921', 'line6678', 'line4471']
     apo_lines = ['line6562', 'line4713', 'line5801', 'line4685', 'line5875', 'line4541', 'line5411', 'line5592', 'line4861', 'line4921', 'line6678', 'line4471']
 
     # mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'line5592', 'line4026', 'line4471', 'line4685', 'line4921', 'line5801', 'line4713', 'line5411', 'line4541']
     mercator_lines = ['line4861', 'line5875', 'line4340', 'line6562', 'line6678', 'line5592', 'line4685', 'line4026', 'line4471',
      'line4921', 'line4713', 'line5801', 'line5411', 'line4541']
-
+    demetra_lines =['line6562', 'line4713']
     # split_up_lines = list(chunks(mercator_lines,3))
     # print chunks(apo_lines,3)
     # obs = 'APO'
@@ -89,6 +89,7 @@ def plot_EW(obs='BOTH',apowantedmarks = None, figsavefolder = r'D:\Peter\School\
             master_files = open_masterfiles.apo()
         else:
             master_files = open_masterfiles.apo(wantedmarks=apowantedmarks)
+
         lines = apo_lines
     elif obs == 'MERCATOR':
         master_files = open_masterfiles.mercator()
@@ -103,7 +104,7 @@ def plot_EW(obs='BOTH',apowantedmarks = None, figsavefolder = r'D:\Peter\School\
         warnings.warn('observatory is not APO, MERCATOR or BOTH, if this is not intentional look at obs variable')
 
     if obs != 'BOTH':
-        for chunk in chunks(lines,3):
+        for chunk in chunks(lines,Chunklength):
             fig, axs = plt.subplots(nrows=len(chunk), ncols=1,sharex=True,figsize=(5, 8))
             fig.subplots_adjust(top = 0.83)
             size = fig.get_size_inches()
@@ -147,7 +148,7 @@ def plot_EW(obs='BOTH',apowantedmarks = None, figsavefolder = r'D:\Peter\School\
             plt.close()
 
     if obs == 'BOTH':
-        for chunk in chunks(lines,3):
+        for chunk in chunks(lines,Chunklength):
             fig, axs = plt.subplots(nrows=len(chunk), ncols=1,sharex=True,figsize=(5, 8))
             fig.subplots_adjust(top = 0.83)
             size = fig.get_size_inches()
@@ -222,6 +223,187 @@ def plot_EW(obs='BOTH',apowantedmarks = None, figsavefolder = r'D:\Peter\School\
             # plt.savefig(figsavefolder+savename)
             plt.show()
             plt.close()
+
+
+def plot_EW_demetra(obs='BOTH', orders=True, figsavefolder=r'D:\Peter\School\Master Thesis\figures\EWs\verslag\\',
+            custom_lines=None, custom_files=None, Chunklength=3,
+            datafile_folder_demetra =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\\',
+            datafile_folder_mercator=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',
+                    save=False, show=True):
+
+    apo_lines = ['line6562', 'line4713', 'line5801', 'line4685', 'line5875', 'line4541', 'line5411', 'line5592',
+                 'line4861', 'line4921', 'line6678', 'line4471']
+
+
+    mercator_lines = ['line4861', 'line5875', 'line4340', 'line6562', 'line6678', 'line5592', 'line4685', 'line4026',
+                      'line4471',
+                      'line4921', 'line4713', 'line5801', 'line5411', 'line4541']
+    demetra_lines = ['line6562', 'line4713']
+    # split_up_lines = list(chunks(mercator_lines,3))
+    # print chunks(apo_lines,3)
+    # obs = 'APO'
+    # obs = 'MERCATOR'
+    if obs == 'APO':
+        if orders is True:
+            master_files = open_masterfiles.apo_demetra_orders(path=datafile_folder_demetra)
+        else:
+            master_files = open_masterfiles.apo_demetra(path=datafile_folder_demetra)
+
+        lines = apo_lines
+    elif obs == 'MERCATOR':
+        master_files = open_masterfiles.mercator(datafile_folder_mercator)
+        lines = mercator_lines
+    elif obs == 'BOTH':
+        if orders is True:
+            apo_files = open_masterfiles.apo_demetra_orders(path=datafile_folder_demetra)
+        else:
+            apo_files = open_masterfiles.apo_demetra(path=datafile_folder_demetra)
+        mercator_files = open_masterfiles.mercator(datafile_folder_mercator)
+        lines = apo_lines
+    else:
+        master_files = custom_files
+        lines = custom_lines
+        warnings.warn('observatory is not APO, MERCATOR or BOTH, if this is not intentional look at obs variable')
+
+    if obs != 'BOTH':
+        for chunk in chunks(lines, Chunklength):
+            fig, axs = plt.subplots(nrows=len(chunk), ncols=1, sharex=True, figsize=(5, 8))
+            fig.subplots_adjust(top=0.83)
+            size = fig.get_size_inches()
+            savename = ''
+            for i, ax in enumerate(axs):
+                line = chunk[i]
+                print(line)
+                phases = []
+                ews = []
+                ew_error = []
+                for file in master_files:
+                    if orders is True and obs == 'APO':
+                        linedata = getattr(file, line+'_order')
+                    else:
+                        linedata = getattr(file, line)
+                    lineinfo = linedata.lineinfo
+                    phases.append(file.phase)
+                    ews.append(linedata.ew)
+                    ew_error.append(linedata.ew_error)
+                chisq, red_chisq, AIC_1, AIC_2, AIC_3, probfactor = airmass.EW_stats2(np.array(ews), np.array(phases),
+                                                                                      np.array(ew_error))
+                print(lineinfo)
+                p1 = [0.005, 0.5, 1]
+                fit1 = curve_fit(my_sin, phases, ews, p0=p1, sigma=ew_error, absolute_sigma=True)
+                fit2 = curve_fit(airmass.flat_line, phases, ews, p0=[1], sigma=ew_error, absolute_sigma=True)
+                t = np.linspace(0, 1, 50)
+                data_fit = my_sin(t, *fit1[0])
+                ax.set_title(lineinfo[-1])
+                l1 = ax.errorbar(phases, ews, yerr=ew_error, fmt='o', c='r', label='Data')
+                l2, = ax.plot(t, data_fit, c='r', label='Sinusodial fit')
+                l3 = ax.axhline(fit2[0][0], linestyle='--', c='gray', label='Weighted Average')
+                aldat = np.append(ews, data_fit)
+                ax.locator_params(axis='y', nbins=7)
+                lowlim, uplim = np.round(np.min(aldat), decimals=2) - 0.01, np.round(np.max(aldat), decimals=2) + 0.01
+                l4 = ax.text(0.75, 0.95 * (uplim - lowlim) + lowlim, str('%.2E' % (1. / probfactor)),
+                             label='likelihood ratio')
+                ax.set_ylim(uplim, lowlim)
+                savename += lineinfo[0] + line[-4:] + '_'
+            savename += obs + '_EW.pdf'
+            print(savename)
+            plt.figlegend((l1, l2, l3), ('Data', 'Sinusodial fit', 'Weighted Average'), bbox_to_anchor=[1., 0.92],
+                          prop={'size': 10}, fancybox=True, framealpha=1)
+            plt.suptitle('Normalized Equivalent width \n' + obs, size=16)
+            # plt.tight_layout()
+            if save is True:
+                plt.savefig(figsavefolder + savename)
+            if show is True:
+                plt.show()
+            plt.close()
+
+    if obs == 'BOTH':
+        for chunk in chunks(lines, Chunklength):
+            fig, axs = plt.subplots(nrows=len(chunk), ncols=1, sharex=True, figsize=(5, 8))
+            fig.subplots_adjust(top=0.83)
+            size = fig.get_size_inches()
+            savename = ''
+            for i, ax in enumerate(axs):
+                line = chunk[i]
+                print(line)
+                phases_apo = []
+                phases_mercator = []
+                phases = []
+                ews_apo = []
+                ews_mercator = []
+                ews = []
+                ew_error_apo = []
+                ew_error_mercator = []
+                ew_error = []
+                for file in apo_files:
+                    linedata = getattr(file, line)
+                    lineinfo = linedata.lineinfo
+                    phases.append(file.phase)
+                    phases_apo.append(file.phase)
+                    ews.append(linedata.ew)
+                    ews_apo.append(linedata.ew)
+                    ew_error.append(linedata.ew_error)
+                    ew_error_apo.append(linedata.ew_error)
+                for file in mercator_files:
+                    linedata = getattr(file, line)
+                    lineinfo = linedata.lineinfo
+                    phases.append(file.phase)
+                    phases_mercator.append(file.phase)
+                    ews.append(linedata.ew)
+                    ews_mercator.append(linedata.ew)
+                    ew_error.append(linedata.ew_error)
+                    ew_error_mercator.append(linedata.ew_error)
+                norm_EW_apo = np.array(ews_apo) / np.average(ews_apo)
+                norm_error_apo = np.array(ew_error_apo) / np.average(ews_apo)
+                norm_EW_mercator = np.array(ews_mercator) / np.average(ews_mercator)
+                norm_error_mercator = np.array(ew_error_mercator) / np.average(ews_mercator)
+                norm_ews = np.append(norm_EW_apo, norm_EW_mercator)
+                norm_ew_errors = np.append(norm_error_apo, norm_error_mercator)
+                norm_phases = np.append(phases_apo, phases_mercator)
+                chisq, red_chisq, AIC_1, AIC_2, AIC_3, probfactor = airmass.EW_stats2(norm_ews, norm_phases,
+                                                                                      norm_ew_errors)
+                # p1 = [0.005, 0.5, 1]
+                p1 = [1, 1, 1]
+                # print norm_ews
+                fit1 = curve_fit(my_sin, phases, norm_ews, p0=p1, sigma=norm_ew_errors, absolute_sigma=True)
+                fit2 = curve_fit(airmass.flat_line, phases, norm_ews, p0=[1], sigma=norm_ew_errors, absolute_sigma=True)
+                fit_sin_apo = curve_fit(my_sin, phases_apo, norm_EW_apo, p0=p1, sigma=norm_error_apo,
+                                        absolute_sigma=True)
+                fit_sin_mercator = curve_fit(my_sin, phases_mercator, norm_EW_mercator, p0=p1,
+                                             sigma=norm_error_mercator, absolute_sigma=True)
+                t = np.linspace(0, 1, 50)
+                data_fit = my_sin(t, *fit1[0])
+                data_fit_apo = my_sin(t, *fit_sin_apo[0])
+                data_fit_mercator = my_sin(t, *fit_sin_mercator[0])
+                ax.set_title(lineinfo[-1])
+                l1_apo = ax.errorbar(phases_apo, norm_EW_apo, yerr=norm_error_apo, fmt='o', c='r', label='APO Data')
+                l1_mercator = ax.errorbar(phases_mercator, norm_EW_mercator, yerr=norm_error_mercator, fmt='o', c='b',
+                                          label='MERCAROR Data')
+                l2a, = ax.plot(t, data_fit_apo, c='r', label='Sinusodial fit APO')
+                l2b = ax.plot(t, data_fit_mercator, c='b', label='Sinusodial fit mercator')
+                l3 = ax.axhline(fit2[0][0], linestyle='--', c='gray', label='Weighted Average')
+                # l5 = ax.errorbar(phases, norm_ews, yerr=norm_ew_errors, fmt='o', c='g', label='combined_Data')
+                aldat = np.append(norm_ews, data_fit)
+                ax.locator_params(axis='y', nbins=7)
+                lowlim, uplim = np.round(np.min(aldat), decimals=2) - 0.01, np.round(np.max(aldat), decimals=2) + 0.01
+                l4 = ax.text(0.75, 0.95 * (uplim - lowlim) + lowlim, str('%.2E' % (1. / probfactor)),
+                             label='likelihood ratio')
+                # ax.set_ylim(uplim,lowlim)
+                savename += lineinfo[0] + line[-4:] + '_'
+            savename += obs + '_EW.pdf'
+            print(savename)
+            plt.figlegend((l1_apo, l1_mercator, l2a, l3),
+                          ('APO Data', 'MERCATOR Data', 'Sinusodial fit', 'Weighted Average'),
+                          bbox_to_anchor=[1., 0.92], prop={'size': 10}, fancybox=True, framealpha=1)
+            plt.suptitle('Normalized Equivalent width \n' + obs, size=16)
+            # plt.tight_layout()
+            if save is True:
+                plt.savefig(figsavefolder+savename)
+            if show is True:
+                plt.show()
+            plt.close()
+
+
 
 def plot_TVS(obs='MERCATOR',save='off',show='on',plot_save_folder='',oneline='off',sg='off', apowantedmarks = None,customlines = None,customfiles = None):
     apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',

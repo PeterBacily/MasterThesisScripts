@@ -12,6 +12,7 @@ from scipy.stats import chi2
 from PyAstronomy import pyasl
 import matplotlib.style
 import datareduc
+import Make_Plots
 matplotlib.style.use('classic')
 vsini =127
 c_light = 299792.458
@@ -77,7 +78,7 @@ dfs=[df1,df2,df3,df4]
 # for i in range(len(pfs)):
 #     datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pfs[i], show='off', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=dfs[i], norm_boundaries='on')
 
-datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pf2+r'\cropped', show='off', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on')
+# datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pf2+r'\cropped', show='off', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on')
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data\clean',r'D:\Peter\Master Thesis\figures\TVS\eShel\cleanonly\reference_line',ll_TVS_eshel,show='off', save = 'on',sg='on',oneline='on')
 
 
@@ -94,3 +95,8 @@ datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pf2+r'\cropped', show='off
 
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr\reference_line',   ll_nieuwe_lijnen,show='on', save = 'off', sg='off', oneline='on')
 
+Make_Plots.plot_EW_demetra(obs='APO', orders=True, figsavefolder=r'D:\peter\Master_Thesis\Datareduction\Plots\test\EWTEST',
+            custom_lines=None, custom_files=None, Chunklength=3,
+            datafile_folder_demetra =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\\',
+            datafile_folder_mercator=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',
+                    save=False, show=True)

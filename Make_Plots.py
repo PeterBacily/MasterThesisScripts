@@ -264,7 +264,8 @@ def plot_EW_demetra(obs='BOTH', orders=True, figsavefolder=r'D:\Peter\School\Mas
         master_files = custom_files
         lines = custom_lines
         warnings.warn('observatory is not APO, MERCATOR or BOTH, if this is not intentional look at obs variable')
-
+    if custom_lines is not None:
+        lines=custom_lines
     if obs != 'BOTH':
         for chunk in chunks(lines, Chunklength):
             fig, axs = plt.subplots(nrows=len(chunk), ncols=1, sharex=True, figsize=(5, 8))

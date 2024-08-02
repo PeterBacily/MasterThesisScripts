@@ -1039,9 +1039,9 @@ def EW_stats2(ew, phase, error):
     # print 'ln(L) =', np.log( L )
 
     # print chisq, chisq2, chisq-chisq2
-    chi2_sin,p_sin = ss.chisquare(ew,data_fit_sin,ddof=3)
-    chi2_line,p_line = ss.chisquare(ew,data_fit_line,ddof=2)
-    chi2_flat,p_flat = ss.chisquare(ew,data_fit_flat,ddof=1)
+    # chi2_sin,p_sin = ss.chisquare(ew,data_fit_sin,ddof=3)
+    # chi2_line,p_line = ss.chisquare(ew,data_fit_line,ddof=2)
+    # chi2_flat,p_flat = ss.chisquare(ew,data_fit_flat,ddof=1)
     # dif1 = p_sin/p_line
     # dif2 = p_sin/p_flat
     # line_to_write = linename+' \t '+ str(chisq2)+ '\t' +str(AIC_1) + '\t' +str(AIC_2) + '\t' +str(AIC_3) + '\n'

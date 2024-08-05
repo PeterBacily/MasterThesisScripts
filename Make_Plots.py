@@ -311,7 +311,7 @@ def plot_EW_demetra(obs='BOTH', orders=True, figsavefolder=r'D:\Peter\School\Mas
             plt.figlegend((l1, l2, l3), ('Data', 'Sinusodial fit', 'Weighted Average'), bbox_to_anchor=[1., 0.92],
                           prop={'size': 10}, fancybox=True, framealpha=1)
             plt.suptitle('Normalized Equivalent width \n' + obs, size=16)
-            # plt.tight_layout()
+            plt.tight_layout()
             if save is True:
                 plt.savefig(figsavefolder + savename)
             if show is True:
@@ -337,7 +337,10 @@ def plot_EW_demetra(obs='BOTH', orders=True, figsavefolder=r'D:\Peter\School\Mas
                 ew_error_mercator = []
                 ew_error = []
                 for file in apo_files:
-                    linedata = getattr(file, line)
+                    if orders is True:
+                        linedata = getattr(file, line + '_order')
+                    else:
+                        linedata = getattr(file, line)
                     lineinfo = linedata.lineinfo
                     phases.append(file.phase)
                     phases_apo.append(file.phase)
@@ -386,17 +389,17 @@ def plot_EW_demetra(obs='BOTH', orders=True, figsavefolder=r'D:\Peter\School\Mas
                 # l5 = ax.errorbar(phases, norm_ews, yerr=norm_ew_errors, fmt='o', c='g', label='combined_Data')
                 aldat = np.append(norm_ews, data_fit)
                 ax.locator_params(axis='y', nbins=7)
-                lowlim, uplim = np.round(np.min(aldat), decimals=2) - 0.01, np.round(np.max(aldat), decimals=2) + 0.01
-                l4 = ax.text(0.75, 0.95 * (uplim - lowlim) + lowlim, str('%.2E' % (1. / probfactor)),
+                lowlim, uplim = ax.get_ylim()
+                l4 = ax.text(0.02, 0.02 * (uplim - lowlim) + lowlim, str('%.2E' % (1. / probfactor)),
                              label='likelihood ratio')
                 # ax.set_ylim(uplim,lowlim)
                 savename += lineinfo[0] + line[-4:] + '_'
             savename += obs + '_EW.pdf'
             print(savename)
             plt.figlegend((l1_apo, l1_mercator, l2a, l3),
-                          ('APO Data', 'MERCATOR Data', 'Sinusodial fit', 'Weighted Average'),
-                          bbox_to_anchor=[1., 0.92], prop={'size': 10}, fancybox=True, framealpha=1)
-            plt.suptitle('Normalized Equivalent width \n' + obs, size=16)
+                          ('APO Data', 'MERCATOR Data', 'Sinusodial fit', 'Weighted Average'),bbox_to_anchor=[0.91, 0.83],
+                           prop={'size': 10}, fancybox=False, framealpha=1)
+            plt.suptitle('Normalized Equivalent width \n' + 'Mercator and APO', size=16)
             # plt.tight_layout()
             if save is True:
                 plt.savefig(figsavefolder+savename)

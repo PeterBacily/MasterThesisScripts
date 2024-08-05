@@ -239,12 +239,15 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 #             self.available_lines.append(linekey)
 #         data.close()
 
-testfile = r"D:\peter\Master_Thesis\Datareduction\Data\LaPalmaData\zet Ori1120151010.fits"
-fn = os.path.basename(testfile)
-data = pf.open(testfile)
-header = data[0].header
-print(header)
-data.close()
+# testfile = r"D:\peter\Master_Thesis\Datareduction\Data\LaPalmaData\zet Ori1120151010.fits"
+# fn = os.path.basename(testfile)
+# datafile = pf.open(testfile)
+# header = datafile[0].header
+# print(header)
+# attrs = vars(datafile[0])
+# for item in attrs:
+#     print(item)
+# datafile.close()
 # plot_TVS_Lapalma('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 
 # folder = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\final_spectra\spectra'

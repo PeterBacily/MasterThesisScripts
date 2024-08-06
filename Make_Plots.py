@@ -366,6 +366,11 @@ def plot_EW_demetra(obs='BOTH', orders=True, figsavefolder=r'D:\Peter\School\Mas
                 norm_phases = np.append(phases_apo, phases_mercator)
                 chisq, red_chisq, AIC_1, AIC_2, AIC_3, probfactor = airmass.EW_stats2(norm_ews, norm_phases,
                                                                                       norm_ew_errors)
+                chisq_apo, red_chisq_apo, AIC_1_apo, AIC_2_apo, AIC_3_apo, probfactor_apo = airmass.EW_stats2(norm_EW_apo, phases_apo,
+                                                                                      norm_error_apo)
+                chisq_merc, red_chisq_merc, AIC_1_merc, AIC_2_merc, AIC_3_merc, probfactor_merc = airmass.EW_stats2(
+                    norm_EW_mercator, phases_mercator,
+                    norm_error_mercator)
                 # p1 = [0.005, 0.5, 1]
                 p1 = [1, 1, 1]
                 # print norm_ews
@@ -390,7 +395,7 @@ def plot_EW_demetra(obs='BOTH', orders=True, figsavefolder=r'D:\Peter\School\Mas
                 aldat = np.append(norm_ews, data_fit)
                 ax.locator_params(axis='y', nbins=7)
                 lowlim, uplim = ax.get_ylim()
-                l4 = ax.text(0.02, 0.02 * (uplim - lowlim) + lowlim, str('%.2E' % (1. / probfactor)),
+                l4 = ax.text(0.02, 0.02 * (uplim - lowlim) + lowlim, 'LHR APO '+str('%.1E' % (1. / probfactor_apo))+'\nLHR MERCATOR '+str('%.1E' % (1. / probfactor_merc)),
                              label='likelihood ratio')
                 # ax.set_ylim(uplim,lowlim)
                 savename += lineinfo[0] + line[-4:] + '_'

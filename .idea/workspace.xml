@@ -7,7 +7,6 @@
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Make_Plots.py" beforeDir="false" afterPath="$PROJECT_DIR$/Make_Plots.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testttt2.py" beforeDir="false" afterPath="$PROJECT_DIR$/testttt2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -310,10 +309,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.Make_Plots" />
-      <item itemvalue="Python.make_linelist" />
       <item itemvalue="Python.ExecuteDataReduc" />
+      <item itemvalue="Python.Make_Plots" />
       <item itemvalue="Python.create_datafiles" />
+      <item itemvalue="Python.make_linelist" />
       <item itemvalue="Python.testttt2" />
     </list>
     <recent_temporary>
@@ -337,13 +336,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00014" summary="changes">
-      <created>1715001912342</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1715001912342</updated>
     </task>
     <task id="LOCAL-00015" summary="changes">
       <created>1715001929341</created>
@@ -681,7 +673,14 @@
       <option name="project" value="LOCAL" />
       <updated>1722595837277</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="changes">
+      <created>1722871228600</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1722871228600</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="ToolWindowManager">

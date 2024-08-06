@@ -302,15 +302,15 @@ def plot_EW_demetra(obs='BOTH', orders=True, figsavefolder=r'D:\Peter\School\Mas
                 aldat = np.append(ews, data_fit)
                 ax.locator_params(axis='y', nbins=7)
                 lowlim, uplim = np.round(np.min(aldat), decimals=2) - 0.01, np.round(np.max(aldat), decimals=2) + 0.01
-                l4 = ax.text(0.75, 0.95 * (uplim - lowlim) + lowlim, str('%.2E' % (1. / probfactor)),
+                l4 = ax.text(0.02, 0.02 * (uplim - lowlim) + lowlim, str('%.2E' % (1. / probfactor)),
                              label='likelihood ratio')
-                ax.set_ylim(uplim, lowlim)
+                ax.set_ylim(lowlim, uplim)
                 savename += lineinfo[0] + line[-4:] + '_'
             savename += obs + '_EW.pdf'
             print(savename)
-            plt.figlegend((l1, l2, l3), ('Data', 'Sinusodial fit', 'Weighted Average'), bbox_to_anchor=[1., 0.92],
-                          prop={'size': 10}, fancybox=True, framealpha=1)
-            plt.suptitle('Normalized Equivalent width \n' + obs, size=16)
+            plt.figlegend((l1, l2, l3), ('Data', 'Sinusodial fit', 'Weighted Average'), bbox_to_anchor=[0.92, 0.87],
+                          prop={'size': 8}, fancybox=True, framealpha=1)
+            plt.suptitle('Equivalent width \n' + obs, size=16)
             plt.tight_layout()
             if save is True:
                 plt.savefig(figsavefolder + savename)
@@ -402,8 +402,8 @@ def plot_EW_demetra(obs='BOTH', orders=True, figsavefolder=r'D:\Peter\School\Mas
             savename += obs + '_EW.pdf'
             print(savename)
             plt.figlegend((l1_apo, l1_mercator, l2a, l3),
-                          ('APO Data', 'MERCATOR Data', 'Sinusodial fit', 'Weighted Average'),bbox_to_anchor=[0.91, 0.83],
-                           prop={'size': 10}, fancybox=False, framealpha=1)
+                          ('APO Data', 'MERCATOR Data', 'Sinusodial fit', 'Weighted Average'),bbox_to_anchor=[0.92, 0.623],
+                           prop={'size': 8}, fancybox=False, framealpha=1)
             plt.suptitle('Normalized Equivalent width \n' + 'Mercator and APO', size=16)
             # plt.tight_layout()
             if save is True:

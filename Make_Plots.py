@@ -44,6 +44,20 @@ def my_slope(p,x):
 # apo_lines  = ['line6562', 'line4861', 'line4713', 'line5875', 'line4541', 'line4685', 'line5411', 'line4471', 'line4921', 'line6678', 'line5592', 'line5801']
 # mercator_lines = ['line6562', 'line4861', 'line4340', 'line4026', 'line4471', 'line4713', 'line5875', 'line4541', 'line4685', 'line5411', 'line4921', 'line6678', 'line5592', 'line5801']
 
+def get_mfs(obs,folder=None):
+    if obs =='APO':
+        if folder is None:
+            mfs = open_masterfiles.apo()
+        else:
+            mfs = open_masterfiles.apo(folder)
+    elif obs =='MERC' or obs =='MERCATOR':
+        if folder is None:
+            mfs =open_masterfiles.mercator()
+        else:
+            mfs = open_masterfiles.mercator(folder)
+    return mfs
+
+
 def sort_linelist(lines, obs='MERCATOR',apowantedmarks = None):
     if obs =='APO':
         if apowantedmarks == None:
@@ -630,32 +644,42 @@ def plot_quotient(obs='MERCATOR',save='off',show='on',plot_save_folder='',overpl
             plt.close()
     savepdf.close()
 
-def plot_TVS_together(manual_filelist=None,obs='apo',save='off',show='on',plot_save_folder='',oneline='off',sg='on', siglvlline=0.01,apowantedmarks = None,customlines = None,customfiles = None):
+def plot_TVS_together(linelist=None, filefolder_apo = None,filefolder_merc=None,orders=True,save='off',show='on',plot_save_folder='',oneline='off',sg='off', siglvlline=0.01,):
     apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
                  'line4861', 'line4921', 'line6678', 'line4471']
     mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'line5592', 'line4026', 'line4471',
                       'line4685', 'line4921', 'line5801', 'line4713', 'line5411', 'line4541']
-    apo_master_files = open_masterfiles.apo()
-    merc_master_files = open_masterfiles.mercator()
+    apo_master_files = get_mfs('APO',filefolder_apo)
+    merc_master_files = get_mfs('MERC',filefolder_merc)
 
-
-
+    if linelist is None:
+        lines =apo_lines
+    else:
+        lines=linelist
     vsini = 127
 
     # for line in [apo_lines[1]]:
-    for line in apo_lines:
+    for line in lines:
         f, axarr = plt.subplots(2, 2, sharex=True, figsize = (8,6))
         for i in [0, 1]:
             if i == 0:
                 master_files = apo_master_files
                 obs = 'APO'
-                k=2
+                if orders is True:
+                    line_extension='_order'
+                    lw, TVS, v, n = airmass.TVS_masterfiles_order(master_files, line+line_extension)
+                else:
+                    line_extension=''
+                    wl, TVS, v, n = airmass.TVS_masterfiles(master_files, line+line_extension)
+                k=1
             elif i == 1:
                 master_files = merc_master_files
                 obs = 'MERCATOR'
                 k=1
-            wl, TVS, v, n = airmass.TVS_masterfiles(master_files, line)
-            lineinfo = getattr(master_files[0], line).lineinfo
+                line_extension = ''
+                wl, TVS, v, n = airmass.TVS_masterfiles(master_files, line+line_extension)
+            # wl, TVS, v, n = airmass.TVS_masterfiles(master_files, line)
+            lineinfo = getattr(master_files[0], line+line_extension).lineinfo
 
             normwl_edges = [lineinfo[k+1],lineinfo[k+2],lineinfo[k+3],lineinfo[k+4]]
             norm_v_edges =airmass.wl_to_velocity(normwl_edges,lineinfo[k])[0]
@@ -663,7 +687,10 @@ def plot_TVS_together(manual_filelist=None,obs='apo',save='off',show='on',plot_s
             TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
             # print v[sgn]-v[0]
             # p = chi2.ppf(0.99, n - 1) / (n - 1)
-            vs, lfs = airmass.overplot_masterfiles(master_files, line)
+            if orders is True:
+                vs, lfs = airmass.overplot_masterfiles_order(master_files,line)
+            else:
+                vs, lfs = airmass.overplot_masterfiles(master_files, line+line_extension)
             # f, (axarr[0, i], axarr[0, i]) = plt.subplots(2, sharex=True)
             spec2 = []
             for j, spec in enumerate(lfs):
@@ -911,12 +938,6 @@ def EW_fit_table():
             print(pf, '   &', det,'   &',)
         print(r'\\')
 
-def get_mfs(obs):
-    if obs =='APO':
-        mfs = open_masterfiles.apo()
-    elif obs =='MERC' or obs =='MERCATOR':
-        mfs =open_masterfiles.mercator()
-    return mfs
 
 def EW_EW_plots(line1,obs,line2,save = 'off',plot_save_folder = '',show='off',invert='off'):
     apo_lines = ['line6562', 'line4713', 'line5801', 'line4685', 'line5875', 'line4541', 'line5411', 'line5592',

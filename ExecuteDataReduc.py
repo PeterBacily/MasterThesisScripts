@@ -95,8 +95,8 @@ dfs=[df1,df2,df3,df4]
 
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr\reference_line',   ll_nieuwe_lijnen,show='on', save = 'off', sg='off', oneline='on')
 
-Make_Plots.plot_EW_demetra(obs='MERCATOR', orders=True, figsavefolder=r'D:\peter\Master_Thesis\Datareduction\Plots\EW_from_orders\\',
-            custom_lines=apo_lines, custom_files=None, Chunklength=3,
-            datafile_folder_demetra =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\snr_100\\',
-            datafile_folder_mercator=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',
-                    save=True, show=False)
+# Make_Plots.plot_EW_demetra(obs='MERCATOR', orders=True, figsavefolder=r'D:\peter\Master_Thesis\Datareduction\Plots\EW_from_orders\\',
+#             custom_lines=apo_lines, custom_files=None, Chunklength=3,
+#             datafile_folder_demetra =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\snr_100\\',
+#             datafile_folder_mercator=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',
+#                     save=True, show=False)

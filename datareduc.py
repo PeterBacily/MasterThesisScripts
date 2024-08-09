@@ -616,7 +616,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         plt.close()
 
 
-def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='off', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None):
+def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None):
     k=0
     if datafilefolder == None:
         filelist = open_masterfiles.apo_demetra_orders()

@@ -604,3 +604,4 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 # plt.plot(wl_original,flux_original)
 # plt.show()
 # plt.close()
+print(plt.style.available)

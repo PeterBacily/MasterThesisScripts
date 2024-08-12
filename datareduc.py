@@ -656,8 +656,8 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         ax1.set_ylim([mini,maxi])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
-            ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='yellow', alpha=0.2)
-            ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='yellow', alpha=0.2)
+            ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='gray', edgecolor=None, alpha=0.2)
+            ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='gray', alpha=0.2)
             # ax1.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax1.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax1.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
@@ -682,9 +682,9 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         #     ax2.plot(v,TVS)
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            ax2.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='gray', alpha=0.2)
+            ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='gray', alpha=0.2)
             # ax2.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
-            ax2.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='yellow', alpha=0.2)
-            ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='yellow', alpha=0.2)
             # ax2.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax2.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax2.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)

@@ -650,21 +650,23 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         ax1.set_title(lineinfo[6+k])
         # ax1.legend()
         # ax1.set_xlim([-600,600])
-        spec2 = spec[(v>-300)& (v<300)]
+        spec2 = spec[(v>-1000)& (v<1000)]
         mini = np.floor(100*0.98*np.amin(spec2))/100
         maxi = np.ceil(100*1.02*np.amax(spec2))/100
-        ax1.set_ylim([mini,maxi])
+        # ax1.set_ylim([mini,maxi])
+        ax1.set_ylim([mini,1.05])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
-            ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='gray', edgecolor=None, alpha=0.2)
-            ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='gray', alpha=0.2)
+            ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+            ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
             # ax1.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax1.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax1.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax1.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)
-
-        ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
-        ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
+        ax1.axvline(vsini, color='0.5', linestyle=':', linewidth=1)
+        ax1.axvline(-vsini, color='0.5', linestyle=':', linewidth=1)
+        # ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
+        # ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
         # if line[2]==5875.621:
         #     TVS2 = np.array(TVS)*1.4
 
@@ -682,14 +684,14 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         #     ax2.plot(v,TVS)
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
-            ax2.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='gray', alpha=0.2)
-            ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='gray', alpha=0.2)
+            ax2.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+            ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
             # ax2.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax2.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax2.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
             # ax2.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)
-        ax2.axvline(vsini, color='k', linestyle=':', linewidth=1)
-        ax2.axvline(-vsini, color='k', linestyle=':', linewidth=1)
+        ax2.axvline(vsini, color='0.5', linestyle=':', linewidth=1)
+        ax2.axvline(-vsini, color='0.5', linestyle=':', linewidth=1)
         # ax2.plot([v[0],v[-1]],[1,1],linestyle='dashed', linewidth=1,c='g')
         # ax2.plot([v[0],v[-1]],[p,p], linewidth=1,c='g')
         # print len(v)

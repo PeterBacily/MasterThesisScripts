@@ -80,9 +80,9 @@ dfs=[df1,df2,df3,df4]
 # for i in range(len(pfs)):
 #     datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pfs[i], show='off', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=dfs[i], norm_boundaries='on')
 
-datareduc.plot_TVS_orders(apo_lines3, plot_save_folder=pf2+r'\vrange1000', show='off', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on',style = None,vrange=1000)
+# datareduc.plot_TVS_orders(apo_lines3, plot_save_folder=pf2+r'\vrange1000', show='off', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on',style = None,vrange=1000)
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data\clean',r'D:\Peter\Master Thesis\figures\TVS\eShel\cleanonly\reference_line',ll_TVS_eshel,show='off', save = 'on',sg='on',oneline='on')
-
+datareduc.plot_TVS_Lapalma_masterfile(apo_lines2,plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\mercator',show='on', save='off', sg='off', oneline='on', siglvlline=0.01, norm_boundaries='on',style = None,vrange=1000)
 
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr',ll_TVS_eshel,show='off', save = 'on')
 #

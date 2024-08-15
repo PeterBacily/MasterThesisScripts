@@ -716,8 +716,9 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         plt.close()
 
 
-def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='on', siglvlline=0.01,datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\'):
+def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='on',norm_boundaries = 'on', siglvlline=0.01,datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',vrange=None,style=None):
     filelist = open_masterfiles.mercator(path=datafilefolder)
+    k=0
     for line in linelist:
         lineinfo = getattr(filelist[0], line).lineinfo
         # swl = line[2]-40
@@ -737,6 +738,11 @@ def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',
         mini = np.floor(10*0.9*np.amin(spec2))/10
         maxi = np.ceil(10*1.01*np.amax(spec2))/10
         ax1.set_ylim([mini,maxi])
+        velo_shift=0
+        if norm_boundaries == 'on':
+            [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+            ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
         ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
         ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
         # if line[2]==5875.621:
@@ -768,7 +774,10 @@ def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',
         ax2.set_xlabel('V (km/s)')
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
-        ax2.set_xlim([-600,600])
+        if vrange == None:
+            ax2.set_xlim([normv_1 - 200, normv_4 + 200])
+        else:
+            ax2.set_xlim([-vrange, vrange])
         if save =='on':
             plt.savefig(plot_save_folder + r'\\LaPalma' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_TVS.pdf',format='pdf', dpi=1200)
         if show =='on':

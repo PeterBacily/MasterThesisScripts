@@ -167,7 +167,7 @@ def run_cddo(snr):
     savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\\'
     linelist = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_oud.txt'
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr)
-run_cddo(snr=100)
+# run_cddo(snr=100)
 
 
 

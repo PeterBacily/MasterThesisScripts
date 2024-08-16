@@ -793,7 +793,7 @@ def fitfraunlp(file):
     cdelt1 = header['CDELT1']
     flux = datafile[0].data
     wl = np.exp(np.arange(naxis1)*cdelt1 + crval1 )
-    apo_wl, apo_flux, _ = normalize(np.array(wl),np.array(flux),5888.5,5889,5894.2,5894.75,5800,6000)
+    apo_wl, apo_flux, nnf, lineflux,fit= normalize(np.array(wl),np.array(flux),5888.5,5889,5894.2,5894.75,5800,6000)
     # print len(apo_wl), len(apo_flux)
     dat_x = apo_wl[(apo_wl>5880)&(apo_wl<5905)]
     dat_y = apo_flux[(apo_wl>5880)&(apo_wl<5905)]

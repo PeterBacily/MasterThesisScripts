@@ -104,7 +104,7 @@ class single_order:
 class Datafile_mercator:
     observatory = 'MERC'
     # linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['Hy', 4340.472, 4322, 4324, 4357, 4360, r'H$\gamma$ 4340'], ['He_I', 4026.1914, 4018.1914, 4022.1914, 4030.1914, 4034.1914, 'He I 4026'], ['He_I', 4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'], ['He_I', 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 5875.621, 5863.0, 5864.5, 5885.0, 5885.8, 'He I 5876'], ['He_II', 4541.6, 4498, 4499, 4580, 4581, 'He II 4542'], ['He_II', 4685.804, 4679, 4680, 4690, 4691, 'He II 4686'], ['He_II', 5411.521, 5400.7, 5401.7, 5422.0, 5423.0, 'He II 5412'], ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'],['He_I', 6678.15, 6656, 6660, 6690, 6695, r'He I 6678'],['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'], ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
-    linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
+    linelist_standard = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
                      ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
                      ['Hy', 4340.472, 4322, 4324, 4357, 4360, r'H$\gamma$ 4340'],
                      ['He_I', 4026.1914, 4016, 4020, 4032, 4036, 'He I 4026'],
@@ -119,7 +119,11 @@ class Datafile_mercator:
                      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'],
                      ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
 
-    def __init__(self, file,v_rad = 18.5,i='n/a'):
+    def __init__(self, file,ll_file=None,v_rad = 18.5,i='n/a'):
+        if ll_file == None:
+            self.linelist = self.linelist_standard
+        else:
+            self.linelist = open_linelist(ll_file)
         fn = os.path.basename(file)
         data = pf.open(file)
         self.i =i
@@ -147,7 +151,7 @@ class Datafile_mercator:
         self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
         for line in self.linelist:
             linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr,self.baricentric_correction,-v_rad)
-            linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_originalself.baricentric_correction,-v_rad)
+            linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,self.baricentric_correction,-v_rad)
             setattr(self,linekey , linedata)
             setattr(self,linekey+'_original',linedata_original)
             self.available_lines.append(linekey)

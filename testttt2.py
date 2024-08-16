@@ -604,4 +604,5 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
 # plt.plot(wl_original,flux_original)
 # plt.show()
 # plt.close()
-print(plt.style.available)
+# print(plt.style.available)
+var1 = open_masterfiles.mercator(path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo')

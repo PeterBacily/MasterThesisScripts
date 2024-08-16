@@ -148,14 +148,14 @@ def create_datafile_eshel(filelist=fl_eshel_all,i=0):
         print(k, mark)
         k+=1
 
-def create_datafiles_lapalma(filelist=sortedfl_lapalma,i=0):
+def create_datafiles_lapalma(filelist=sortedfl_lapalma,save_folder=datafile_folder_merc,linelist_file=None):
     k=1
-    for file in sortedfl_lapalma:
+    for file in filelist:
         print(k)
         startdate = airmass.timeanddatelp(file)
-        a = Datafile_mercator(file, i=k)
+        a = Datafile_mercator(file, i=k,ll_file=linelist_file)
         dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
-        savename = datafile_folder_merc+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
+        savename = save_folder+a.observatory+'{num:02d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
         workfileresource = open(savename, 'wb')
         pickle.dump(a, workfileresource)
         workfileresource.close()
@@ -169,7 +169,12 @@ def run_cddo(snr):
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr)
 # run_cddo(snr=100)
 
-
+def run_cdm():
+    filelist = sortedfl_lapalma
+    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo\\'
+    linelist = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt'
+    create_datafiles_lapalma(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
+run_cdm()
 
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
 # testfile_apo = fl_clean[12]

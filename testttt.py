@@ -65,6 +65,61 @@ def Lapalma_vrad(datafile_folder, plot_save_folder, linelist):
             minvs.append(minv)
         # print minvs
         print(np.median(minvs))
+
+
+def overplot_masterfiles_wl(filelist,line,separate_lines=False):
+    vsini = 127
+    lfs = []
+    vs = []
+    wls=[]
+    a = 0.0
+    if separate_lines:
+        ap = 0.1
+    elif not separate_lines:
+        ap = 0.0
+    else:
+        raise SyntaxError('separate_lines needs to be Boolean')
+    for file in filelist:
+        linedata = getattr(file, line)
+        flux = linedata.flux
+        wl = linedata.wl
+        wls.append(wl)
+        v = linedata.v_cor
+        lfs.append(np.array(flux) + a)
+        vs.append(v)
+        a += ap
+    return wls,vs, lfs
+test_fl = open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo\no_vshift\\')
+
+apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
+             'line4861', 'line4921', 'line6678', 'line4471']
+line=apo_lines[0]
+linedata = getattr(test_fl[0], line)
+lineinfo=linedata.lineinfo
+print(lineinfo)
+k=0
+barcor = test_fl[0].baricentric_correction
+[normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            # ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+            # ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+wls,vs,lfs = overplot_masterfiles_wl(test_fl,line)
+print(lfs[1].shape)
+f, (ax1, ax2) = plt.subplots(2)
+for i ,wl in enumerate(wls):
+    ax1.plot(wls[i],lfs[i])
+    ax2.plot(vs[i],lfs[i])
+velo_shift=barcor-18.5
+ax1.axvspan(lineinfo[2+k],lineinfo[3+k],facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+ax1.axvspan(lineinfo[4+k],lineinfo[5+k],facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+ax2.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+ax1.axvline(wls[0][len(wls[0])//2])
+ax2.axvline(vs[0][len(vs[0])//2])
+ax1.set_xlim([wls[1][0],wls[1][-1]])
+ax2.set_xlim([vs[1][0],vs[1][-1]])
+plt.show()
+plt.close()
+
 # Lapalma_vrad('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 # x = np.arange(-300,300,1)
 
@@ -131,41 +186,41 @@ def aphase(filetime):
 
 
 
-def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
-    filelist = glob.glob(datafile_folder+'\*.fits')
-    for line in linelist:
-        print(line[6])
-        swl = line[2]-40
-        ewl = line[5]+40
-        lw,TVS,v,n =airmass.TVS_LaPalma(filelist,line,swl,ewl, v_rad=18.5)
-        p = chi2.ppf(0.99, n-1)/(n-1)
-        vs,lws = airmass.overplot_LaPalma(filelist,line,v_rad=18.5,startwl=swl,endwl=ewl)
-        f, (ax1, ax2) = plt.subplots(2, sharex=True)
-        for i,spec in enumerate(lws):
-            ax1.plot(vs[i],spec )
-        ax1.set_title(line[6])
-        ax1.legend()
-        # ax1.set_xlim([-600,600])
-        # ax1.set_ylim([0.6,1.1])
-        ax1.axvline(vsini, color='k', linestyle='dashed', linewidth=1)
-        ax1.axvline(-vsini, color='k', linestyle='dashed', linewidth=1)
-        if line[2]==5875.621:
-            TVS2 = np.array(TVS)*1.4
-            ax2.plot(v, TVS2)
-        else:
-            ax2.plot(v,TVS)
-        ax2.axvline(vsini, color='k', linestyle='dashed', linewidth=1)
-        ax2.axvline(-vsini, color='k', linestyle='dashed', linewidth=1)
-        ax2.plot([v[0],v[-1]],[1,1],linestyle='dashed', linewidth=1,c='g')
-        ax2.plot([v[0],v[-1]],[p,p], linewidth=1,c='g')
-        # ax2.set_ylim([0,5])
-        ax2.set_xlabel('V (km/s)')
-        ax1.set_ylabel('Normlized Flux')
-        ax2.set_ylabel('TVS')
-        ax2.set_xlim([-600,600])
-        plt.savefig(plot_save_folder + r'\\' + line[0] + str(int(np.round(line[1])))+'_TVS.pdf')
-        plt.show()
-        plt.close()
+# def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist):
+#     filelist = glob.glob(datafile_folder+'\*.fits')
+#     for line in linelist:
+#         print(line[6])
+#         swl = line[2]-40
+#         ewl = line[5]+40
+#         lw,TVS,v,n =airmass.TVS_LaPalma(filelist,line,swl,ewl, v_rad=18.5)
+#         p = chi2.ppf(0.99, n-1)/(n-1)
+#         vs,lws = airmass.overplot_LaPalma(filelist,line,v_rad=18.5,startwl=swl,endwl=ewl)
+#         f, (ax1, ax2) = plt.subplots(2, sharex=True)
+#         for i,spec in enumerate(lws):
+#             ax1.plot(vs[i],spec )
+#         ax1.set_title(line[6])
+#         ax1.legend()
+#         # ax1.set_xlim([-600,600])
+#         # ax1.set_ylim([0.6,1.1])
+#         ax1.axvline(vsini, color='k', linestyle='dashed', linewidth=1)
+#         ax1.axvline(-vsini, color='k', linestyle='dashed', linewidth=1)
+#         if line[2]==5875.621:
+#             TVS2 = np.array(TVS)*1.4
+#             ax2.plot(v, TVS2)
+#         else:
+#             ax2.plot(v,TVS)
+#         ax2.axvline(vsini, color='k', linestyle='dashed', linewidth=1)
+#         ax2.axvline(-vsini, color='k', linestyle='dashed', linewidth=1)
+#         ax2.plot([v[0],v[-1]],[1,1],linestyle='dashed', linewidth=1,c='g')
+#         ax2.plot([v[0],v[-1]],[p,p], linewidth=1,c='g')
+#         # ax2.set_ylim([0,5])
+#         ax2.set_xlabel('V (km/s)')
+#         ax1.set_ylabel('Normlized Flux')
+#         ax2.set_ylabel('TVS')
+#         ax2.set_xlim([-600,600])
+#         plt.savefig(plot_save_folder + r'\\' + line[0] + str(int(np.round(line[1])))+'_TVS.pdf')
+#         plt.show()
+#         plt.close()
 
 # plot_TVS_Lapalma('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 

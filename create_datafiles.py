@@ -171,7 +171,7 @@ def run_cddo(snr):
 
 def run_cdm():
     filelist = sortedfl_lapalma
-    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo\\'
+    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo\no_vshift\\'
     linelist = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt'
     create_datafiles_lapalma(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
 run_cdm()

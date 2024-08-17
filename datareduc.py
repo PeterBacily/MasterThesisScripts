@@ -719,6 +719,9 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
 def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='on',norm_boundaries = 'on', siglvlline=0.01,datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',vrange=None,style=None):
     filelist = open_masterfiles.mercator(path=datafilefolder)
     k=0
+    barcor=filelist[0].baricentric_correction
+    v_rad=-18.5
+    velo_shift=barcor+v_rad
     for line in linelist:
         lineinfo = getattr(filelist[0], line).lineinfo
         # swl = line[2]-40
@@ -738,7 +741,6 @@ def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',
         mini = np.floor(10*0.9*np.amin(spec2))/10
         maxi = np.ceil(10*1.01*np.amax(spec2))/10
         ax1.set_ylim([mini,maxi])
-        velo_shift=0
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
             ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
@@ -748,6 +750,10 @@ def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',
         # if line[2]==5875.621:
         #     TVS2 = np.array(TVS)*1.4
         ax2.plot(v, TVS, color='b')
+        if norm_boundaries == 'on':
+            [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            ax2.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+            ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
         if sg == 'on':
             ax2.plot(v,TVS_smoothed,color='r',linestyle='dashed')
         if oneline == 'on':

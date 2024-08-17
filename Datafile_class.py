@@ -150,8 +150,8 @@ class Datafile_mercator:
         self.snr_original =airmass.snr(self.wl_original,self.flux_original)
         self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
         for line in self.linelist:
-            linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr,self.baricentric_correction,-v_rad)
-            linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,self.baricentric_correction,-v_rad)
+            linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr,0,0)
+            linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,0,0)
             setattr(self,linekey , linedata)
             setattr(self,linekey+'_original',linedata_original)
             self.available_lines.append(linekey)

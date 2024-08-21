@@ -85,7 +85,7 @@ def open_linelist(path):
     return b
 
 class single_order:
-    def __init__(self, filepath,order_number,order_number_demetra):
+    def __init__(self, filepath,order_number,order_number_demetra,v_rad=-18.5,velo_shift=True):
         self.order_number_demetra =order_number_demetra
         self.order_number = order_number
         with pf.open(filepath) as a:
@@ -93,7 +93,17 @@ class single_order:
             naxis1 = self.header['NAXIS1']
             crval1 = self.header['CRVAL1']
             cdelt1 = self.header['CDELT1']
-            self.wl_original = np.arange(naxis1) * cdelt1 + crval1
+            self.baricentric_correction, self.HJD = airmass.barcor(filepath, JDOBS=self.header['JD-MID'])
+            if velo_shift is True:
+                self.v_shift=self.baricentric_correction + v_rad
+            else:
+                self.v_shift=0
+            wl_offset_factor= 1+(self.v_shift / 299792.458)
+            self.wl_original_no_v_cor = np.arange(naxis1) * cdelt1 + crval1
+            self.wl_original = self.wl_original_no_v_cor*wl_offset_factor
+            wldif =self.wl_original[20]-self.wl_original_no_v_cor[20]
+            vdif=wldif*299792.458
+            # print(vdif, wldif)
             self.flux_original = a[0].data
             self.wl_start = self.wl_original[0]
             self.wl_end = self.wl_original[-1]
@@ -290,7 +300,7 @@ class Datafile_apo_demetra_with_orders:
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-    def __init__(self, orderfiles,fullspecfile,ll_file=None,v_rad = 18.5,i='n/a',mark = 0):
+    def __init__(self, orderfiles,fullspecfile,ll_file=None,v_rad = -18.5,i='n/a',mark = 0):
         if ll_file == None:
             self.linelist = self.linelist_standard
         else:
@@ -327,7 +337,7 @@ class Datafile_apo_demetra_with_orders:
         naxis1 = self.header['NAXIS1']
         crval1 = self.header['CRVAL1']
         cdelt1 = self.header['CDELT1']
-        self.wl_original = np.arange(naxis1) * cdelt1 + crval1 - v_rad / 299792.458
+        self.wl_original = np.arange(naxis1) * cdelt1 + crval1 + (v_rad+self.baricentric_correction) / 299792.458
         self.flux_original = fullspecdata[0].data
         self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original)
         self.available_lines = []
@@ -343,13 +353,13 @@ class Datafile_apo_demetra_with_orders:
             onr += 1
         self.orders = ords
         for line in self.linelist:
-            linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr, self.baricentric_correction,-18.5)
+            linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr, 0,0)
             linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,0,0)
             ol = sorted(self.orders, key=lambda x: np.abs(x.wl_avg-line[1]))
             line_order = ol[0]
             normalization_wl = [line[self.k + 1], line[self.k + 2], line[self.k + 3], line[self.k + 4]]
             if line_order.wl_start<normalization_wl[0] and line_order.wl_end>normalization_wl[-1]:
-                linedata_order,lk = line_data(line,line_order.wl_original,line_order.flux_original,self.observatory,self.snr, self.baricentric_correction,-18.5)
+                linedata_order,lk = line_data(line,line_order.wl_original,line_order.flux_original,self.observatory,self.snr, 0,0)
                 setattr(self,linekey+'_order',linedata_order)
             else:
                 print('line out of order bounds, no order line was made for',line[0],self.filename)

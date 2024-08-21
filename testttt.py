@@ -89,37 +89,101 @@ def overplot_masterfiles_wl(filelist,line,separate_lines=False):
         vs.append(v)
         a += ap
     return wls,vs, lfs
-test_fl = open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo\no_vshift\\')
 
-apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
-             'line4861', 'line4921', 'line6678', 'line4471']
-line=apo_lines[0]
-linedata = getattr(test_fl[0], line)
-lineinfo=linedata.lineinfo
-print(lineinfo)
-k=0
-barcor = test_fl[0].baricentric_correction
-[normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
-            # ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
-            # ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
-wls,vs,lfs = overplot_masterfiles_wl(test_fl,line)
-print(lfs[1].shape)
-f, (ax1, ax2) = plt.subplots(2)
-for i ,wl in enumerate(wls):
-    ax1.plot(wls[i],lfs[i])
-    ax2.plot(vs[i],lfs[i])
-velo_shift=barcor-18.5
-ax1.axvspan(lineinfo[2+k],lineinfo[3+k],facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
-ax1.axvspan(lineinfo[4+k],lineinfo[5+k],facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
-ax2.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
-ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
-ax1.axvline(wls[0][len(wls[0])//2])
-ax2.axvline(vs[0][len(vs[0])//2])
-ax1.set_xlim([wls[1][0],wls[1][-1]])
-ax2.set_xlim([vs[1][0],vs[1][-1]])
-plt.show()
-plt.close()
+def normtest_merc(filefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo\no_vshift\\'):
+    test_fl = open_masterfiles.mercator(filefolder)
 
+    apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
+                 'line4861', 'line4921', 'line6678', 'line4471']
+    line=apo_lines[0]
+    linedata = getattr(test_fl[0], line)
+    lineinfo=linedata.lineinfo
+    print(lineinfo)
+    k=0
+    barcor = test_fl[0].baricentric_correction
+    [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+                # ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+                # ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+    wls,vs,lfs = overplot_masterfiles_wl(test_fl,line)
+    print(lfs[1].shape)
+    f, (ax1, ax2) = plt.subplots(2)
+    for i ,wl in enumerate(wls):
+        ax1.plot(wls[i],lfs[i])
+        ax2.plot(vs[i],lfs[i])
+    velo_shift=barcor-18.5
+    ax1.axvspan(lineinfo[2+k],lineinfo[3+k],facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+    ax1.axvspan(lineinfo[4+k],lineinfo[5+k],facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+    ax2.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+    ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+    ax1.axvline(lineinfo[1])
+    ax2.axvline(0)
+    ax1.set_xlim([wls[1][0],wls[1][-1]])
+    ax2.set_xlim([vs[1][0],vs[1][-1]])
+    plt.show()
+    plt.close()
+
+
+def overplot_masterfiles_wl_orders(filelist, baseline, separate_lines=False):
+    vsini = 127
+    lfs = []
+    vs = []
+    wls = []
+    a = 0.0
+    line=baseline+'_order'
+    if separate_lines:
+        ap = 0.1
+    elif not separate_lines:
+        ap = 0.0
+    else:
+        raise SyntaxError('separate_lines needs to be Boolean')
+    for file in filelist:
+        linedata = getattr(file, line)
+        flux = linedata.flux
+        wl = linedata.wl
+        wls.append(wl)
+        v = linedata.v_cor
+        lfs.append(np.array(flux) + a)
+        vs.append(v)
+        a += ap
+    return wls, vs, lfs
+
+
+def normtest_apo_orders(filefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\'):
+    test_fl = open_masterfiles.mercator(filefolder)
+
+    apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
+                 'line4861', 'line4921', 'line6678', 'line4471']
+    for baseline in apo_lines:
+        line=baseline+'_order'
+        linedata = getattr(test_fl[0], line)
+        lineinfo = linedata.lineinfo
+        print(line, lineinfo)
+        k = 0
+        barcor = test_fl[0].baricentric_correction
+        [normv_1, normv_2, normv_3, normv_4], uselessvar = airmass.wl_to_velocity(
+            [lineinfo[2 + k], lineinfo[3 + k], lineinfo[4 + k], lineinfo[5 + k]], lineinfo[1 + k])
+        # ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+        # ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
+        wls, vs, lfs = overplot_masterfiles_wl(test_fl, line)
+        print(lfs[1].shape)
+        f, (ax1, ax2) = plt.subplots(2)
+        for i, wl in enumerate(wls):
+            ax1.plot(wls[i], lfs[i])
+            ax2.plot(vs[i], lfs[i])
+        # velo_shift = barcor - 18.5
+        velo_shift=0
+        ax1.axvspan(lineinfo[2 + k], lineinfo[3 + k], facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
+        ax1.axvspan(lineinfo[4 + k], lineinfo[5 + k], facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
+        ax2.axvspan(normv_1 + velo_shift, normv_2 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
+        ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
+        ax1.axvline(lineinfo[1])
+        ax2.axvline(0)
+        ax1.set_xlim([wls[1][0], wls[1][-1]])
+        ax2.set_xlim([vs[1][0], vs[1][-1]])
+        plt.show()
+        plt.close()
+
+normtest_apo_orders()
 # Lapalma_vrad('D:\Peter\Master Thesis\Data\LaPalmaData',r'D:\Peter\Master Thesis\figures\TVS\LaPalma',ll_lapalma)
 # x = np.arange(-300,300,1)
 

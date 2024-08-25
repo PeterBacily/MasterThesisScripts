@@ -291,14 +291,29 @@ def aphase(filetime):
 
 # a =pf.open(fp)
 # a.close()
-
-
-
-path_fl = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\zo_good'
-fl = open_masterfiles.apo_demetra()
-testfile = fl[2]
-for item in testfile.header:
-    print(item)
+# files = []
+# fl=glob.glob(r'D:\peter\Master_Thesis\Master_Thesis\Other\vtest\*.txt')
+# for file in fl:
+#     a = open(file, 'rb')
+#         # for line in testfile:
+#         #     print line
+#     b = pickle.load(a)
+#     files.append(b)
+# i=0
+# for file in files:
+#     linedata=getattr(file,'line6562')
+#     wl=linedata.wl
+#     flux=linedata.flux
+#     plt.plot(wl,flux)
+# plt.show()
+# plt.close()
+print(airmass.wl_to_velocity([6557.02,6567.55,6567.95],6567.95))
+# plt.savefig(r'D:\peter\Master_Thesis\Master_Thesis\Other\vtest\fig'+str(i)+'.pdf',format='pdf', dpi=1200)
+# path_fl = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\zo_good'
+# fl = open_masterfiles.apo_demetra()
+# testfile = fl[2]
+# for item in testfile.header:
+#     print(item)
 # line ='line4713'
 
 # linedata = getattr(testfile, line)

@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datafile_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testttt.py" beforeDir="false" afterPath="$PROJECT_DIR$/testttt.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testttt2.py" beforeDir="false" afterPath="$PROJECT_DIR$/testttt2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -186,7 +184,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.testttt">
+  <component name="RunManager" selected="Python.testttt2">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -320,10 +318,10 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.testttt" />
-        <item itemvalue="Python.create_datafiles" />
-        <item itemvalue="Python.Datafile_class" />
         <item itemvalue="Python.testttt2" />
+        <item itemvalue="Python.create_datafiles" />
+        <item itemvalue="Python.testttt" />
+        <item itemvalue="Python.Datafile_class" />
         <item itemvalue="Python.ExecuteDataReduc" />
       </list>
     </recent_temporary>
@@ -339,13 +337,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00024" summary="changes">
-      <created>1717761355353</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1717761355353</updated>
     </task>
     <task id="LOCAL-00025" summary="changes">
       <created>1717857606749</created>
@@ -683,7 +674,14 @@
       <option name="project" value="LOCAL" />
       <updated>1723905601117</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="changes">
+      <created>1724253024250</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1724253024250</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="ToolWindowManager">

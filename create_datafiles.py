@@ -168,8 +168,8 @@ def run_cddo(snr):
     linelist = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt'
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr)
 run_cddo(snr=100)
-run_cddo(snr=None)
-run_cddo(snr=90)
+# run_cddo(snr=None)
+# run_cddo(snr=90)
 def run_cdm():
     filelist = [sortedfl_lapalma[1]]
     savefolder = r'D:\peter\Master_Thesis\Master_Thesis\Other\vtest\\'

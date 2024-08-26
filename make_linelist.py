@@ -1,30 +1,31 @@
 import pickle
 import airmass
-
+import open_masterfiles
+import Datafile_class
 def open_linelist(filepath):
-     workfileresource = open(filepath, 'rb')
-     list = pickle.load(workfileresource)
-     workfileresource.close()
-     return list
+    workfileresource = open(filepath, 'rb')
+    list = pickle.load(workfileresource)
+    workfileresource.close()
+    return list
 
 def make_linelist(list,filepath):
-     workfileresource = open(filepath, 'wb')
-     pickle.dump(list, workfileresource)
-     workfileresource.close()
+    workfileresource = open(filepath, 'wb')
+    pickle.dump(list, workfileresource)
+    workfileresource.close()
 
 
 linelist_apo = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
-     ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
-     ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
-     ['He_I', 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5875'],
-     ['He_II', 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4541'],
-     ['He_II', 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4685'],
-     ['He_II', 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5411'],
-     ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'],
-     ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4921'],
-     ['He_I', 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'],
-     ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
-     ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
+                ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
+                ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
+                ['He_I', 5875.621, 5863.0, 5864.5, 5892.7, 5894.6, 'He I 5875'],
+                ['He_II', 4541.6, 4523, 4529, 4546, 4548.5, 'He II 4541'],
+                ['He_II', 4685.804, 4671.5, 4672.2, 4693.3, 4694.3, 'He II 4685'],
+                ['He_II', 5411.521, 5405.2, 5406.6, 5425.0, 5428.2, 'He II 5411'],
+                ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'],
+                ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4921'],
+                ['He_I', 6678.15, 6656, 6660, 6690, 6695, 'He I 6678'],
+                ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
+                ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
 
 linelist_apo2 = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
@@ -66,10 +67,34 @@ linelist_standard = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563']
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
+linelist_apo_vshift = [['Ha', 6562.819, 6549.2, 6550.2, 6577.0, 6578.0, r'H$\alpha$ 6563'],
+['Hb', 4861.333, 4847.3, 4848.3, 4876.3, 4877.3, r'H$\beta$ 4861'],
+['He_I', 4713.1457, 4707.6, 4708.6, 4717.3, 4718.3, 'He I 4713'],
+['He_I', 5875.621, 5866.1, 5867.1, 5880.8, 5881.8, 'He I 5875'],
+['He_II', 4541.6, 4536.8, 4537.8, 4545.9, 4546.9, 'He II 4541'],
+['He_II', 4685.804, 4681.6, 4682.6, 4689.8, 4690.8, 'He II 4685'],
+['He_II', 5411.521, 5404.4, 5405.4, 5416.2, 5417.4, 'He II 5411'],
+['He_I', 4471.4802, 4462.3, 4463.3, 4475.5, 4476.5, 'He I 4471'],
+['He_I', 4921.93, 4913.5, 4914.5, 4927.5, 4928.5, 'He I 4921'],
+['He_I', 6678.15, 6669.0, 6670.0, 6684.0, 6685.0, 'He I 6678'],
+['O_III', 5592.37, 5587.5, 5588.5, 5596.7, 5597.7, 'O III 5592'],
+['C_IV', 5801.33, 5792.9, 5793.9, 5816.2, 5817.2, 'C IV 5801']]
 
-test_file = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_oud.txt'
 
-make_linelist(linelist_standard,test_file)
+# datafiles = open_masterfiles.apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\',manual_filelist=None,sorted='off')
+# usefile=datafiles[0]
+# wl_factor=usefile.wl_offset_factor
 
-mylist = open_linelist(test_file)
-print(mylist)
+test_file_name = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_v_cor.txt'
+# iter = [2,3,4,5]
+# for line in linelist_apo_new:
+# 	for i in iter:
+# 		a=line[i]
+# 		b=round(a*wl_factor,1)
+# 		line[i]=b
+# 	print(line,', ')
+
+make_linelist(linelist_apo_vshift,test_file_name)
+
+# mylist = open_linelist(test_file_name)
+# print(mylist)

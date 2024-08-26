@@ -159,7 +159,7 @@ def normtest_apo_orders(filefolder=r'D:\peter\Master_Thesis\Datareduction\Conver
         lineinfo = linedata.lineinfo
         print(line, lineinfo)
         k = 0
-        barcor = test_fl[0].baricentric_correction
+        wl_factor = test_fl[0].wl_offset_factor
         [normv_1, normv_2, normv_3, normv_4], uselessvar = airmass.wl_to_velocity(
             [lineinfo[2 + k], lineinfo[3 + k], lineinfo[4 + k], lineinfo[5 + k]], lineinfo[1 + k])
         # ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
@@ -171,9 +171,9 @@ def normtest_apo_orders(filefolder=r'D:\peter\Master_Thesis\Datareduction\Conver
             ax1.plot(wls[i], lfs[i])
             ax2.plot(vs[i], lfs[i])
         # velo_shift = barcor - 18.5
-        velo_shift=0
-        ax1.axvspan(lineinfo[2 + k], lineinfo[3 + k], facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
-        ax1.axvspan(lineinfo[4 + k], lineinfo[5 + k], facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
+        velo_shift=test_fl[0].v_shift
+        ax1.axvspan(lineinfo[2 + k]*wl_factor, lineinfo[3 + k]*wl_factor, facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
+        ax1.axvspan(lineinfo[4 + k]*wl_factor, lineinfo[5 + k]*wl_factor, facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
         ax2.axvspan(normv_1 + velo_shift, normv_2 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
         ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--', alpha=1)
         ax1.axvline(lineinfo[1])

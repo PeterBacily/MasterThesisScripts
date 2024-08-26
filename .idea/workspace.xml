@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datafile_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExecuteDataReduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExecuteDataReduc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testttt2.py" beforeDir="false" afterPath="$PROJECT_DIR$/testttt2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testttt.py" beforeDir="false" afterPath="$PROJECT_DIR$/testttt.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +186,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.testttt2">
+  <component name="RunManager" selected="Python.testttt">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -318,9 +320,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.testttt2" />
-        <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.testttt" />
+        <item itemvalue="Python.create_datafiles" />
+        <item itemvalue="Python.testttt2" />
         <item itemvalue="Python.Datafile_class" />
         <item itemvalue="Python.ExecuteDataReduc" />
       </list>
@@ -337,13 +339,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00025" summary="changes">
-      <created>1717857606749</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1717857606749</updated>
     </task>
     <task id="LOCAL-00026" summary="changes">
       <created>1718121600497</created>
@@ -681,7 +676,14 @@
       <option name="project" value="LOCAL" />
       <updated>1724253024250</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="changes">
+      <created>1724589436583</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1724589436583</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="ToolWindowManager">

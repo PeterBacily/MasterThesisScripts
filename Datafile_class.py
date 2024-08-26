@@ -98,9 +98,9 @@ class single_order:
                 self.v_shift=self.baricentric_correction + v_rad
             else:
                 self.v_shift=0
-            wl_offset_factor= 1+(self.v_shift / 299792.458)
+            self.wl_offset_factor= 1+(self.v_shift / 299792.458)
             self.wl_original_no_v_cor = np.arange(naxis1) * cdelt1 + crval1
-            self.wl_original = self.wl_original_no_v_cor*wl_offset_factor
+            self.wl_original = self.wl_original_no_v_cor*self.wl_offset_factor
             wldif =self.wl_original[20]-self.wl_original_no_v_cor[20]
             vdif=wldif*299792.458
             # print(vdif, wldif)
@@ -337,7 +337,10 @@ class Datafile_apo_demetra_with_orders:
         naxis1 = self.header['NAXIS1']
         crval1 = self.header['CRVAL1']
         cdelt1 = self.header['CDELT1']
-        self.wl_original = np.arange(naxis1) * cdelt1 + crval1 + (v_rad+self.baricentric_correction) / 299792.458
+        self.v_shift = self.baricentric_correction + v_rad
+        self.wl_offset_factor = 1 + (self.v_shift / 299792.458)
+        self.wl_original_no_v_cor = np.arange(naxis1) * cdelt1 + crval1
+        self.wl_original = self.wl_original_no_v_cor * self.wl_offset_factor
         self.flux_original = fullspecdata[0].data
         self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original)
         self.available_lines = []

@@ -472,6 +472,11 @@ def TVS_masterfiles(filelist,line):
         flux = linedata.flux
         wl = linedata.wl
         v = linedata.v_cor
+        v2=linedata.v
+        if v2==v:
+            print('good')
+        else:
+            print('bad')
         nf = linedata.normalizationflux
         wls.append(wl)
         lfs.append(flux)
@@ -498,8 +503,14 @@ def TVS_masterfiles_order(filelist,line):
 
     for file in filelist:
         offset_v = file.baricentric_correction + vrad
-        v = wl_to_velocity_2(wavenew, linecenter, offset_v)
         linedata = getattr(file, line)
+        v = linedata.v_cor
+        v2 = linedata.v
+        if (v2 == v).all():
+            print('good')
+        else:
+            print('bad')
+
         flux = linedata.flux
         wl = linedata.wl
         flux_rebin = rebin_spec(wl,flux,wavenew)
@@ -592,9 +603,9 @@ def overplot_masterfiles_order(filelist,line,separate_lines=False):
     wavenew = np.arange(wl_file_1[10], wl_file_1[-10], 0.05)
     lineinfo = getattr(filelist[0], line).lineinfo
     linecenter = lineinfo[1]
-    vrad = -18.5
-    offset_v = filelist[0].baricentric_correction + vrad
-    v = wl_to_velocity_2(wavenew, linecenter, offset_v)
+    # vrad = -18.5
+    # offset_v = filelist[0].baricentric_correction + vrad
+    # v = wl_to_velocity_2(wavenew, linecenter, offset_v)
     if separate_lines:
         ap = 0.1
     elif not separate_lines:
@@ -602,14 +613,17 @@ def overplot_masterfiles_order(filelist,line,separate_lines=False):
     else:
         raise SyntaxError('separate_lines needs to be Boolean')
     for file in filelist:
-        offset_v = file.baricentric_correction + vrad
-        v = wl_to_velocity_2(wavenew, linecenter, offset_v)
+        # offset_v = file.baricentric_correction + vrad
+        v_new = wl_to_velocity(wavenew, linecenter)[0]
         linedata = getattr(file, line)
+        v = linedata.v_cor
+        v2 = linedata.v
         flux = linedata.flux
         wl = linedata.wl
         flux_rebin = rebin_spec(wl, flux, wavenew)
+        print(flux_rebin.shape,v_new.shape)
         lfs.append(np.array(flux_rebin) + a)
-        vs.append(v)
+        vs.append(v_new)
         a += ap
     return vs, lfs
 

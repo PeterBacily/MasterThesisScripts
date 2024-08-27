@@ -544,7 +544,8 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
 
     bccor = filelist[0].baricentric_correction
     vrad= -18.5
-    velo_shift = bccor+vrad
+    # velo_shift = bccor+vrad
+    velo_shift=0
     for line in linelist:
         lineinfo = getattr(filelist[0], line).lineinfo
         # print filelist

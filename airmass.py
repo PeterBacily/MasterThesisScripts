@@ -37,7 +37,7 @@ def my_line(x,a,b):
 def flat_line(x,a):
     return a
 
-
+# this comment is to test if pushing work
 
 def redchisqg(ydata,ymod,deg=2,sd=None):
       """

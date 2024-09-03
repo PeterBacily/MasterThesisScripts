@@ -65,15 +65,29 @@ apo_lines3 =[  'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line
 # datareduc.plot_TVS_eShel_masterfile(apo_lines, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\apo\demetra_altair_snr100',show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\snr100\\',datareductionprogram='Demetra', norm_boundaries='on')
 # datareduc.plot_TVS_orders(apo_lines, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\apo\from_orders',show='off',save='on',sg='off',oneline='on', siglvlline=0.01, norm_boundaries='on')
 
-pf1=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\all'
-pf2=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\snr_100'
-pf3=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\all'
-pf4=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\snr_100'
+# pf1=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\all'
+# pf2=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\snr_100'
+# pf3=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\all'
+# pf4=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\snr_100'
+#
+# df1 = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\\'
+# df2 = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\'
+# df3 = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\\'
+# df4 = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\snr_100\\'
 
-df1 = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\\'
-df2 = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\'
-df3 = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\\'
-df4 = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\snr_100\\'
+
+
+pf1=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\all'
+pf2=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\snr_100'
+pf3=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\all'
+pf4=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\snr_100'
+
+df1 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\\'
+df2 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\'
+df3 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\\'
+df4 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\snr_100\\'
+
+
 pfs=[pf1,pf2,pf3,pf4]
 dfs=[df1,df2,df3,df4]
 

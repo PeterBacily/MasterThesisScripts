@@ -489,6 +489,7 @@ def TVS_masterfiles(filelist,line):
     for datapoint in np.transpose(lfs):
         TVS.append(np.std(datapoint)/std_expected)
     return np.array(wl),np.array(TVS),np.array(v),len(filelist)
+
 def TVS_masterfiles_order(filelist,line):
     wls = []
     lfs = []
@@ -499,8 +500,6 @@ def TVS_masterfiles_order(filelist,line):
     lineinfo = getattr(filelist[0], line).lineinfo
     linecenter = lineinfo[1]
     vrad = -18.5
-
-
     for file in filelist:
         offset_v = file.baricentric_correction + vrad
         linedata = getattr(file, line)
@@ -514,6 +513,7 @@ def TVS_masterfiles_order(filelist,line):
         flux = linedata.flux
         wl = linedata.wl
         flux_rebin = rebin_spec(wl,flux,wavenew)
+        vnew=wl_to_velocity(wavenew,linecenter)[0]
         nf = linedata.normalizationflux
         wls.append(wavenew)
         lfs.append(flux_rebin)
@@ -525,7 +525,7 @@ def TVS_masterfiles_order(filelist,line):
     # print(len( np.transpose(lfs)))
     for datapoint in np.transpose(lfs):
         TVS.append(np.std(datapoint)/std_expected)
-    return np.array(wavenew),np.array(TVS),np.array(v),len(filelist)
+    return np.array(wavenew),np.array(TVS),np.array(vnew),len(filelist)
 
 def average_masterfiles(filelist,line):
     wls = []

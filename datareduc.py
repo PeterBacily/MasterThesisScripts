@@ -47,9 +47,12 @@ filelist = glob.glob(str(Data_folder) + r'\LaPalmaData\*.fits')
 filelist_lapalma = glob.glob(str(Data_folder)+r'\LaPalmaData\*.fits')
 filelist2 = glob.glob(str(Data_folder)+r'/eShelData/data/*.fit')
 filepath_eshel_spectra_info = str(Data_folder)+r'\masterfiles\dict_apo_files.txt'
-f = open(filepath_eshel_spectra_info,'r')
-dict_eshel = ast.literal_eval(f.read())
-f.close()
+try:
+    f = open(filepath_eshel_spectra_info,'r')
+    dict_eshel = ast.literal_eval(f.read())
+    f.close()
+except:
+    pass
 # del filelist2[0]
 # del filelist2[-6:]
 # del filelist2[]
@@ -651,7 +654,7 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         ax1.set_title(lineinfo[6+k])
         # ax1.legend()
         # ax1.set_xlim([-600,600])
-        spec2 = spec[(v>-1000)& (v<1000)]
+        spec2 = lws[0][(vs[0]>-1000)& (vs[0]<1000)]
         mini = np.floor(100*0.98*np.amin(spec2))/100
         maxi = np.ceil(100*1.02*np.amax(spec2))/100
         # ax1.set_ylim([mini,maxi])

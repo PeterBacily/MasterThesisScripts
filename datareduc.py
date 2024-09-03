@@ -631,7 +631,7 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
 
     bccor = filelist[0].baricentric_correction
     vrad= -18.5
-    velo_shift = bccor+vrad
+    velo_shift = 0
     if style is not None:
         plt.style.use(style)
 

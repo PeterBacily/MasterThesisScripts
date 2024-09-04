@@ -80,12 +80,23 @@ linelist_apo_vshift = [['Ha', 6562.819, 6549.2, 6550.2, 6577.0, 6578.0, r'H$\alp
 ['O_III', 5592.37, 5587.5, 5588.5, 5596.7, 5597.7, 'O III 5592'],
 ['C_IV', 5801.33, 5792.9, 5793.9, 5816.2, 5817.2, 'C IV 5801']]
 
-
+linelist_apo_vshift_revised = [['Ha', 6562.819, 6549.7, 6550.7, 6577.0, 6578.0, r'H$\alpha$ 6563'],
+['Hb', 4861.333, 4847.3, 4848.3, 4876.3, 4877.3, r'H$\beta$ 4861'],
+['He_I', 4713.1457, 4707.6, 4708.6, 4717.3, 4718.3, 'He I 4713'],
+['He_I', 5875.621, 5866.3, 5867.3, 5884.4, 5885.3, 'He I 5875'],
+['He_II', 4541.6, 4536.8, 4537.8, 4545.9, 4546.9, 'He II 4541'],
+['He_II', 4685.804, 4681.6, 4682.6, 4689.8, 4690.8, 'He II 4685'],
+['He_II', 5411.521, 5404.4, 5405.4, 5416.2, 5417.4, 'He II 5411'],
+['He_I', 4471.4802, 4462.3, 4463.3, 4475.5, 4476.5, 'He I 4471'],
+['He_I', 4921.93, 4913.5, 4914.5, 4927.5, 4928.5, 'He I 4921'],
+['He_I', 6678.15, 6669.0, 6670.0, 6684.0, 6685.0, 'He I 6678'],
+['O_III', 5592.37, 5587.5, 5588.5, 5596.7, 5597.7, 'O III 5592'],
+['C_IV', 5801.33, 5792.9, 5793.9, 5816.2, 5817.2, 'C IV 5801']]
 # datafiles = open_masterfiles.apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\',manual_filelist=None,sorted='off')
 # usefile=datafiles[0]
 # wl_factor=usefile.wl_offset_factor
 
-test_file_name = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_v_cor.txt'
+test_file_name = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_v_cor_2.txt'
 # iter = [2,3,4,5]
 # for line in linelist_apo_new:
 # 	for i in iter:
@@ -94,7 +105,7 @@ test_file_name = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists
 # 		line[i]=b
 # 	print(line,', ')
 
-make_linelist(linelist_apo_vshift,test_file_name)
+make_linelist(linelist_apo_vshift_revised,test_file_name)
 
 # mylist = open_linelist(test_file_name)
 # print(mylist)

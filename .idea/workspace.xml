@@ -7,9 +7,11 @@
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExecuteDataReduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExecuteDataReduc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavitzkyGolay.py" beforeDir="false" afterPath="$PROJECT_DIR$/SavitzkyGolay.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/make_linelist.py" beforeDir="false" afterPath="$PROJECT_DIR$/make_linelist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.py" beforeDir="false" afterPath="$PROJECT_DIR$/todo.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,8 +191,12 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python tests.Python tests in test.py.executor": "Run",
     "Python.ExecuteDataReduc.executor": "Run",
     "Python.airmass.executor": "Run",
+    "Python.create_datafiles.executor": "Run",
+    "Python.make_linelist.executor": "Run",
+    "Python.test.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
@@ -314,7 +320,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="testttt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -327,7 +333,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testttt.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -337,19 +343,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.test" />
       <item itemvalue="Python.airmass" />
       <item itemvalue="Python.ExecuteDataReduc" />
       <item itemvalue="Python.create_datafiles" />
       <item itemvalue="Python.make_linelist" />
-      <item itemvalue="Python.testttt" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.ExecuteDataReduc" />
-        <item itemvalue="Python.airmass" />
         <item itemvalue="Python.create_datafiles" />
-        <item itemvalue="Python.testttt" />
         <item itemvalue="Python.make_linelist" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.airmass" />
       </list>
     </recent_temporary>
   </component>
@@ -715,7 +721,7 @@
       <option name="project" value="LOCAL" />
       <updated>1724768183392</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="ToolWindowManager">

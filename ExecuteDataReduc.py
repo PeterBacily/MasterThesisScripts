@@ -81,22 +81,23 @@ pf1=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\
 pf2=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\snr_100'
 pf3=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\all'
 pf4=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\snr_100'
+pf_lp=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\mercator\ll_apo_2'
 
 df1 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\\'
 df2 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\'
 df3 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\\'
 df4 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\snr_100\\'
-
+df_lp = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo_vcor_2\\'
 
 pfs=[pf1,pf2,pf3,pf4]
 dfs=[df1,df2,df3,df4]
 
 # for i in range(len(pfs)):
-datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pfs[0], show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=dfs[1], norm_boundaries='on')
+# datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pfs[0], show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=dfs[1], norm_boundaries='on')
 
 # datareduc.plot_TVS_orders(apo_lines3, plot_save_folder=pf2+r'\vrange1000', show='off', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on',style = None,vrange=1000)
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data\clean',r'D:\Peter\Master Thesis\figures\TVS\eShel\cleanonly\reference_line',ll_TVS_eshel,show='off', save = 'on',sg='on',oneline='on')
-# datareduc.plot_TVS_Lapalma_masterfile(apo_lines,plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\mercator\cropped\vrange1000',datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo\no_vshift\\',show='off', save='on', sg='off', oneline='on', siglvlline=0.01, norm_boundaries='on',style = None,vrange=1000)
+datareduc.plot_TVS_Lapalma_masterfile(apo_lines,plot_save_folder=pf_lp,datafilefolder=df_lp,show='on', save='off', sg='off', oneline='on', siglvlline=0.01, norm_boundaries='on',style = None,vrange=1000)
 
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr',ll_TVS_eshel,show='off', save = 'on')
 #

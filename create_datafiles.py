@@ -163,17 +163,18 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,save_folder=datafile_fold
 
 
 def run_cddo(snr):
-    datafolder = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\spectra_with_orders\\'
-    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\\'
-    linelist = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_v_cor.txt'
+    datafolder = r'C:\Peter\master\Master_Thesis\Datareduction\Data\Demetra\spectra_with_orders\\'
+    savefolder = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor_2\\'
+    linelist = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_v_cor_2.txt'
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr)
-# run_cddo(snr=100)
-# run_cddo(snr=None)
-# run_cddo(snr=90)
+run_cddo(snr=100)
+run_cddo(snr=None)
+run_cddo(snr=90)
 def run_cdm():
     filelist = sortedfl_lapalma
-    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo_vcor\\'
-    linelist = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_v_cor.txt'
+    print('attention',filelist)
+    savefolder = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo_vcor_2\\'
+    linelist = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_v_cor_2.txt'
     create_datafiles_lapalma(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
 run_cdm()
 

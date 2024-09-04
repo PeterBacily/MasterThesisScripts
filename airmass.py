@@ -349,6 +349,12 @@ def quotient_eShel(file1,file2,line,startwl,endwl,v_rad=18.5):
     qf = quotient(lf1,lf2)
     return lw1,v, qf
 
+def velocity_to_wl(v_list, linecenter):
+    wl=[]
+    for v in v_list:
+        l=((v/299792.5)+1)*linecenter
+        wl.append(l)
+    return np.array(wl)
 
 def wl_to_velocity(wavelengths, linecenter):
     vsini = 127
@@ -473,7 +479,7 @@ def TVS_masterfiles(filelist,line):
         wl = linedata.wl
         v = linedata.v_cor
         v2=linedata.v
-        if v2==v:
+        if (v2==v).all:
             print('good')
         else:
             print('bad')

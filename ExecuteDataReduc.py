@@ -89,6 +89,7 @@ df3 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_
 df4 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\snr_100\\'
 df_lp = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo_vcor_2\\'
 
+
 pfs=[pf1,pf2,pf3,pf4]
 dfs=[df1,df2,df3,df4]
 

@@ -101,7 +101,7 @@ def time_from_filename(filename):
     b=str(a.stem)[-15:]
     c=b[:8]+b[9:]
     return(int(c))
-def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file,snrtreshhold=None):
+def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file,snrtreshhold=None,vshift=True):
     zipfiles = sorted(glob.glob(datafolder+r'*.zip'), key=lambda x: time_from_filename(x))
     print(zipfiles)
     full_spec_files = sorted(glob.glob(datafolder+r'*.fit'), key=lambda x: time_from_filename(x))
@@ -109,7 +109,7 @@ def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file,snrtresh
     for i in range(len(zipfiles)):
         if str(Path(zipfiles[i]).stem)[-15:] ==str(Path(full_spec_files[i]).stem)[-15:]:
             print(str(i))
-            orders_class_object=Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=linelist_file)
+            orders_class_object=Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=linelist_file,velo_shift=vshift)
             dl, dl2 = airmass.split_date(orders_class_object.header['DATE-OBS'])
             snr=orders_class_object.snr_original
             savename = savefolder + orders_class_object.observatory + '_' + dl[0] + dl[1] + dl[2] + dl[3] + '.txt'
@@ -127,6 +127,21 @@ def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file,snrtresh
         else:
             print('YOU SUCK')
 
+
+def create_test_version_datafiles_demetra_orders(datafolder,linelist_file,snrtreshhold=None):
+    zipfiles = sorted(glob.glob(datafolder+r'*.zip'), key=lambda x: time_from_filename(x))
+    print(zipfiles)
+    full_spec_files = sorted(glob.glob(datafolder+r'*.fit'), key=lambda x: time_from_filename(x))
+    print(full_spec_files)
+    testfile_list=[]
+    for i in range(len(zipfiles)):
+        if str(Path(zipfiles[i]).stem)[-15:] ==str(Path(full_spec_files[i]).stem)[-15:]:
+            print(str(i))
+            orders_class_object=Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=linelist_file)
+            testfile_list.append(orders_class_object)
+        else:
+            print('YOU SUCK')
+    return testfile_list
 
 def create_datafile_eshel(filelist=fl_eshel_all,i=0):
     mark1 = [1, 37]
@@ -168,17 +183,28 @@ def run_cddo(snr):
     datafolder = str(Data_folder)+r'\Demetra\spectra_with_orders\\'
     savefolder = str(converted_Data_folder)+r'\demetra\with_orders\v_cor_2\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
-    create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr)
-run_cddo(snr=100)
-run_cddo(snr=None)
-run_cddo(snr=90)
+    create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=False)
+def run_test_do():
+    datafolder = str(Data_folder)+r'\Demetra\spectra_with_orders\\'
+    linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
+    create_test_version_datafiles_demetra_orders(datafolder,linelist_file=linelist)
+# a=run_test_do()
+def make_testfiles_do():
+    datafolder = str(Data_folder)+r'\Demetra\spectra_with_orders\\'
+    savefolder = str(converted_Data_folder)+r'\demetra\with_orders\test\\'
+    linelist = str(converted_Data_folder) + r'\linelists\linelist_v_cor_2.txt'
+    create_datafiles_demetra_orders(datafolder, savefolder, linelist_file=linelist,snrtreshhold=100,vshift=False)
+make_testfiles_do()
+# run_cddo(snr=100)
+# run_cddo(snr=None)
+# run_cddo(snr=90)
 def run_cdm():
     filelist = sortedfl_lapalma
     print('attention',filelist)
     savefolder = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
     create_datafiles_lapalma(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
-run_cdm()
+# run_cdm()
 
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
 # testfile_apo = fl_clean[12]

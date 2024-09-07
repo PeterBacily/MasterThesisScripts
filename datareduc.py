@@ -637,6 +637,7 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
 
     for baseline in linelist:
         line=baseline+'_order'
+        # line=baseline
         lineinfo = getattr(filelist[0], line).lineinfo
         # print filelist
         # swl = line[3]-40

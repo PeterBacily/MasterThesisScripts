@@ -96,14 +96,16 @@ class single_order:
             self.baricentric_correction, self.HJD = airmass.barcor(filepath, JDOBS=self.header['JD-MID'])
             if velo_shift is True:
                 self.v_shift=self.baricentric_correction + v_rad
+            elif velo_shift is False:
+                self.v_shift = 0
             else:
-                self.v_shift=0
+                self.v_shift = velo_shift
             self.wl_offset_factor= 1+(self.v_shift / 299792.458)
             self.wl_original_no_v_cor = np.arange(naxis1) * cdelt1 + crval1
             self.wl_original = self.wl_original_no_v_cor*self.wl_offset_factor
             wldif =self.wl_original[20]-self.wl_original_no_v_cor[20]
-            vdif=wldif*299792.458
-            # print(vdif, wldif)
+            vdif=(self.wl_original[20]/self.wl_original_no_v_cor[20]-1)*299792.458
+            # print(self.v_shift,vdif)
             self.flux_original = a[0].data
             self.wl_start = self.wl_original[0]
             self.wl_end = self.wl_original[-1]
@@ -300,7 +302,7 @@ class Datafile_apo_demetra_with_orders:
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-    def __init__(self, orderfiles,fullspecfile,ll_file=None,v_rad = -18.5,i='n/a',mark = 0):
+    def __init__(self, orderfiles,fullspecfile,ll_file=None,v_rad = -18.5,i='n/a',mark = 0,velo_shift=True):
         if ll_file == None:
             self.linelist = self.linelist_standard
         else:
@@ -337,7 +339,12 @@ class Datafile_apo_demetra_with_orders:
         naxis1 = self.header['NAXIS1']
         crval1 = self.header['CRVAL1']
         cdelt1 = self.header['CDELT1']
-        self.v_shift = self.baricentric_correction + v_rad
+        if velo_shift is True:
+            self.v_shift = self.baricentric_correction + v_rad
+        elif velo_shift is False:
+            self.v_shift = 0
+        else:
+            self.v_shift=velo_shift
         self.wl_offset_factor = 1 + (self.v_shift / 299792.458)
         self.wl_original_no_v_cor = np.arange(naxis1) * cdelt1 + crval1
         self.wl_original = self.wl_original_no_v_cor * self.wl_offset_factor
@@ -351,7 +358,7 @@ class Datafile_apo_demetra_with_orders:
         for file in orderfilelist:
             file_name = os.path.basename(file)
             order_number_demetra= os.path.splitext(file_name)[0][-2:]
-            od = single_order(file, order_number=onr, order_number_demetra=order_number_demetra)
+            od = single_order(file, order_number=onr, order_number_demetra=order_number_demetra,velo_shift=velo_shift)
             ords.append(od)
             onr += 1
         self.orders = ords
@@ -376,56 +383,56 @@ class Datafile_apo_demetra_with_orders:
 
 
 
-class Datafile_mercator_with_orders:
-    observatory = 'MERC'
-    # linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['Hy', 4340.472, 4322, 4324, 4357, 4360, r'H$\gamma$ 4340'], ['He_I', 4026.1914, 4018.1914, 4022.1914, 4030.1914, 4034.1914, 'He I 4026'], ['He_I', 4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'], ['He_I', 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 5875.621, 5863.0, 5864.5, 5885.0, 5885.8, 'He I 5876'], ['He_II', 4541.6, 4498, 4499, 4580, 4581, 'He II 4542'], ['He_II', 4685.804, 4679, 4680, 4690, 4691, 'He II 4686'], ['He_II', 5411.521, 5400.7, 5401.7, 5422.0, 5423.0, 'He II 5412'], ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'],['He_I', 6678.15, 6656, 6660, 6690, 6695, r'He I 6678'],['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'], ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
-    linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
-                     ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
-                     ['Hy', 4340.472, 4322, 4324, 4357, 4360, r'H$\gamma$ 4340'],
-                     ['He_I', 4026.1914, 4016, 4020, 4032, 4036, 'He I 4026'],
-                     ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'],
-                     ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
-                     ['He_I', 5875.621, 5863.0, 5864.5, 5884.6, 5885.5, 'He I 5875'],
-                     ['He_II', 4541.6, 4498, 4499, 4580, 4581, 'He II 4541'],
-                     ['He_II', 4685.804, 4679, 4680, 4690, 4691, 'He II 4685'],
-                     ['He_II', 5411.521, 5400.7, 5401.7, 5422.0, 5423.0, 'He II 5411'],
-                     ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4921'],
-                     ['He_I', 6678.15, 6656, 6660, 6690, 6695, r'He I 6678'],
-                     ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'],
-                     ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
-
-    def __init__(self, file,v_rad = 18.5,i='n/a'):
-        fn = os.path.basename(file)
-        data = pf.open(file)
-        self.i =i
-        self.filename = fn[:fn.rfind(".")]
-        self.header = data[0].header
-        self.time_and_date = airmass.timeanddate2(self.header['DATE-OBS'])
-        self.original_filepath = file
-        self.HJD = float(self.header['BJD'])
-        self.phase =  airmass.aphase(self.header['BJD'])
-        self.exptime = self.header['EXPTIME']
-        self.altitude = float(self.header['TELALT'])
-        self.airmass = 1/np.sin(2*np.pi*self.altitude/360)
-        self.baricentric_correction = float(self.header['BVCOR'])
-        self.fwl = airmass.fitfraunlp(file)
-        self.velshift = 299792.458*(self.fwl-5895.92)/5895.92
-        naxis1 = self.header['NAXIS1']
-        crval1 = self.header['CRVAL1']
-        cdelt1 = self.header['CDELT1']
-        self.wl_original = np.exp(np.arange(naxis1) * cdelt1 + crval1 - v_rad / 299792.458)
-        self.flux_original = data[0].data
-        self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original)
-        self.available_lines = []
-        self.snr_original =airmass.snr(self.wl_original,self.flux_original)
-        self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
-        for line in self.linelist:
-            linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr,0,0)
-            linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,0,0)
-            setattr(self,linekey , linedata)
-            setattr(self,linekey+'_original',linedata_original)
-            self.available_lines.append(linekey)
-        data.close()
+# class Datafile_mercator_with_orders:
+#     observatory = 'MERC'
+#     # linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'], ['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4881.0, r'H$\beta$ 4861'], ['Hy', 4340.472, 4322, 4324, 4357, 4360, r'H$\gamma$ 4340'], ['He_I', 4026.1914, 4018.1914, 4022.1914, 4030.1914, 4034.1914, 'He I 4026'], ['He_I', 4471.4802, 4466.0, 4467.0, 4475.0, 4476.0, 'He I 4471'], ['He_I', 4713.1457, 4708.15, 4709.15, 4718.15, 4719.15, 'He I 4713'], ['He_I', 5875.621, 5863.0, 5864.5, 5885.0, 5885.8, 'He I 5876'], ['He_II', 4541.6, 4498, 4499, 4580, 4581, 'He II 4542'], ['He_II', 4685.804, 4679, 4680, 4690, 4691, 'He II 4686'], ['He_II', 5411.521, 5400.7, 5401.7, 5422.0, 5423.0, 'He II 5412'], ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4922'],['He_I', 6678.15, 6656, 6660, 6690, 6695, r'He I 6678'],['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'], ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
+#     linelist = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
+#                      ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
+#                      ['Hy', 4340.472, 4322, 4324, 4357, 4360, r'H$\gamma$ 4340'],
+#                      ['He_I', 4026.1914, 4016, 4020, 4032, 4036, 'He I 4026'],
+#                      ['He_I', 4471.4802, 4459.0, 4462, 4475.5, 4478.5, 'He I 4471'],
+#                      ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
+#                      ['He_I', 5875.621, 5863.0, 5864.5, 5884.6, 5885.5, 'He I 5875'],
+#                      ['He_II', 4541.6, 4498, 4499, 4580, 4581, 'He II 4541'],
+#                      ['He_II', 4685.804, 4679, 4680, 4690, 4691, 'He II 4685'],
+#                      ['He_II', 5411.521, 5400.7, 5401.7, 5422.0, 5423.0, 'He II 5411'],
+#                      ['He_I', 4921.93, 4910, 4913, 4928.2, 4931.5, 'He I 4921'],
+#                      ['He_I', 6678.15, 6656, 6660, 6690, 6695, r'He I 6678'],
+#                      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, r'O III 5592'],
+#                      ['C_IV', 5801.33, 5794.6, 5795.6, 5807.1, 5808.1, r'C IV 5801']]
+#
+#     def __init__(self, file,v_rad = 18.5,i='n/a'):
+#         fn = os.path.basename(file)
+#         data = pf.open(file)
+#         self.i =i
+#         self.filename = fn[:fn.rfind(".")]
+#         self.header = data[0].header
+#         self.time_and_date = airmass.timeanddate2(self.header['DATE-OBS'])
+#         self.original_filepath = file
+#         self.HJD = float(self.header['BJD'])
+#         self.phase =  airmass.aphase(self.header['BJD'])
+#         self.exptime = self.header['EXPTIME']
+#         self.altitude = float(self.header['TELALT'])
+#         self.airmass = 1/np.sin(2*np.pi*self.altitude/360)
+#         self.baricentric_correction = float(self.header['BVCOR'])
+#         self.fwl = airmass.fitfraunlp(file)
+#         self.velshift = 299792.458*(self.fwl-5895.92)/5895.92
+#         naxis1 = self.header['NAXIS1']
+#         crval1 = self.header['CRVAL1']
+#         cdelt1 = self.header['CDELT1']
+#         self.wl_original = np.exp(np.arange(naxis1) * cdelt1 + crval1 - v_rad / 299792.458)
+#         self.flux_original = data[0].data
+#         self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original)
+#         self.available_lines = []
+#         self.snr_original =airmass.snr(self.wl_original,self.flux_original)
+#         self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
+#         for line in self.linelist:
+#             linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr,0,0)
+#             linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,0,0)
+#             setattr(self,linekey , linedata)
+#             setattr(self,linekey+'_original',linedata_original)
+#             self.available_lines.append(linekey)
+#         data.close()
 
 # class Datafile_apo_demetra_orders:
 #     observatory = 'APO_DEMETRA'

@@ -21,6 +21,11 @@ def dir_paths(path_string=folder_of_this_file):
     return a
 
 
+def base_path(path_string=folder_of_this_file):
+    dir_check(path_string)
+    a = pathlib.Path(up(path_string))
+    return a
+
 dir_paths()
 
 

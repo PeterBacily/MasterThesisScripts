@@ -12,6 +12,7 @@ from scipy.stats import chi2
 from PyAstronomy import pyasl
 import matplotlib.style
 import datareduc
+import os
 import Make_Plots
 matplotlib.style.use('classic')
 vsini =127
@@ -41,6 +42,15 @@ filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
 apo_lines2 = ['line6562','line4861']
 apo_lines3 =[  'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
               'line4921', 'line6678', 'line4471']
+
+import Path_check
+
+import pickle
+# import seaborn as sns
+folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
+Path_check.dir_check(folder_of_this_file)
+
+[converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
 # ----------------------
 #
 #
@@ -77,17 +87,17 @@ apo_lines3 =[  'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line
 
 
 
-pf1=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\all'
-pf2=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\snr_100'
-pf3=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\all'
-pf4=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_old\snr_100'
-pf_lp=r'C:\Peter\master\Master_Thesis\Datareduction\Plots\TVS\mercator\ll_apo_2'
+pf1=str(Plots_folder)+r'\TVS\demetra_from_orders\ll_new\all'
+pf2=str(Plots_folder)+r'\TVS\demetra_from_orders\ll_new\snr_100'
+pf3=str(Plots_folder)+r'\TVS\demetra_from_orders\ll_old\all'
+pf4=str(Plots_folder)+r'\TVS\demetra_from_orders\ll_old\snr_100'
+pf_lp=str(Plots_folder)+r'\TVS\mercator\cropped\vrange1000\ll_apo_vcor_2'
 
-df1 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\\'
-df2 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\'
-df3 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\\'
-df4 = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\ll_oud\snr_100\\'
-df_lp = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo_vcor_2\\'
+df1 = str(converted_Data_folder)+r'\demetra\with_orders\v_cor_2\\'
+df2 = str(converted_Data_folder)+r'\demetra\with_orders\v_cor_2\snr_90\\'
+df3 = str(converted_Data_folder)+r'\demetra\with_orders\ll_oud\\'
+df4 = str(converted_Data_folder)+r'\demetra\with_orders\ll_oud\snr_100\\'
+df_lp = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
 
 
 pfs=[pf1,pf2,pf3,pf4]
@@ -96,9 +106,9 @@ dfs=[df1,df2,df3,df4]
 # for i in range(len(pfs)):
 # datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pfs[0], show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=dfs[1], norm_boundaries='on')
 
-# datareduc.plot_TVS_orders(apo_lines3, plot_save_folder=pf2+r'\vrange1000', show='off', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on',style = None,vrange=1000)
+datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pf2+r'\vrange1000', show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on',style = None,vrange=1000)
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data\clean',r'D:\Peter\Master Thesis\figures\TVS\eShel\cleanonly\reference_line',ll_TVS_eshel,show='off', save = 'on',sg='on',oneline='on')
-datareduc.plot_TVS_Lapalma_masterfile(apo_lines,plot_save_folder=pf_lp,datafilefolder=df_lp,show='on', save='off', sg='off', oneline='on', siglvlline=0.01, norm_boundaries='on',style = None,vrange=1000)
+# datareduc.plot_TVS_Lapalma_masterfile(apo_lines2,plot_save_folder=pf_lp,datafilefolder=df_lp,show='off', save='on', sg='off', oneline='on', siglvlline=0.01, norm_boundaries='on',style = None,vrange=1000)
 
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr',ll_TVS_eshel,show='off', save = 'on')
 #

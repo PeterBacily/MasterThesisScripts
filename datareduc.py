@@ -17,14 +17,13 @@ with warnings.catch_warnings():
     import SavitzkyGolay
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 import ast
+import open_masterfiles
 import os
 import Path_check
-import open_masterfiles
-import pickle
-# import seaborn as sns
+
+
 folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
 Path_check.dir_check(folder_of_this_file)
-
 [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
 # print(converted_Data_folder, Data_folder, Plots_folder, Scripts_folder)
 
@@ -494,7 +493,8 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist,show='off',save
         # ax1.set_xlim([-600,600])
         spec2 = spec[(v>-300)& (v<300)]
         mini = np.floor(10*0.9*np.amin(spec2))/10
-        maxi = np.ceil(10*1.01*np.amax(spec2))/10
+        # maxi = np.ceil(10*1.01*np.amax(spec2))/10
+        maxi=np.ceil(np.amax(spec2) / 0.05) * 0.05
         ax1.set_ylim([mini,maxi])
         ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
         ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
@@ -654,11 +654,11 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         ax1.set_title(lineinfo[6+k])
         # ax1.legend()
         # ax1.set_xlim([-600,600])
-        spec2 = lws[0][(vs[0]>-1000)& (vs[0]<1000)]
-        mini = np.floor(100*0.98*np.amin(spec2))/100
-        maxi = np.ceil(100*1.02*np.amax(spec2))/100
+        spec2 = lws[0][(vs[0]>-300)& (vs[0]<300)]
+        mini = np.floor(20*np.amin(spec2))/20
+        maxi = np.ceil(20*np.amax(spec2))/20
         # ax1.set_ylim([mini,maxi])
-        ax1.set_ylim([mini,1.05])
+        ax1.set_ylim([mini,maxi])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
             ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
@@ -742,8 +742,9 @@ def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',
         # ax1.legend()
         # ax1.set_xlim([-600,600])
         spec2 = spec[(v>-300)& (v<300)]
-        mini = np.floor(10*0.9*np.amin(spec2))/10
-        maxi = np.ceil(10*1.01*np.amax(spec2))/10
+        mini = np.floor(20*np.amin(spec2))/20
+        # maxi = np.ceil(np.amax(spec2) / 0.05) * 0.05
+        maxi = np.ceil(20*np.amax(spec2)+1)/20
         ax1.set_ylim([mini,maxi])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])

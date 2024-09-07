@@ -2,6 +2,13 @@ import pickle
 import airmass
 import open_masterfiles
 import Datafile_class
+import os
+import Path_check
+
+
+folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
+Path_check.dir_check(folder_of_this_file)
+[converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
 def open_linelist(filepath):
     workfileresource = open(filepath, 'rb')
     list = pickle.load(workfileresource)
@@ -96,7 +103,7 @@ linelist_apo_vshift_revised = [['Ha', 6562.819, 6549.7, 6550.7, 6577.0, 6578.0, 
 # usefile=datafiles[0]
 # wl_factor=usefile.wl_offset_factor
 
-test_file_name = r'C:\Peter\master\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_v_cor_2.txt'
+test_file_name = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
 # iter = [2,3,4,5]
 # for line in linelist_apo_new:
 # 	for i in iter:

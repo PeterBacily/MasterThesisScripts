@@ -40,7 +40,7 @@ fl_clean = glob.glob(fl_eshel_clean_folder+r'\*.fit')
 fl_goodSNR = glob.glob(fl_eshel_goodSNR_folder+r'\*.fit')
 filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
 apo_lines2 = ['line6562','line4861']
-apo_lines3 =[  'line5875']
+apo_lines3 =[ 'line6562','line4861' ]
 
 import Path_check
 
@@ -105,9 +105,9 @@ dfs=[df1,df2,df3,df4]
 # for i in range(len(pfs)):
 # datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pfs[0], show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=dfs[1], norm_boundaries='on')
 
-datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pf2+r'\vrange1000', show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df_test, norm_boundaries='on',style = None,vrange=1000)
+datareduc.plot_TVS_orders(apo_lines3, plot_save_folder=pf2+r'\vrange1000', show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df_test, norm_boundaries='on',style = None,vrange=1000)
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data\clean',r'D:\Peter\Master Thesis\figures\TVS\eShel\cleanonly\reference_line',ll_TVS_eshel,show='off', save = 'on',sg='on',oneline='on')
-# datareduc.plot_TVS_Lapalma_masterfile(apo_lines2,plot_save_folder=pf_lp,datafilefolder=df_lp,show='off', save='on', sg='off', oneline='on', siglvlline=0.01, norm_boundaries='on',style = None,vrange=1000)
+datareduc.plot_TVS_Lapalma_masterfile(apo_lines3,plot_save_folder=pf_lp,datafilefolder=df_lp,show='on', save='off', sg='off', oneline='on', siglvlline=0.01, norm_boundaries='on',style = None,vrange=1000)
 
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr',ll_TVS_eshel,show='off', save = 'on')
 #

@@ -1,4 +1,5 @@
 # todo
+    # omkeren voor apo
    # linelist normalization adjustments
     # halapha, left side +0.5A
     #He5875 rechterkant: v=455-504

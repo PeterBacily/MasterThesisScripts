@@ -181,9 +181,12 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,save_folder=datafile_fold
 
 def run_cddo(snr):
     datafolder = str(Data_folder)+r'\Demetra\spectra_with_orders\\'
-    savefolder = str(converted_Data_folder)+r'\demetra\with_orders\v_cor_2\\'
-    linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
-    create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=False)
+    savefolder = str(converted_Data_folder)+r'\demetra\with_orders\v_cor_3\\'
+    linelist = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_2.txt'
+    create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=True)
+run_cddo(snr=100)
+run_cddo(snr=None)
+run_cddo(snr=90)
 def run_test_do():
     datafolder = str(Data_folder)+r'\Demetra\spectra_with_orders\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
@@ -194,10 +197,8 @@ def make_testfiles_do():
     savefolder = str(converted_Data_folder)+r'\demetra\with_orders\test\\'
     linelist = str(converted_Data_folder) + r'\linelists\linelist_v_cor_2.txt'
     create_datafiles_demetra_orders(datafolder, savefolder, linelist_file=linelist,snrtreshhold=100,vshift=False)
-make_testfiles_do()
-# run_cddo(snr=100)
-# run_cddo(snr=None)
-# run_cddo(snr=90)
+# make_testfiles_do()
+
 def run_cdm():
     filelist = sortedfl_lapalma
     print('attention',filelist)

@@ -2,7 +2,7 @@
     # omkeren voor apo
    # linelist normalization adjustments
     # halapha, left side +0.5A
-    #He5875 rechterkant: v=455-504
+    #He5875 rechterkant: v=404-455
     #linkerkant+0.2A
 
 

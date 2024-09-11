@@ -655,7 +655,7 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         ax1.set_title(lineinfo[6+k])
         # ax1.legend()
         # ax1.set_xlim([-600,600])
-        spec2 = lws[0][(vs[0]>-300)& (vs[0]<300)]
+        spec2 = lws[0][(vs[0]>-1000)& (vs[0]<1000)]
         mini = np.floor(20*np.amin(spec2))/20
         maxi = np.ceil(20*np.amax(spec2))/20
         # ax1.set_ylim([mini,maxi])

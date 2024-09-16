@@ -662,7 +662,7 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         mini = np.floor(20*np.amin(spec2))/20
         maxi = np.ceil(20*np.amax(spec2))/20
         # ax1.set_ylim([mini,maxi])
-        ax1.set_ylim([mini,maxi])
+        ax1.set_ylim([0.85,1.05])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
             ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
@@ -746,10 +746,13 @@ def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',
         # ax1.legend()
         # ax1.set_xlim([-600,600])
         spec2 = spec[(v>-300)& (v<300)]
-        mini = np.floor(20*np.amin(spec2))/20
+
         # maxi = np.ceil(np.amax(spec2) / 0.05) * 0.05
-        maxi = np.ceil(20*np.amax(spec2)+1)/20
-        ax1.set_ylim([mini,1.05])
+        mini = np.floor(20*np.amin(spec2))/20
+        # maxi = np.ceil(20*np.amax(spec2)+1)/20
+        # mini = 0.75
+        maxi = 1.05
+        ax1.set_ylim([mini,maxi])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
             ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
@@ -785,7 +788,7 @@ def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',
         # print TVS2
         # print np.amax(TVS2)
         maxi2 = np.ceil(np.amax(TVS2))
-        ax2.set_ylim([0,maxi2])
+        ax2.set_ylim([0,3])
         ax2.set_xlabel('V (km/s)')
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)

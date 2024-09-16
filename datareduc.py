@@ -622,7 +622,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         plt.close()
 
 
-def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None,style=None):
+def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None,style=None,from_order=True):
     k=0
     if datafilefolder == None:
         filelist = open_masterfiles.apo_demetra_orders()
@@ -636,7 +636,10 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         plt.style.use(style)
 
     for baseline in linelist:
-        line=baseline+'_order'
+        if from_order is True:
+            line=baseline+'_order'
+        else:
+            line=baseline
         # line=baseline
         lineinfo = getattr(filelist[0], line).lineinfo
         # print filelist
@@ -746,7 +749,7 @@ def plot_TVS_Lapalma_masterfile(linelist, plot_save_folder,show='off',save='on',
         mini = np.floor(20*np.amin(spec2))/20
         # maxi = np.ceil(np.amax(spec2) / 0.05) * 0.05
         maxi = np.ceil(20*np.amax(spec2)+1)/20
-        ax1.set_ylim([mini,maxi])
+        ax1.set_ylim([mini,1.05])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
             ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)

@@ -662,7 +662,7 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         mini = np.floor(20*np.amin(spec2))/20
         maxi = np.ceil(20*np.amax(spec2))/20
         # ax1.set_ylim([mini,maxi])
-        ax1.set_ylim([0.85,1.05])
+        ax1.set_ylim([0.65,1.05])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
             ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)

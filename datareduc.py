@@ -625,10 +625,12 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
 def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None,style=None,from_order=True):
     k=0
     if datafilefolder == None:
+        print('a')
         filelist = open_masterfiles.apo_demetra_orders()
     else:
         filelist = open_masterfiles.apo_demetra_orders(path=datafilefolder)
-
+        print('b')
+    print(filelist)
     bccor = filelist[0].baricentric_correction
     vrad= -18.5
     velo_shift = 0

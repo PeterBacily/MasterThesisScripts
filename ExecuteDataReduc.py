@@ -90,6 +90,8 @@ pf1=str(Plots_folder)+r'\TVS\demetra_from_orders\ll_new\all'
 pf2=str(Plots_folder)+r'\TVS\demetra_from_orders\ll_new\snr_100'
 pf3=str(Plots_folder)+r'\TVS\demetra_from_orders\ll_old\all'
 pf4=str(Plots_folder)+r'\TVS\demetra_from_orders\ll_old\snr_100'
+
+
 pf_lp=str(Plots_folder)+r'\TVS\mercator\cropped\vrange1000\ll_apo_vcor_2'
 pf_lp_final = str(Plots_folder)+r'\TVS\mercator\final'
 pf_dem_final_all = str(Plots_folder)+r'\TVS\demetra_from_orders\final\all'
@@ -101,13 +103,14 @@ df3 = str(converted_Data_folder)+r'\demetra\with_orders\v_cor_3\snr_100\\'
 # df4 = str(converted_Data_folder)+r'\demetra\with_orders\ll_oud\snr_100\\'
 df_lp = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
 df_test= str(converted_Data_folder)+r'\demetra\with_orders\test\snr_100\\'
+data_full_night_100= str(converted_Data_folder)+r'\demetra\with_orders\full_night\snr_100'
 
 pfs=[pf_dem_final_all,pf_dem_final_90,pf_dem_final_100]
 dfs=[df1,df2,df3]
 
 
-datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=df2,filefolder_merc=df_lp,show='on',save='off')
-# datareduc.plot_TVS_orders(apo_lines2, plot_save_folder=pfs[0], show='on', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=dfs[0], norm_boundaries='on',vrange=1000)
+# datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=df2,filefolder_merc=df_lp,show='on',save='off')
+datareduc.plot_TVS_orders(apo_lines2, plot_save_folder=pfs[0], show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=data_full_night_100, norm_boundaries='on',vrange=1000)
 # #
 # datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pf2+r'\vrange1000', show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on',style = None,vrange=1000, from_order=True)
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data\clean',r'D:\Peter\Master Thesis\figures\TVS\eShel\cleanonly\reference_line',ll_TVS_eshel,show='off', save = 'on',sg='on',oneline='on')

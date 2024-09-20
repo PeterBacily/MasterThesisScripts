@@ -180,8 +180,8 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,save_folder=datafile_fold
 
 
 def run_cddo(snr):
-    datafolder = str(Data_folder)+r'\Demetra\spectra_with_orders\\'
-    savefolder = str(converted_Data_folder)+r'\demetra\with_orders\v_cor_3\\'
+    datafolder = str(Data_folder)+r'\Demetra\full_day_stacked\\'
+    savefolder = str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_2.txt'
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=True)
 run_cddo(snr=100)

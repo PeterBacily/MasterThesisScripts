@@ -184,9 +184,9 @@ def run_cddo(snr):
     savefolder = str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_2.txt'
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=True)
-run_cddo(snr=100)
-run_cddo(snr=None)
-run_cddo(snr=90)
+run_cddo(snr=110)
+# run_cddo(snr=None)
+# run_cddo(snr=90)
 def run_test_do():
     datafolder = str(Data_folder)+r'\Demetra\spectra_with_orders\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'

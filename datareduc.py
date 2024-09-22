@@ -622,7 +622,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         plt.close()
 
 
-def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None,style=None,from_order=True):
+def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None,style=None,from_order=True,es_top=0,es_bottom=0):
     k=0
     if datafilefolder == None:
         print('a')
@@ -663,7 +663,8 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         spec2 = lws[0][(vs[0]>-1000)& (vs[0]<1000)]
         mini = np.floor(20*np.amin(spec2))/20
         maxi = np.ceil(20*np.amax(spec2))/20
-        ax1.set_ylim([mini-0.05,maxi+0.05])
+        # extra_space=0.05
+        ax1.set_ylim([mini-es_bottom,maxi+es_top])
         # ax1.set_ylim([0.65,1.05])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])

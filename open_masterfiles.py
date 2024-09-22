@@ -54,7 +54,7 @@ def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercat
         # print b.line6562.ew
         datafiles.append(b)
         a.close()
-    sortednewlist = sorted(datafiles,key=lambda x: x.i)
+    sortednewlist = sorted(datafiles,key=lambda x: float(x.header['JD-MID']))
     return sortednewlist
 
 def apo_demetra(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\demetra\\',manual_filelist=None,sorted='off'):
@@ -78,7 +78,7 @@ def apo_demetra(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\tes
     else:
         return datafiles
 
-def apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\\',manual_filelist=None,sorted='off'):
+def apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\\',manual_filelist=None,sort_data_files='off'):
     if manual_filelist == None:
         fl = glob.glob(path+r'*.txt')
     else:
@@ -93,8 +93,9 @@ def apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_D
         # print b.line6562.ew
         datafiles.append(b)
         a.close()
-    if sorted == 'on':
-        sortednewlist = sorted(datafiles,key=lambda x: float(x.header['JD-MID']))
+    print(type(datafiles[0].header['JD-MID']))
+    if sort_data_files == 'on':
+        sortednewlist = sorted(datafiles,key=lambda x: x.header['JD-MID'])
         return sortednewlist
     else:
         return datafiles

@@ -104,13 +104,14 @@ df3 = str(converted_Data_folder)+r'\demetra\with_orders\v_cor_3\snr_100\\'
 df_lp = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
 df_test= str(converted_Data_folder)+r'\demetra\with_orders\test\snr_100\\'
 data_full_night_100= str(converted_Data_folder)+r'\demetra\with_orders\full_night\snr_90\\'
+data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
 
 pfs=[pf_dem_final_all,pf_dem_final_90,pf_dem_final_100]
 dfs=[df1,df2,df3]
 
 
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=df2,filefolder_merc=df_lp,show='on',save='off')
-datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pfs[0], show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=data_full_night_100, norm_boundaries='on',vrange=1000)
+# datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pfs[0], show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=data_full_night_100, norm_boundaries='on',vrange=1000)
 # #
 # datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pf2+r'\vrange1000', show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on',style = None,vrange=1000, from_order=True)
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data\clean',r'D:\Peter\Master Thesis\figures\TVS\eShel\cleanonly\reference_line',ll_TVS_eshel,show='off', save = 'on',sg='on',oneline='on')
@@ -134,3 +135,5 @@ datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pfs[0], show='on', save='o
 #             datafile_folder_demetra =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\snr_100\\',
 #             datafile_folder_mercator=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',
 #                     save=True, show=False)
+
+datareduc.create_JoO(data_full_night_all,obs='apo')

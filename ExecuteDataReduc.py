@@ -41,7 +41,7 @@ filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
 
 apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
              'line4861', 'line4921', 'line6678', 'line4471']
-apo_lines2 = ['line6678']
+apo_lines2 = ['line6562']
 apo_lines3 =[ 'line6562','line4861', 'line5411', 'line6678' ]
 # esb=0
 # est=-0.05

@@ -530,14 +530,14 @@ def plot_TVS_Lapalma(datafile_folder, plot_save_folder, linelist,show='off',save
         plt.close()
 
 
-def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='off', siglvlline=0.01,datafilefolder=None,datareductionprogram='Demetra',norm_boundaries='on'):
+def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg='on',oneline='off', siglvlline=0.01,datafilefolder=None,datareductionprogram='Demetra',norm_boundaries='on',vrange=None):
     # print datafile_folder
     if datareductionprogram == 'AudeLA':
-        k=1
+        k=0
         if datafilefolder==None:
             filelist = open_masterfiles.apo()
         else:
-            filelist = open_masterfiles.apo(path=datafilefolder)
+            filelist = open_masterfiles.apo(path=datafilefolder)[1:]
     elif datareductionprogram =='Demetra':
         k=0
         if datafilefolder == None:
@@ -549,6 +549,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
     vrad= -18.5
     # velo_shift = bccor+vrad
     velo_shift=0
+
     for line in linelist:
         lineinfo = getattr(filelist[0], line).lineinfo
         # print filelist
@@ -614,7 +615,10 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder,show='off',save='on',sg
         ax2.set_xlabel('V (km/s)')
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
-        ax2.set_xlim([normv_1-200,normv_4+200])
+        if vrange == None:
+            ax2.set_xlim([normv_1 - 200, normv_4 + 200])
+        else:
+            ax2.set_xlim([-vrange, vrange])
         if save =='on':
             plt.savefig(plot_save_folder + r'\\APO_'+datareductionprogram+'_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_TVS.pdf',format='pdf', dpi=1200)
         if show =='on':
@@ -1055,10 +1059,12 @@ def plot_quotient_eShel(datafile_folder, plot_save_folder, linelist,overplot = '
             plt.close()
 
 def create_JoO(filefolder,obs):
-    if obs =='apo':
+    if obs =='apo_demetra':
         files = open_masterfiles.apo_demetra_orders(path = filefolder,manual_filelist=None,sort_data_files='on')
     elif obs =='merc':
         files = open_masterfiles.mercator(path=filefolder, manual_filelist=None)
+    elif obs == 'apo_audela':
+        files =  open_masterfiles.apo(wantedmarks = None,path = filefolder,manual_filelist=None)
     print(r'\begin{tabular}{ l|| r| r| r| r|r|r|r|r|r|l }')
     print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ & Notes\\')
     print(r' APO & 2016 & $-$2457000 & (s)& & & (deg)& p = 6.83 d& (km/s) & (km/s) &          \\')

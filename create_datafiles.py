@@ -63,13 +63,14 @@ datafile_folder_apo = str(converted_Data_folder)+r'\apo\\'
 datafile_folder_demetra = str(converted_Data_folder)+r'\demetra\\'
 datafile_folder_demetra_test= str(converted_Data_folder)+r'\test\demetra\\'
 test_datafile_folder = str(converted_Data_folder)+r'\test\\'
+datafile_folder_audela_all = str(converted_Data_folder)+r'\AudeLA\all\\'
 
 fl_demetra_all = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Zet_Ori_Response\final_spectra\*.fit')
 fl_demetra_good = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Zet_Ori_Response\final_spectra\good\*.fit')
 
 fl_demetra_all_alt = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\final_spectra\*.fit')
 fl_demetra_good_alt = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\final_spectra\good\*.fit')
-
+fl_apo_audela_all = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\eShelData\data\AlleSpectra\*.fit')
 
 
 
@@ -90,6 +91,16 @@ def create_datafiles_demetra(filelist=fl_eshel_demetra,savefolder=datafile_folde
     i=0
     for file in filelist:
         a = Datafile_apo_demetra(file,ll_file=linelist_file_path)
+        dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
+        savename = savefolder+a.observatory+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(a, workfileresource)
+        workfileresource.close()
+        i+=1
+def create_datafiles_audela(filelist=fl_apo_audela_all,savefolder=datafile_folder_audela_all,linelist_file_path=None,vshift=True):
+    i=0
+    for file in filelist:
+        a = Datafile_apo(file,ll_file=linelist_file_path,velo_shift=vshift)
         dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
         savename = savefolder+a.observatory+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
         workfileresource = open(savename, 'wb')
@@ -184,7 +195,7 @@ def run_cddo(snr):
     savefolder = str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_2.txt'
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=True)
-run_cddo(snr=110)
+# run_cddo(snr=110)
 # run_cddo(snr=None)
 # run_cddo(snr=90)
 def run_test_do():
@@ -206,7 +217,12 @@ def run_cdm():
     linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
     create_datafiles_lapalma(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
 # run_cdm()
-
+print(fl_apo_audela_all[7:10])
+def run_cda():
+    linelist = str(converted_Data_folder) + r'\linelists\linelist_apo_v_cor_2.txt'
+    create_datafiles_audela(filelist=fl_apo_audela_all, savefolder=datafile_folder_audela_all,
+                                linelist_file_path=linelist, vshift=True)
+run_cda()
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
 # testfile_apo = fl_clean[12]
 # a = Datafile_class.Datafile_apo(testfile_apo)

@@ -42,7 +42,7 @@ filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
 apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
              'line4861', 'line4921', 'line6678', 'line4471']
 apo_lines2 = ['line6562']
-apo_lines3 =[ 'line6562','line4861', 'line5411', 'line6678' ]
+apo_lines3 =[ 'line5875','line6562','line4861',  'line6678' ]
 # esb=0
 # est=-0.05
 # # shw,sv = 'on', 'off'
@@ -120,17 +120,17 @@ data_full_night_100= str(converted_Data_folder)+r'\demetra\with_orders\full_nigh
 # dfs=[df1,df2,df3]
 dfs_full_night = [data_full_night_110,data_full_night_100]
 pfs_full_night = [pf_full_night_110,pf_full_night_100]
-
+audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=df2,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):
-datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pf_full_night_all, show='off', save='on', sg='off', oneline='on', siglvlline=0.01,datafilefolder=data_full_night_all, norm_boundaries='on',vrange=1000)
+# datareduc.plot_TVS_orders(apo_lines3, plot_save_folder=pf_full_night_all, show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=data_full_night_all, norm_boundaries='on',vrange=1000,from_order=False)
 
 # datareduc.plot_TVS_orders(apo_lines, plot_save_folder=pf2+r'\vrange1000', show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=df2, norm_boundaries='on',style = None,vrange=1000, from_order=True)
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data\clean',r'D:\Peter\Master Thesis\figures\TVS\eShel\cleanonly\reference_line',ll_TVS_eshel,show='off', save = 'on',sg='on',oneline='on')
 # datareduc.plot_TVS_Lapalma_masterfile(apo_lines2,plot_save_folder=pf_lp_final,datafilefolder=df_lp,show='off', save='on', sg='off', oneline='on', siglvlline=0.01, norm_boundaries='on',style = None,vrange=1000)
 
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr',ll_TVS_eshel,show='off', save = 'on')
-#
+datareduc.plot_TVS_eShel_masterfile(linelist=apo_lines3, plot_save_folder=pf1,show='on',save='off',sg='off',oneline='off', siglvlline=0.01,datafilefolder=audela_folder,datareductionprogram='AudeLA',norm_boundaries='on',vrange=1000)
 #
 # Quotient eShel
 # datareduc.plot_quotient_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\test',[ll_TVS_eshel[1]],overplot='off',show='off',save='on',sg = 'off',oneline = 'on')

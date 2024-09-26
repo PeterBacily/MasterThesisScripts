@@ -36,7 +36,10 @@ def apo(wantedmarks = [0,3],path = r'D:\peter\Master_Thesis\Datareduction\Conver
         # print b.line6562.ew
         datafiles.append(b)
         a.close()
-    newlist = [x for x in datafiles if x.mark in wantedmarks]
+    if wantedmarks is None:
+        newlist=datafiles
+    else:
+        newlist = [x for x in datafiles if x.mark in wantedmarks]
     sortednewlist = sorted(newlist,key=lambda x: x.i)
     return sortednewlist
 def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',manual_filelist=None):

@@ -130,7 +130,7 @@ audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all
 # datareduc.plot_TVS_Lapalma_masterfile(apo_lines2,plot_save_folder=pf_lp_final,datafilefolder=df_lp,show='off', save='on', sg='off', oneline='on', siglvlline=0.01, norm_boundaries='on',style = None,vrange=1000)
 
 # datareduc.plot_TVS_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\TVS\eShel\every_good_snr',ll_TVS_eshel,show='off', save = 'on')
-datareduc.plot_TVS_eShel_masterfile(linelist=apo_lines3, plot_save_folder=pf1,show='on',save='off',sg='off',oneline='off', siglvlline=0.01,datafilefolder=audela_folder,datareductionprogram='AudeLA',norm_boundaries='on',vrange=1000)
+# datareduc.plot_TVS_eShel_masterfile(linelist=apo_lines3, plot_save_folder=pf1,show='on',save='off',sg='off',oneline='off', siglvlline=0.01,datafilefolder=audela_folder,datareductionprogram='AudeLA',norm_boundaries='on',vrange=1000)
 #
 # Quotient eShel
 # datareduc.plot_quotient_eShel('D:\Peter\Master Thesis\Data\eShelData\data',r'D:\Peter\Master Thesis\figures\test',[ll_TVS_eshel[1]],overplot='off',show='off',save='on',sg = 'off',oneline = 'on')
@@ -148,4 +148,4 @@ datareduc.plot_TVS_eShel_masterfile(linelist=apo_lines3, plot_save_folder=pf1,sh
 #             datafile_folder_mercator=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',
 #                     save=True, show=False)
 
-# datareduc.create_JoO(data_full_night_all,obs='apo')
+datareduc.create_JoO(df_lp,obs='merc')

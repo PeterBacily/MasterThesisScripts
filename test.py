@@ -22,19 +22,50 @@ Path_check.dir_check(folder_of_this_file)
 
 [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
 data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
+data_merc = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
+data_audela = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
+filelist_merc=open_masterfiles.mercator(data_merc)
+filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
+filelist_audela = open_masterfiles.apo(data_audela)
+for file in filelist_merc:
+    print(file.header['CDELT1'])
+    nf_ha = file.line6562.normalizationflux
+    snr_ha = 1 / np.std(nf_ha)
+    print(snr_ha)
+print('------')
+for file in filelist_apo:
+    print('cd',file.header['CDELT1'])
+    nf_ha = file.line6562.normalizationflux
+    snr_ha = 1 / np.std(nf_ha)
+    print(snr_ha)
+print('-----')
+for file in filelist_audela:
+    # print(file.header['CDELT1'])
+    nf_ha = file.line6562.normalizationflux
+    snr_ha = 1 / np.std(nf_ha)
+    print(snr_ha)
+
+file_apo=filelist_audela[7]
+file_merc=filelist_merc[6]
+wl_apo,flux_apo = file_apo.wl_original,file_apo.flux_original
+wl_merc,flux_merc = file_merc.wl_original,file_merc.flux_original
+plt.plot(wl_apo,flux_apo)
+# plt.plot(wl_merc,flux_merc)
+plt.show()
+plt.close()
 # file = r"D:\peter\Master_Thesis\Datareduction\Data\LaPalmaData\zet Ori2220151012.fits"
 # data = pf.open(file)
-apo_file=open_masterfiles.apo_demetra_orders(data_full_night_all)[5]
+# apo_file=open_masterfiles.apo_demetra_orders(data_full_night_all)[5]
 # apo_lines = ['line6562_order']
-linedata = getattr(apo_file, 'line6562_order')
-flux = linedata.flux
-wave = linedata.wl
-[a,b,c,d]=linedata.normalization_boundaries_wl
-normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
-normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
-print(normflux)
-nf= linedata.normalizationflux
-print(1/np.std(nf))
+# linedata = getattr(apo_file, 'line6562_order')
+# flux = linedata.flux
+# wave = linedata.wl
+# [a,b,c,d]=linedata.normalization_boundaries_wl
+# normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
+# normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
+# print(normflux)
+# nf= linedata.normalizationflux
+# print(1/np.std(nf))
 
 # hd = apo_files.header
 # date = apo_files.header['JD-MID']

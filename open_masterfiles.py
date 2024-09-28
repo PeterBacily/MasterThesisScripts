@@ -19,7 +19,7 @@ from Datafile_class import *
 sys.modules['Line'] = Line
 sys.modules['Datafile_mercator'] = Datafile_mercator
 sys.modules['Datafile_apo'] = Datafile_apo
-def apo(wantedmarks = [0,3],path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\apo\test\\',manual_filelist=None):
+def apo(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\apo\test\\', wantedmarks = None,manual_filelist=None):
     if manual_filelist == None:
         fl = glob.glob(path+r'*.txt')
     else:
@@ -57,7 +57,7 @@ def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercat
         # print b.line6562.ew
         datafiles.append(b)
         a.close()
-    sortednewlist = sorted(datafiles,key=lambda x: float(x.header['JD-MID']))
+    sortednewlist = sorted(datafiles,key=lambda x: float(x.header['BJD']))
     return sortednewlist
 
 def apo_demetra(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\demetra\\',manual_filelist=None,sorted='off'):

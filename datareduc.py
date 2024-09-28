@@ -1058,13 +1058,27 @@ def plot_quotient_eShel(datafile_folder, plot_save_folder, linelist,overplot = '
                 plt.show()
             plt.close()
 
-def create_JoO(filefolder,obs):
-    if obs =='apo_demetra':
-        files = open_masterfiles.apo_demetra_orders(path = filefolder,manual_filelist=None,sort_data_files='on')
-    elif obs =='merc':
-        files = open_masterfiles.mercator(path=filefolder, manual_filelist=None)
-    elif obs == 'apo_audela':
-        files =  open_masterfiles.apo(wantedmarks = None,path = filefolder,manual_filelist=None)
+def create_JoO_apo_demetra(filefolder,obs):
+    files = open_masterfiles.apo_demetra_orders(path = filefolder,manual_filelist=None,sort_data_files='on')
+    print(r'\begin{tabular}{ l|| r| r| r| r|r|r|r|r|r|l }')
+    print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ & Notes\\')
+    print(r' APO & 2016 & $-$2457000 & (s)& & & (deg)& p = 6.83 d& (km/s) & (km/s) &          \\')
+    print(r'\hline')
+    # files.sort(key=lambda x: x.i)
+    for file in files:
+        if file.mark == 0:
+            note = ''
+        else:
+            note = str(file.mark)
+        nf_ha=file.line6562_original.normalizationflux
+        snr_ha = np.avg(nf_ha)/np.std(nf_ha)
+        print(obs, file.i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
+            file.exptime), '&', "{:.0f}".format(snr_ha), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
+            file.alt), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
+            file.baricentric_correction), '&', "{:.0f}".format(file.velshift), '&', note, r'\\')
+
+def create_JoO_apo_audela(filefolder):
+    files =  open_masterfiles.apo(wantedmarks = None,path = filefolder,manual_filelist=None)
     print(r'\begin{tabular}{ l|| r| r| r| r|r|r|r|r|r|l }')
     print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ & Notes\\')
     print(r' APO & 2016 & $-$2457000 & (s)& & & (deg)& p = 6.83 d& (km/s) & (km/s) &          \\')
@@ -1080,3 +1094,22 @@ def create_JoO(filefolder,obs):
             file.alt), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
             file.baricentric_correction), '&', "{:.0f}".format(file.velshift), '&', note, r'\\')
 
+
+def create_JoO_mercator(filefolder):
+    files =  open_masterfiles.apo(wantedmarks = None,path = filefolder,manual_filelist=None)
+    print(r'\begin{tabular}{ l|| r| r| r| r|r|r|r|r|r|l }')
+    print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ & Notes\\')
+    print(r' APO & 2016 & $-$2457000 & (s)& & & (deg)& p = 6.83 d& (km/s) & (km/s) &          \\')
+    print(r'\hline')
+    # files.sort(key=lambda x: x.i)
+    for file in files:
+        if file.mark == 0:
+            note = ''
+        else:
+            note = str(file.mark)
+        print(obs, file.i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
+            file.exptime), '&', "{:.0f}".format(file.snr), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
+            file.alt), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
+            file.baricentric_correction), '&', "{:.0f}".format(file.velshift), '&', note, r'\\')
+def see_snr_merc(filefolder):
+    files = open_masterfiles.apo(wantedmarks=None, path=filefolder, manual_filelist=None)

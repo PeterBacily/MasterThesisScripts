@@ -43,8 +43,6 @@ def line_data(line,wl,flux,observatory,snr,bccor,vrad):
     else:
         raise Exception('observatory needs to be APO or MERC or APO_DEMETRA')
     center_wl = int(line[k])
-    print(line[k+1],line[k+2],line[k+3],line[k+4])
-    print(line[k+1]-20,line[k+4]+20)
     lw, lf, nf, _,_ = airmass.normalize(wl,flux,line[k+1],line[k+2],line[k+3],line[k+4],line[k+1]-20,line[k+4]+20)
     v, vsini = airmass.wl_to_velocity(lw, line[k])
     normalization_wl= [line[k+1],line[k+2],line[k+3],line[k+4]]

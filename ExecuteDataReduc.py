@@ -115,6 +115,7 @@ df_test= str(converted_Data_folder)+r'\demetra\with_orders\test\snr_100\\'
 data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
 data_full_night_110= str(converted_Data_folder)+r'\demetra\with_orders\full_night\snr_110\\'
 data_full_night_100= str(converted_Data_folder)+r'\demetra\with_orders\full_night\snr_100\\'
+data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
 
 # pfs=[pf_dem_final_all,pf_dem_final_90,pf_dem_final_100]
 # dfs=[df1,df2,df3]
@@ -148,4 +149,4 @@ audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all
 #             datafile_folder_mercator=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',
 #                     save=True, show=False)
 
-datareduc.create_JoO(df_lp,obs='merc')
+datareduc.create_JoO_apo_demetra(data_individual)

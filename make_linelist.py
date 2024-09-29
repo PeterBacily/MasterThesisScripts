@@ -100,7 +100,7 @@ linelist_merc_vshift_revised = [['Ha', 6562.819, 6549.7, 6550.7, 6577.0, 6578.0,
 ['O_III', 5592.37, 5587.5, 5588.5, 5596.7, 5597.7, 'O III 5592'],
 ['C_IV', 5801.33, 5792.9, 5793.9, 5816.2, 5817.2, 'C IV 5801']]
 
-linelist_apo_vshift_revised = [['Ha', 6562.819, 6549.7, 6550.7, 6577.0, 6578.0, r'H$\alpha$ 6563'],
+linelist_apo_vshift_revised = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'H$\alpha$ 6563'],
 ['Hb', 4861.333, 4847.3, 4848.3, 4876.3, 4877.3, r'H$\beta$ 4861'],
 ['He_I', 4713.1457, 4707.6, 4708.6, 4717.3, 4718.3, 'He I 4713'],
 ['He_I', 5875.621, 5866.3, 5867.3, 5883.5, 5884.5, 'He I 5875'],
@@ -116,7 +116,7 @@ linelist_apo_vshift_revised = [['Ha', 6562.819, 6549.7, 6550.7, 6577.0, 6578.0, 
 # usefile=datafiles[0]
 # wl_factor=usefile.wl_offset_factor
 
-test_file_name = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_2.txt'
+test_file_name = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_3.txt'
 # iter = [2,3,4,5]
 # for line in linelist_apo_new:
 # 	for i in iter:

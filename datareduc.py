@@ -1058,24 +1058,26 @@ def plot_quotient_eShel(datafile_folder, plot_save_folder, linelist,overplot = '
                 plt.show()
             plt.close()
 
-def create_JoO_apo_demetra(filefolder,obs):
+def create_JoO_apo_demetra(filefolder):
     files = open_masterfiles.apo_demetra_orders(path = filefolder,manual_filelist=None,sort_data_files='on')
     print(r'\begin{tabular}{ l|| r| r| r| r|r|r|r|r|r|l }')
     print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ & Notes\\')
     print(r' APO & 2016 & $-$2457000 & (s)& & & (deg)& p = 6.83 d& (km/s) & (km/s) &          \\')
     print(r'\hline')
     # files.sort(key=lambda x: x.i)
+    i=1
     for file in files:
         if file.mark == 0:
             note = ''
         else:
             note = str(file.mark)
-        nf_ha=file.line6562_original.normalizationflux
-        snr_ha = np.avg(nf_ha)/np.std(nf_ha)
-        print(obs, file.i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
+        nf_ha=file.line6562.normalizationflux
+        snr_ha = 1/np.std(nf_ha)
+        print('APO ', i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
             file.exptime), '&', "{:.0f}".format(snr_ha), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
             file.alt), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
             file.baricentric_correction), '&', "{:.0f}".format(file.velshift), '&', note, r'\\')
+        i+=1
 
 def create_JoO_apo_audela(filefolder):
     files =  open_masterfiles.apo(wantedmarks = None,path = filefolder,manual_filelist=None)

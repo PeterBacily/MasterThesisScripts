@@ -1071,8 +1071,22 @@ def create_JoO_apo_demetra(filefolder):
             note = ''
         else:
             note = str(file.mark)
-        nf_ha=file.line6562.normalizationflux
-        snr_ha = 1/np.std(nf_ha)
+        # nf_ha=file.line6562.normalizationflux
+        # snr_ha = 1/np.std(nf_ha)
+        a,b,c,d = 6549, 6550.7, 6576.0, 6578.0
+        wave=file.wl_original
+        flux = file.flux_original
+        normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
+        normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
+        # fit line trough slice
+        # print('ss', startwl, endwl)
+        slope, height = np.polyfit(normwave, normflux, 1)
+        # print 'slope and height are', slope, height
+        fit = np.poly1d([slope, height])
+        nnf = []
+        for k, nwl in enumerate(normwave):
+            nnf.append(normflux[k] / fit(nwl))
+        snr_ha = 1/np.std(nnf)
         print('APO ', i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
             file.exptime), '&', "{:.0f}".format(snr_ha), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
             file.alt), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
@@ -1098,20 +1112,33 @@ def create_JoO_apo_audela(filefolder):
 
 
 def create_JoO_mercator(filefolder):
-    files =  open_masterfiles.apo(wantedmarks = None,path = filefolder,manual_filelist=None)
-    print(r'\begin{tabular}{ l|| r| r| r| r|r|r|r|r|r|l }')
+    files =  open_masterfiles.mercator(path = filefolder,manual_filelist=None)
+    print(r'\begin{tabular}{ l|| c| c| c| c|c|c|c|c|c|c }')
     print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ & Notes\\')
     print(r' APO & 2016 & $-$2457000 & (s)& & & (deg)& p = 6.83 d& (km/s) & (km/s) &          \\')
     print(r'\hline')
     # files.sort(key=lambda x: x.i)
+    i = 1
+    note=''
     for file in files:
-        if file.mark == 0:
-            note = ''
-        else:
-            note = str(file.mark)
-        print(obs, file.i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
-            file.exptime), '&', "{:.0f}".format(file.snr), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
-            file.alt), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
+        a, b, c, d = 6549.7, 6550.7, 6577.0, 6578.0
+        wave = file.wl_original
+        flux = file.flux_original
+        normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
+        normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
+        # fit line trough slice
+        # print('ss', startwl, endwl)
+        slope, height = np.polyfit(normwave, normflux, 1)
+        # print 'slope and height are', slope, height
+        fit = np.poly1d([slope, height])
+        nnf = []
+        for k, nwl in enumerate(normwave):
+            nnf.append(normflux[k] / fit(nwl))
+        snr_ha = 1 / np.std(nnf)
+        print('MERC', file.i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
+            file.exptime), '&', "{:.0f}".format(snr_ha), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
+            file.altitude), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
             file.baricentric_correction), '&', "{:.0f}".format(file.velshift), '&', note, r'\\')
+        i+=1
 def see_snr_merc(filefolder):
     files = open_masterfiles.apo(wantedmarks=None, path=filefolder, manual_filelist=None)

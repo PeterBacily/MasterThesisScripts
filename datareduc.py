@@ -1060,7 +1060,7 @@ def plot_quotient_eShel(datafile_folder, plot_save_folder, linelist,overplot = '
 
 def create_JoO_apo_demetra(filefolder):
     files = open_masterfiles.apo_demetra_orders(path = filefolder,manual_filelist=None,sort_data_files='on')
-    print(r'\begin{tabular}{ l|| r| r| r| r|r|r|r|r|r|l }')
+    print(r'\begin{tabular}{ l|| c| c| c| c|c|c|c|c|c|c }')
     print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ & Notes\\')
     print(r' APO & 2016 & $-$2457000 & (s)& & & (deg)& p = 6.83 d& (km/s) & (km/s) &          \\')
     print(r'\hline')

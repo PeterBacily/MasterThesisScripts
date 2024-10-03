@@ -1058,11 +1058,12 @@ def plot_quotient_eShel(datafile_folder, plot_save_folder, linelist,overplot = '
                 plt.show()
             plt.close()
 
-def create_JoO_apo_demetra(filefolder):
+def create_JoO_apo_demetra(filefolder,stacked=True):
     files = open_masterfiles.apo_demetra_orders(path = filefolder,manual_filelist=None,sort_data_files='on')
-    print(r'\begin{tabular}{ l|| c| c| c| c|c|c|c|c|c|c }')
-    print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ & Notes\\')
-    print(r' APO & 2016 & $-$2457000 & (s)& & & (deg)& p = 6.83 d& (km/s) & (km/s) &          \\')
+    print(r'\begin{table*}')
+    print(r'\begin{tabular}{ l|| c| c| c| c|c|c|c|c|c|c|c|c }')
+    print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & SNR rate& efficiency&Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ &notes\\')
+    print(r'APO & 2016 & $-$2457000 & (s)&H$\alpha$ & SNR 60s$^{-1}$& SNR$^{2}$ 60s$^{-1}$& &(deg)& (6.83 d)& km\,s$^{-1}$) & km\,s$^{-1}$)) &\\')
     print(r'\hline')
     # files.sort(key=lambda x: x.i)
     i=1
@@ -1074,8 +1075,8 @@ def create_JoO_apo_demetra(filefolder):
         # nf_ha=file.line6562.normalizationflux
         # snr_ha = 1/np.std(nf_ha)
         a,b,c,d = 6549, 6550.7, 6576.0, 6578.0
-        wave=file.wl_original
-        flux = file.flux_original
+        wave = file.wl_rebin
+        flux = file.flux_rebin
         normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
         normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
         # fit line trough slice
@@ -1086,12 +1087,20 @@ def create_JoO_apo_demetra(filefolder):
         nnf = []
         for k, nwl in enumerate(normwave):
             nnf.append(normflux[k] / fit(nwl))
-        snr_ha = 1/np.std(nnf)
-        print('APO ', i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
-            file.exptime), '&', "{:.0f}".format(snr_ha), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
+        snr_ha = 1 / np.std(nnf)
+        snr_per_60 = snr_ha*60/file.exptime
+        count_per_60 = (snr_ha**2)*60/file.exptime
+        if stacked is True:
+            obs_prefix='A'
+        elif stacked is False:
+            obs_prefix='APO'
+        print(obs_prefix,i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
+            file.exptime), '&', "{:.0f}".format(snr_ha), '&',"{:.0f}".format(snr_per_60), '&',"{:.0f}".format(count_per_60), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
             file.alt), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
             file.baricentric_correction), '&', "{:.0f}".format(file.velshift), '&', note, r'\\')
         i+=1
+    print(r'\end{tabular}')
+    print(r'\end{table*}')
 
 def create_JoO_apo_audela(filefolder):
     files =  open_masterfiles.apo(wantedmarks = None,path = filefolder,manual_filelist=None)

@@ -122,7 +122,7 @@ data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\
 dfs_full_night = [data_full_night_110,data_full_night_100]
 pfs_full_night = [pf_full_night_110,pf_full_night_100]
 audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
-datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
+# datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):
 # datareduc.plot_TVS_orders(apo_lines3, plot_save_folder=pf_full_night_all, show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=data_full_night_all, norm_boundaries='on',vrange=1000,from_order=False)
 

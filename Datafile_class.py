@@ -384,6 +384,7 @@ class Datafile_apo_demetra_with_orders:
             normalization_wl = [line[self.k + 1], line[self.k + 2], line[self.k + 3], line[self.k + 4]]
             if line_order.wl_start<normalization_wl[0] and line_order.wl_end>normalization_wl[-1]:
                 linedata_order,lk = line_data(line,line_order.wl_original,line_order.flux_original,self.observatory,self.snr, 0,0)
+                linedata_order,lk =
                 setattr(self,linekey+'_order',linedata_order)
             else:
                 print('line out of order bounds, no order line was made for',line[0],self.filename)

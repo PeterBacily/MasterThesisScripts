@@ -27,63 +27,69 @@ data_audela = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\
 filelist_merc=open_masterfiles.mercator(data_merc)
 filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
 filelist_audela = open_masterfiles.apo(data_audela)
-for file in filelist_merc:
-    print(file.header['CDELT1'])
-    nf_ha = file.line6562.normalizationflux
-    snr_ha = 1 / np.std(nf_ha)
-    print(snr_ha)
-print('------')
+# for file in filelist_merc:
+#     print(file.header['CDELT1'])
+#     nf_ha = file.line6562.normalizationflux
+#     snr_ha = 1 / np.std(nf_ha)
+#     print(snr_ha)
+# print('------')
 for file in filelist_apo:
-    print('cd',file.header['CDELT1'])
-    nf_ha = file.line6562.normalizationflux
-    snr_ha = 1 / np.std(nf_ha)
-    print(snr_ha)
-print('-----')
-for file in filelist_audela:
-    # print(file.header['CDELT1'])
-    nf_ha = file.line6562.normalizationflux
-    snr_ha = 1 / np.std(nf_ha)
-    print(snr_ha)
-
-file_apo=filelist_audela[7]
-file_merc=filelist_merc[6]
-wl_apo,flux_apo = file_apo.wl_original,file_apo.flux_original
-[a,b,c,d]=file_apo.line6562.normalization_boundaries_wl
-normwave_apo = np.hstack((wl_apo[(wl_apo > a) & (wl_apo < b)], wl_apo[(wl_apo > c) & (wl_apo < d)]))
-normflux_apo = np.hstack((flux_apo[(wl_apo > a) & (wl_apo < b)], flux_apo[(wl_apo > c) & (wl_apo < d)]))
-flux_left = flux_apo[(wl_apo > a) & (wl_apo < b)]
-flux_right =  flux_apo[(wl_apo > c) & (wl_apo < d)]
-n_fl = flux_left/np.average(flux_left)
-n_fr = flux_right/np.average(flux_right)
-normflux_apo_2  = np.hstack((n_fl,n_fr))
-snr2 = 1/np.std(normflux_apo_2)
-slope,height = np.polyfit(normwave_apo,normflux_apo,1)
-
-    # print 'slope and height are', slope, height
-fit = np.poly1d([slope,height])
-print(np.poly1d(fit))
-
-
-nnf=[]
-for k, nwl in enumerate(normwave_apo):
-    nnf.append(normflux_apo[k] / fit(nwl))
-# plt.plot(normflux_apo)
-# plt.plot(nnf)
+    wlarr= file.line6562_order.wl
+    wldist = []
+    for i in range (len(wlarr)-5):
+        wld = wlarr[i+1]-wlarr[i]
+        wldist.append(wld)
+    print(wldist)
+    # print('cd',file.header['CDELT1'])
+    # nf_ha = file.line6562.normalizationflux
+    # snr_ha = 1 / np.std(nf_ha)
+    # print(snr_ha)
+# print('-----')
+# for file in filelist_audela:
+#     # print(file.header['CDELT1'])
+#     nf_ha = file.line6562.normalizationflux
+#     snr_ha = 1 / np.std(nf_ha)
+#     print(snr_ha)
+#
+# file_apo=filelist_audela[7]
+# file_merc=filelist_merc[6]
+# wl_apo,flux_apo = file_apo.wl_original,file_apo.flux_original
+# [a,b,c,d]=file_apo.line6562.normalization_boundaries_wl
+# normwave_apo = np.hstack((wl_apo[(wl_apo > a) & (wl_apo < b)], wl_apo[(wl_apo > c) & (wl_apo < d)]))
+# normflux_apo = np.hstack((flux_apo[(wl_apo > a) & (wl_apo < b)], flux_apo[(wl_apo > c) & (wl_apo < d)]))
+# flux_left = flux_apo[(wl_apo > a) & (wl_apo < b)]
+# flux_right =  flux_apo[(wl_apo > c) & (wl_apo < d)]
+# n_fl = flux_left/np.average(flux_left)
+# n_fr = flux_right/np.average(flux_right)
+# normflux_apo_2  = np.hstack((n_fl,n_fr))
+# snr2 = 1/np.std(normflux_apo_2)
+# slope,height = np.polyfit(normwave_apo,normflux_apo,1)
+#
+#     # print 'slope and height are', slope, height
+# fit = np.poly1d([slope,height])
+# print(np.poly1d(fit))
+#
+#
+# nnf=[]
+# for k, nwl in enumerate(normwave_apo):
+#     nnf.append(normflux_apo[k] / fit(nwl))
+# # plt.plot(normflux_apo)
+# # plt.plot(nnf)
+# # plt.show()
+# # plt.close()
+# print(nnf)
+# print(np.std(nnf))
+# snr = 1/np.std(nnf)
+# print('snr=',snr)
+# print('snr2=',snr2)
+# print(a,b,c,d)
+# # print(normwave_apo,normflux_apo)
+# # wl_merc,flux_merc = file_merc.wl_original,file_merc.flux_original
+# plt.plot(wl_apo,flux_apo)
+#
+# # plt.plot(wl_merc,flux_merc)
 # plt.show()
 # plt.close()
-print(nnf)
-print(np.std(nnf))
-snr = 1/np.std(nnf)
-print('snr=',snr)
-print('snr2=',snr2)
-print(a,b,c,d)
-# print(normwave_apo,normflux_apo)
-# wl_merc,flux_merc = file_merc.wl_original,file_merc.flux_original
-plt.plot(wl_apo,flux_apo)
-
-# plt.plot(wl_merc,flux_merc)
-plt.show()
-plt.close()
 # file = r"D:\peter\Master_Thesis\Datareduction\Data\LaPalmaData\zet Ori2220151012.fits"
 # data = pf.open(file)
 # apo_file=open_masterfiles.apo_demetra_orders(data_full_night_all)[5]

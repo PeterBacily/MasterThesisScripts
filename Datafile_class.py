@@ -107,6 +107,7 @@ class single_order:
             vdif=(self.wl_original[20]/self.wl_original_no_v_cor[20]-1)*299792.458
             # print(self.v_shift,vdif)
             self.flux_original = a[0].data
+            self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original,step=0.1)
             self.wl_start = self.wl_original[0]
             self.wl_end = self.wl_original[-1]
             self.wl_avg = np.average([self.wl_start, self.wl_end])

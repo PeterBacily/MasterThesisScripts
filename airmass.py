@@ -301,12 +301,16 @@ def rebin(wlarray, fluxarray):
     xs = np.arange(wlarray[0], wlarray[-1], 0.05)
     return xs, spl(xs)
 
-def rebin2(wlarray, fluxarray):
+def rebin2(wlarray, fluxarray,step=None):
     # print wlarray[0],wlarray[-1]
     # spl = interpolate.InterpolatedUnivariateSpline(wlarray, fluxarray)
     # xs = np.arange(pars[0], pars[1], pars[2])
+    if step==None:
+        dx = 0.05
+    else:
+        dx=step
     wlarray2,fluxarray2 = remove_nan(wlarray,fluxarray)
-    xs = np.arange(wlarray2[0], wlarray2[-1], 0.05)
+    xs = np.arange(wlarray2[0], wlarray2[-1], dx)
     ys = rebin_spec(wlarray2,fluxarray2,xs)
     return xs,ys
 

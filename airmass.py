@@ -210,7 +210,10 @@ def extractdata(j,file,return_header = 'off'):
         return wl2, data
     pf.close(file)
 
-
+def grab_norm_area(wave,flux,a,b,c,d ):
+    normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
+    normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
+    return normwave,normflux
 
 def AIC_rel_likelihood(AIC_1, AIC_2):
     if AIC_1 < AIC_2:

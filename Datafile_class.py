@@ -21,6 +21,8 @@ class Line:
         self.lineinfo = li
         self.normalization_boundaries_wl=norm_boundaries[0]
         self.normalization_boundaries_v = norm_boundaries[1]
+        self.normwave_original =norm_boundaries[2]
+        self.normflux_original = norm_boundaries[3]
         self.wl = wave
         self.v = velo
         self.v_cor = np.array(velo)+(barcor+vrad)
@@ -47,7 +49,8 @@ def line_data(line,wl,flux,observatory,snr,bccor,vrad):
     v, vsini = airmass.wl_to_velocity(lw, line[k])
     normalization_wl= [line[k+1],line[k+2],line[k+3],line[k+4]]
     normalization_v = airmass.wl_to_velocity(normalization_wl, line[k])
-    return Line(line,line[k],lw,lf,v,nf,vsini,snr, barcor,vrad,[normalization_wl,normalization_v]),'line'+str(center_wl)
+    normwave_original,normflux_original = airmass.grab_norm_area(wl,flux,line[k+1],line[k+2],line[k+3],line[k+4])
+    return Line(line,line[k],lw,lf,v,nf,vsini,snr, barcor,vrad,[normalization_wl,normalization_v,normwave_original,normflux_original]),'line'+str(center_wl)
 
 def linecenters(linelist,observatory):
     lcs = []
@@ -159,14 +162,17 @@ class Datafile_mercator:
         self.wl_original = np.exp(np.arange(naxis1) * cdelt1 + crval1 - v_rad / 299792.458)
         self.flux_original = data[0].data
         self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original)
+        self.wl_rebin2, self.flux_rebin2 = airmass.rebin2(self.wl_original, self.flux_original,step=0.1)
         self.available_lines = []
         self.snr_original =airmass.snr(self.wl_original,self.flux_original)
         self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
         for line in self.linelist:
             linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr,0,0)
             linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,0,0)
+            linedata_rebin, lk = line_data(line, self.wl_rebin2, self.flux_rebin2, self.observatory, self.snr_original, 0, 0)
             setattr(self,linekey , linedata)
             setattr(self,linekey+'_original',linedata_original)
+            setattr(self, linekey + '_rebin', linedata_rebin)
             self.available_lines.append(linekey)
         data.close()
 
@@ -384,8 +390,9 @@ class Datafile_apo_demetra_with_orders:
             normalization_wl = [line[self.k + 1], line[self.k + 2], line[self.k + 3], line[self.k + 4]]
             if line_order.wl_start<normalization_wl[0] and line_order.wl_end>normalization_wl[-1]:
                 linedata_order,lk = line_data(line,line_order.wl_original,line_order.flux_original,self.observatory,self.snr, 0,0)
-                linedata_order,lk =
+                linedata_order_rebin,lk = line_data(line,line_order.wl_rebin,line_order.flux_rebin,self.observatory,self.snr, 0,0)
                 setattr(self,linekey+'_order',linedata_order)
+                setattr(self, linekey + '_order_rebin', linedata_order_rebin)
             else:
                 print('line out of order bounds, no order line was made for',line[0],self.filename)
             setattr(self,linekey , linedata)

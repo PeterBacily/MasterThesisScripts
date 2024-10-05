@@ -27,19 +27,37 @@ data_audela = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\
 filelist_merc=open_masterfiles.mercator(data_merc)
 filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
 filelist_audela = open_masterfiles.apo(data_audela)
+data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
 # for file in filelist_merc:
 #     print(file.header['CDELT1'])
 #     nf_ha = file.line6562.normalizationflux
 #     snr_ha = 1 / np.std(nf_ha)
 #     print(snr_ha)
 # print('------')
-for file in filelist_apo:
-    wlarr= file.line6562_order.wl
-    wldist = []
-    for i in range (len(wlarr)-5):
-        wld = wlarr[i+1]-wlarr[i]
-        wldist.append(wld)
-    print(wldist)
+# for file in filelist_apo:
+#     wlarr= file.line6562_order.wl
+#     wldist = []
+#     for i in range (len(wlarr)-5):
+#         wld = wlarr[i+1]-wlarr[i]
+#         wldist.append(wld)
+#     print(wldist)
+data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
+data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
+
+i=0
+orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
+print(orderfile_comp)
+for file in orderfile_comp:
+    wave = file.line6562_order_rebin.wl
+    flux = file.line6562_order_rebin.flux
+    plt.plot(wave,flux+i)
+    i += 0.1
+mf = filelist_merc[6]
+wave = mf.line6562_rebin.wl
+flux = mf.line6562_rebin.flux
+plt.plot(wave,flux+i)
+plt.show()
+plt.close()
     # print('cd',file.header['CDELT1'])
     # nf_ha = file.line6562.normalizationflux
     # snr_ha = 1 / np.std(nf_ha)

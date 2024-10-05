@@ -149,5 +149,5 @@ audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all
 #             datafile_folder_mercator=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',
 #                     save=True, show=False)
 
-datareduc.create_JoO_apo_demetra(data_full_night_all,stacked=True)
+datareduc.create_JoO_apo_demetra(data_individual,stacked=False)
 # datareduc.create_JoO_mercator(df_lp)

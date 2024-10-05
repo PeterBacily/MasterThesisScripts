@@ -190,13 +190,16 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,save_folder=datafile_fold
         k+=1
 
 
-def run_cddo(snr):
-    datafolder = str(Data_folder)+r'\Demetra\Individual\\'
-    savefolder = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
+def run_cddo(snr, df,sf):
+    # datafolder = str(Data_folder)+r'\Demetra\Individual\\'
+    datafolder =df
+    # savefolder = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
+    savefolder =sf
     linelist = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_3.txt'
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=True)
 # run_cddo(snr=110)
-run_cddo(snr=None)
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\full_day_stacked\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\full_night\\')
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Individual\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\Individual\\')
 # run_cddo(snr=90)
 def run_test_do():
     datafolder = str(Data_folder)+r'\Demetra\spectra_with_orders\\'
@@ -216,7 +219,7 @@ def run_cdm():
     savefolder = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
     create_datafiles_lapalma(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
-# run_cdm()
+run_cdm()
 # print(fl_apo_audela_all[7:10])
 def run_cda():
     linelist = str(converted_Data_folder) + r'\linelists\linelist_apo_v_cor_2.txt'

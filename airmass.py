@@ -13,6 +13,7 @@ from scipy import interpolate
 from scipy.optimize import *
 from PyAstronomy import pyasl
 import scipy.stats as ss
+from collections import defaultdict
 warnings.simplefilter('ignore')
 from SavitzkyGolay import savitzky_golay
 from pysynphot import observation
@@ -214,6 +215,13 @@ def grab_norm_area(wave,flux,a,b,c,d ):
     normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
     normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
     return normwave,normflux
+
+def group_by_day(list_of_masterfile_objects):
+    groups = defaultdict(list)
+    for obj in list_of_masterfile_objects:
+        groups[obj.time_and_date[0:5]].append(obj)
+    new_list = groups.values()
+    return new_list
 
 def AIC_rel_likelihood(AIC_1, AIC_2):
     if AIC_1 < AIC_2:

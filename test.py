@@ -46,18 +46,35 @@ data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = data_full_
 
 i=0
 orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
-print(orderfile_comp)
-for file in orderfile_comp:
-    wave = file.line6562_order_rebin.wl
-    flux = file.line6562_order_rebin.flux
-    plt.plot(wave,flux+i)
-    i += 0.1
-mf = filelist_merc[6]
-wave = mf.line6562_rebin.wl
-flux = mf.line6562_rebin.flux
-plt.plot(wave,flux+i)
-plt.show()
-plt.close()
+# print(orderfile_comp)
+# for file in orderfile_comp:
+#     wave = file.line6562_order_rebin.wl
+#     flux = file.line6562_order_rebin.flux
+#     plt.plot(wave,flux+i)
+#     i += 0.1
+# mf = filelist_merc[6]
+# wave = mf.line6562_rebin.wl
+# flux = mf.line6562_rebin.flux
+# plt.plot(wave,flux+i)
+# plt.show()
+# plt.close()
+
+from collections import defaultdict
+
+
+groups = defaultdict(list)
+
+for obj in data_individual_list:
+    # print(obj.time_and_date)
+    groups[obj.time_and_date[0:5]].append(obj)
+
+new_list = groups.values()
+i=1
+for day in new_list:
+    print(i)
+    i+=1
+    for spectrum in day:
+        print(spectrum.time_and_date)
     # print('cd',file.header['CDELT1'])
     # nf_ha = file.line6562.normalizationflux
     # snr_ha = 1 / np.std(nf_ha)

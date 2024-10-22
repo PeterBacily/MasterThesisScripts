@@ -72,22 +72,28 @@ new_list = groups.values()
 # day=new_list[0]
 # for day in new_list:
 #
-day=list(new_list)[0]
-for i in range(18):
-    # print('-----')
-    for k in range(len(day)- 1):
-        wl1 = np.array(day[k].orders[i].wl_original)
-        wl2 = np.array(day[k+1].orders[i].wl_original)
-        eq = np.array_equal(wl1, wl2)
-        are_close = np.allclose(wl1,wl2)
-        # print(eq)
-        # print(np.allclose(wl1,wl2))
-        print('------------')
-        print(wl1)
-        print(wl2)
-        print('------------')
-        # flux =observation.orders[i].flux_original
+for day in list(new_list):
+    dd_max = []
+    for i in range(18):
+        # print('-----')
 
+        for k in range(len(day)- 1):
+            wl1 = np.array(day[k].orders[i].wl_original)
+            wl2 = np.array(day[k+1].orders[i].wl_original)
+            eq = np.array_equal(wl1, wl2)
+            are_close = np.allclose(wl1,wl2)
+            difference = np.absolute(np.subtract(wl1,wl2))
+            dd_max.append(np.max(difference))
+
+            # print(eq)
+            # if not np.allclose(wl1,wl2):
+            #     print('not close')
+            # print('------------')
+            # print(wl1)
+            # print(wl2)
+            # print('------------')
+            # flux =observation.orders[i].flux_original
+    print(np.max(dd_max))
 
     # print('cd',file.header['CDELT1'])
     # nf_ha = file.line6562.normalizationflux

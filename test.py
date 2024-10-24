@@ -79,12 +79,14 @@ for day in list(new_list):
 
         for k in range(len(day)- 1):
             wl1 = np.array(day[k].orders[i].wl_original)
-            wl2 = np.array(day[k+1].orders[i].wl_original)
-            eq = np.array_equal(wl1, wl2)
-            are_close = np.allclose(wl1,wl2)
-            difference = np.absolute(np.subtract(wl1,wl2))
-            dd_max.append(np.max(difference))
-
+            for j in range(k+1,len(day)):
+                wl2 = np.array(day[j].orders[i].wl_original)
+                eq = np.array_equal(wl1, wl2)
+                are_close = np.allclose(wl1,wl2)
+                difference = np.absolute(np.subtract(wl1,wl2))
+                dd_max.append(np.max(difference))
+            # print('wlarraystepmin=',min(np.diff(wl1)))
+            print(len(wl1))
             # print(eq)
             # if not np.allclose(wl1,wl2):
             #     print('not close')

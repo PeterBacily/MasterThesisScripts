@@ -71,22 +71,18 @@ for obj in data_individual_list:
 new_list = groups.values()
 # day=new_list[0]
 # for day in new_list:
-#
+day_data=[]
 for day in list(new_list):
-    dd_max = []
     for i in range(18):
-        # print('-----')
-
-        for k in range(len(day)- 1):
+        wl_rebin = np.array(day[0].orders[i].wl_original)[10:-10]
+        day_order_data = []
+        for k in range(len(day)):
             wl1 = np.array(day[k].orders[i].wl_original)
-            for j in range(k+1,len(day)):
-                wl2 = np.array(day[j].orders[i].wl_original)
-                eq = np.array_equal(wl1, wl2)
-                are_close = np.allclose(wl1,wl2)
-                difference = np.absolute(np.subtract(wl1,wl2))
-                dd_max.append(np.max(difference))
+            flux1=np.array(day[k].orders[i].wl_original)
+            flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
+            day_order_data.append([wl1,flux1,wl_rebin,flux_rebin])
             # print('wlarraystepmin=',min(np.diff(wl1)))
-            print(len(wl1))
+            # print(len(wl1))
             # print(eq)
             # if not np.allclose(wl1,wl2):
             #     print('not close')
@@ -95,7 +91,6 @@ for day in list(new_list):
             # print(wl2)
             # print('------------')
             # flux =observation.orders[i].flux_original
-    print(np.max(dd_max))
 
     # print('cd',file.header['CDELT1'])
     # nf_ha = file.line6562.normalizationflux

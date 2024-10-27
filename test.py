@@ -81,7 +81,9 @@ for day in list(new_list):
             wl1 = np.array(day[k].orders[i].wl_original)
             flux1=np.array(day[k].orders[i].flux_original)
             flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
-            day_order_data.append([wl1,flux1,wl_rebin,flux_rebin])
+            snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
+            print(snr_ha)
+            day_order_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha])
             # plt.plot(wl_rebin,flux_rebin)
 
             # print('wlarraystepmin=',min(np.diff(wl1)))

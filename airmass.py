@@ -295,6 +295,29 @@ def snr(wl,flux):
     stnr = avgcounts/stand_dev
     return stnr
 
+def snr_ha(datafile_class_file,return_only_snr=False):
+    file=datafile_class_file
+    a, b, c, d = 6549, 6550.7, 6576.0, 6578.0
+    wave = file.line6562_order_rebin.wl
+    flux = file.line6562_order_rebin.flux
+    normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
+    normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
+    # fit line trough slice
+    # print('ss', startwl, endwl)
+    slope, height = np.polyfit(normwave, normflux, 1)
+    # print 'slope and height are', slope, height
+    fit = np.poly1d([slope, height])
+    nnf = []
+    for k, nwl in enumerate(normwave):
+        nnf.append(normflux[k] / fit(nwl))
+    snr_ha = 1 / np.std(nnf)
+    snr_per_60 = snr_ha * 60 / file.exptime
+    count_per_60 = (snr_ha ** 2) * 60 / file.exptime
+    if return_only_snr is True:
+        return snr_ha
+    else:
+        return snr_ha,snr_per_60,count_per_60
+
 def rebin_spec(wl, flux, wavnew):
     wave = np.array(wl)
     flux = np.array(flux)

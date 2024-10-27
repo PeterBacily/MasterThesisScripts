@@ -71,16 +71,19 @@ for obj in data_individual_list:
 new_list = groups.values()
 # day=new_list[0]
 # for day in new_list:
-day_data=[]
+full_data = []
 for day in list(new_list):
+    day_data = []
     for i in range(18):
         wl_rebin = np.array(day[0].orders[i].wl_original)[10:-10]
         day_order_data = []
         for k in range(len(day)):
             wl1 = np.array(day[k].orders[i].wl_original)
-            flux1=np.array(day[k].orders[i].wl_original)
+            flux1=np.array(day[k].orders[i].flux_original)
             flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
             day_order_data.append([wl1,flux1,wl_rebin,flux_rebin])
+            # plt.plot(wl_rebin,flux_rebin)
+
             # print('wlarraystepmin=',min(np.diff(wl1)))
             # print(len(wl1))
             # print(eq)
@@ -91,7 +94,19 @@ for day in list(new_list):
             # print(wl2)
             # print('------------')
             # flux =observation.orders[i].flux_original
+        # plt.show()
+        # plt.close()
+        day_data.append(day_order_data)
+    full_data.append(day_data)
 
+testday = full_data[0]
+testorder = testday[12]
+for spec in testorder:
+    plt.plot(spec[2],spec[3])
+    print(spec[3])
+
+plt.show()
+plt.close()
     # print('cd',file.header['CDELT1'])
     # nf_ha = file.line6562.normalizationflux
     # snr_ha = 1 / np.std(nf_ha)

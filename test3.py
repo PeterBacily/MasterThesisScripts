@@ -16,104 +16,106 @@ from PyAstronomy import pyasl
 import Path_check
 import os
 import pickle
+
+
+a =[[1,1,1],[2,2,10],[1,1.1]]
+b=[a[0],a[1]]
+c=np.average(b,axis=0,weights=a[2])
+print(c)
+
 # import seaborn as sns
-folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
-Path_check.dir_check(folder_of_this_file)
-
-[converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
-data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
-data_merc = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
-data_audela = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
-filelist_merc=open_masterfiles.mercator(data_merc)
-filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
-filelist_audela = open_masterfiles.apo(data_audela)
-data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
-# for file in filelist_merc:
-#     print(file.header['CDELT1'])
-#     nf_ha = file.line6562.normalizationflux
-#     snr_ha = 1 / np.std(nf_ha)
-#     print(snr_ha)
-# print('------')
-# for file in filelist_apo:
-#     wlarr= file.line6562_order.wl
-#     wldist = []
-#     for i in range (len(wlarr)-5):
-#         wld = wlarr[i+1]-wlarr[i]
-#         wldist.append(wld)
-#     print(wldist)
-data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
-data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
-
-i=0
-orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
-# print(orderfile_comp)
-# for file in orderfile_comp:
-#     wave = file.line6562_order_rebin.wl
-#     flux = file.line6562_order_rebin.flux
-#     plt.plot(wave,flux+i)
-#     i += 0.1
-# mf = filelist_merc[6]
-# wave = mf.line6562_rebin.wl
-# flux = mf.line6562_rebin.flux
-# plt.plot(wave,flux+i)
+# folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
+# Path_check.dir_check(folder_of_this_file)
+#
+# [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
+# data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
+# data_merc = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
+# data_audela = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
+# filelist_merc=open_masterfiles.mercator(data_merc)
+# filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
+# filelist_audela = open_masterfiles.apo(data_audela)
+# data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
+# # for file in filelist_merc:
+# #     print(file.header['CDELT1'])
+# #     nf_ha = file.line6562.normalizationflux
+# #     snr_ha = 1 / np.std(nf_ha)
+# #     print(snr_ha)
+# # print('------')
+# # for file in filelist_apo:
+# #     wlarr= file.line6562_order.wl
+# #     wldist = []
+# #     for i in range (len(wlarr)-5):
+# #         wld = wlarr[i+1]-wlarr[i]
+# #         wldist.append(wld)
+# #     print(wldist)
+# data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
+# data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
+#
+# i=0
+# orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
+# # print(orderfile_comp)
+# # for file in orderfile_comp:
+# #     wave = file.line6562_order_rebin.wl
+# #     flux = file.line6562_order_rebin.flux
+# #     plt.plot(wave,flux+i)
+# #     i += 0.1
+# # mf = filelist_merc[6]
+# # wave = mf.line6562_rebin.wl
+# # flux = mf.line6562_rebin.flux
+# # plt.plot(wave,flux+i)
+# # plt.show()
+# # plt.close()
+#
+# from collections import defaultdict
+#
+#
+# groups = defaultdict(list)
+#
+# for obj in data_individual_list:
+#     # print(obj.time_and_date)
+#     groups[obj.time_and_date[0:5]].append(obj)
+#
+# new_list = groups.values()
+# # day=new_list[0]
+# # for day in new_list:
+# full_data = []
+# for day in list(new_list):
+#     day_data = []
+#     for i in range(18):
+#         wl_rebin = np.array(day[0].orders[i].wl_original)[10:-10]
+#         day_order_data = []
+#         for k in range(len(day)):
+#             wl1 = np.array(day[k].orders[i].wl_original)
+#             flux1=np.array(day[k].orders[i].flux_original)
+#             flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
+#             snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
+#             # print(snr_ha)
+#             day_order_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha])
+#             # plt.plot(wl_rebin,flux_rebin)
+#
+#             # print('wlarraystepmin=',min(np.diff(wl1)))
+#             # print(len(wl1))
+#             # print(eq)
+#             # if not np.allclose(wl1,wl2):
+#             #     print('not close')
+#             # print('------------')
+#             # print(wl1)
+#             # print(wl2)
+#             # print('------------')
+#             # flux =observation.orders[i].flux_original
+#         # plt.show()
+#         # plt.close()
+#         day_data.append(day_order_data)
+#     full_data.append(day_data)
+#
+# testday = full_data[0]
+# testorder = testday[12]
+# for spec in testorder:
+#     plt.plot(spec[2],spec[3])
+#     print(len(spec[3]))
+#
 # plt.show()
 # plt.close()
-
-from collections import defaultdict
-
-
-groups = defaultdict(list)
-
-for obj in data_individual_list:
-    # print(obj.time_and_date)
-    groups[obj.time_and_date[0:5]].append(obj)
-
-new_list = groups.values()
-# day=new_list[0]
-# for day in new_list:
-full_data = []
-for day in list(new_list)[0:2]:
-    day_data = []
-    for i in range(18):
-        wl_rebin = np.array(day[0].orders[i].wl_original)[10:-10]
-        day_order_data = []
-        for k in range(len(day)):
-            wl1 = np.array(day[k].orders[i].wl_original)
-            flux1=np.array(day[k].orders[i].flux_original)
-            flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
-            snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
-            # print(snr_ha)
-            day_order_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha])
-            # plt.plot(wl_rebin,flux_rebin)
-
-            # print('wlarraystepmin=',min(np.diff(wl1)))
-            # print(len(wl1))
-            # print(eq)
-            # if not np.allclose(wl1,wl2):
-            #     print('not close')
-            # print('------------')
-            # print(wl1)
-            # print(wl2)
-            # print('------------')
-            # flux =observation.orders[i].flux_original
-        # plt.show()
-        # plt.close()
-        day_data.append(day_order_data)
-    full_data.append(day_data)
-
-testday = full_data[0]
-testorder = testday[12]
-spec_list = []
-weightlist = []
-for spec in testorder:
-    spec_list.append(spec[3])
-    weightlist.append(spec[4])
-avg_spec = np.average(spec_list,axis=0,weights=weightlist)
-plt.plot(spec[2],avg_spec,c='r')
-plt.plot(spec[2],spec[3],c='g')
-
-plt.show()
-plt.close()
     # print('cd',file.header['CDELT1'])
     # nf_ha = file.line6562.normalizationflux
     # snr_ha = 1 / np.std(nf_ha)

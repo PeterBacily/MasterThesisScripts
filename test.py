@@ -74,16 +74,15 @@ new_list = groups.values()
 full_data = []
 for day in list(new_list)[0:2]:
     day_data = []
-    for i in range(18):
-        wl_rebin = np.array(day[0].orders[i].wl_original)[10:-10]
-        day_order_data = []
-        for k in range(len(day)):
-            wl1 = np.array(day[k].orders[i].wl_original)
-            flux1=np.array(day[k].orders[i].flux_original)
-            flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
-            snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
+    wlarray = day[0].line6562_order.wl[10:-10]
+    wl_rebin = np.arange(wlarray[0], wlarray[-1], 0.1)
+    for k in range(len(day)):
+        wl1 = day[k].line6562_order.wl
+        flux1 = day[k].line6562_order.flux
+        flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
+        snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
             # print(snr_ha)
-            day_order_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha])
+        day_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha])
             # plt.plot(wl_rebin,flux_rebin)
 
             # print('wlarraystepmin=',min(np.diff(wl1)))
@@ -98,15 +97,14 @@ for day in list(new_list)[0:2]:
             # flux =observation.orders[i].flux_original
         # plt.show()
         # plt.close()
-        day_data.append(day_order_data)
     full_data.append(day_data)
 
 testday = full_data[0]
-testorder = testday[12]
+
 spec_list = []
 weightlist = []
-print(len(testorder))
-for spec in testorder:
+
+for spec in testday:
     spec_list.append(spec[3])
     weightlist.append(spec[4])
 avg_spec = np.average(spec_list,axis=0,weights=weightlist)

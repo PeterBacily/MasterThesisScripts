@@ -105,6 +105,7 @@ testday = full_data[0]
 testorder = testday[12]
 spec_list = []
 weightlist = []
+print(len(testorder))
 for spec in testorder:
     spec_list.append(spec[3])
     weightlist.append(spec[4])

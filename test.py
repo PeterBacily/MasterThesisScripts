@@ -72,13 +72,13 @@ new_list = groups.values()
 # day=new_list[0]
 # for day in new_list:
 full_data = []
-for day in list(new_list)[0:2]:
+for day in list(new_list):
     day_data = []
-    wlarray = day[0].line6562_order.wl[10:-10]
+    wlarray = day[0].orders[9].wl_original[10:-10]
     wl_rebin = np.arange(wlarray[0], wlarray[-1], 0.1)
     for k in range(len(day)):
-        wl1 = day[k].line6562_order.wl
-        flux1 = day[k].line6562_order.flux
+        wl1 = day[k].orders[9].wl_original
+        flux1 = day[k].orders[9].flux_original
         flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
         snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
             # print(snr_ha)
@@ -99,7 +99,7 @@ for day in list(new_list)[0:2]:
         # plt.close()
     full_data.append(day_data)
 
-testday = full_data[0]
+testday = full_data[3]
 
 spec_list = []
 weightlist = []
@@ -109,7 +109,7 @@ for spec in testday:
     weightlist.append(spec[4])
 avg_spec = np.average(spec_list,axis=0,weights=weightlist)
 plt.plot(spec[2],avg_spec,c='r')
-plt.plot(spec[2],spec[3],c='g')
+plt.plot(spec[2],spec[3]+0.1,c='g')
 
 plt.show()
 plt.close()

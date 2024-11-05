@@ -81,7 +81,7 @@ for day in list(new_list):
         flux1 = day[k].orders[9].flux_original
         flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
         snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
-            # print(snr_ha)
+        print(snr_ha)
         day_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha])
             # plt.plot(wl_rebin,flux_rebin)
 
@@ -103,13 +103,18 @@ testday = full_data[3]
 
 spec_list = []
 weightlist = []
-
+i=1
 for spec in testday:
-    spec_list.append(spec[3])
+    spc_avg= np.average(spec[3][10:-10])
+    normspec = spec[3]/spc_avg
+    spec_list.append(normspec)
     weightlist.append(spec[4])
+    plt.plot(spec[2], normspec + 0.1*i, c='g')
+    i+=1
 avg_spec = np.average(spec_list,axis=0,weights=weightlist)
 plt.plot(spec[2],avg_spec,c='r')
-plt.plot(spec[2],spec[3]+0.1,c='g')
+
+
 
 plt.show()
 plt.close()

@@ -74,14 +74,15 @@ new_list = groups.values()
 full_data = []
 for day in list(new_list):
     day_data = []
-    wlarray = day[0].orders[9].wl_original[10:-10]
+    wlarray = day[0].line6562_order.wl[10:-10]
     wl_rebin = np.arange(wlarray[0], wlarray[-1], 0.1)
     for k in range(len(day)):
-        wl1 = day[k].orders[9].wl_original
-        flux1 = day[k].orders[9].flux_original
+        wl1 = day[k].line6562_order.wl
+        flux1 = day[k].line6562_order.flux
         flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
         snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
-        print(snr_ha)
+        snr_ha2 = airmass.snr_2(wl1,flux1)
+        print(snr_ha,snr_ha2)
         day_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha])
             # plt.plot(wl_rebin,flux_rebin)
 

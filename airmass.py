@@ -295,6 +295,38 @@ def snr(wl,flux):
     stnr = avgcounts/stand_dev
     return stnr
 
+
+def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_size=0.1):
+    if len(boundaries)==2:
+        [a,d]=boundaries
+    elif len(boundaries)==4:
+        [a,b,c,d]=boundaries
+    else:
+        raise Exception('boundaries  needs to be either list of either 2 or 4 values')
+    start =a-2
+    stop = d+2
+    slice = flux[(wl>start) & (wl<stop)]
+    wlslice = wl[(wl>start) & (wl<stop)]
+
+    if len(boundaries)==2:
+        l = int((len(wlslice) - 1) / 2)
+        b=l
+        c=l+1
+    if rebin is True:
+        wl_rebin = np.arange(wlslice[10], wlslice[-10], rebin_size)
+        flux_rebin = rebin_spec(wlslice, slice, wl_rebin)
+        lw,lf, _,_,_ = normalize(wl_rebin,flux_rebin,a,b,c,d,wl_rebin[0],wl_rebin[-1])
+    else:
+        lw,lf, _,_,_ = normalize(wlslice,slice,a,b,c,d,a,d)
+    normwave = np.hstack((lw[(lw > a) & (lw < b)], lw[(lw > c) & (lw < d)]))
+    normflux = np.hstack((lf[(lw > a) & (lw < b)], lf[(lw > c) & (lw < d)]))
+    avgcounts = np.average(normflux)
+    stand_dev = np.std(normflux)
+    stnr = avgcounts/stand_dev
+    return stnr
+
+
+
 def snr_ha(datafile_class_file,return_only_snr=False):
     file=datafile_class_file
     a, b, c, d = 6549, 6550.7, 6576.0, 6578.0

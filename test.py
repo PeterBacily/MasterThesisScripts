@@ -104,19 +104,23 @@ testday = full_data[3]
 
 spec_list = []
 weightlist = []
-i=1
+i=0
 for spec in testday:
     spc_avg= np.average(spec[3][10:-10])
     normspec = spec[3]/spc_avg
     spec_list.append(normspec)
     weightlist.append(spec[4])
     plt.plot(spec[2], normspec + 0.1*i, c='g')
-    i+=1
+    i+=0
 avg_spec = np.average(spec_list,axis=0,weights=weightlist)
+print(airmass.snr_2(spec[2],avg_spec))
 plt.plot(spec[2],avg_spec,c='r')
 
 
-
+testfile_merc= filelist_merc[2]
+wl_m,flux_m = airmass.slice_spec(testfile_merc.wl_rebin2,testfile_merc.flux_rebin2,spec[2][0],spec[2][-1])
+flux_m_norm = flux_m/np.average(flux_m)
+plt.plot(wl_m,flux_m_norm,c='b')
 plt.show()
 plt.close()
     # print('cd',file.header['CDELT1'])

@@ -389,7 +389,10 @@ def remove_nan(wl,flux):
             flux2.append(item)
     return wl2,flux2
 
-
+def slice_spec(wl,flux,wl_start,wl_stop):
+    slice = flux[(wl>wl_start) & (wl<wl_stop)]
+    wlslice = wl[(wl>wl_start) & (wl<wl_stop)]
+    return wlslice,slice
 
 def quotient(lf1, lf2):
     # wl_rebin1,flux_rebin1 = reduce_spectrum(file1,18.5)

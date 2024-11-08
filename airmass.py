@@ -1254,3 +1254,16 @@ def make_linelist(list, filepath):
     workfileresource = open(filepath, 'wb')
     pickle.dump(list, workfileresource)
     workfileresource.close()
+
+def find_order(wl , demetra_file):
+    orders = demetra_file.orders
+    centerwl=np.average(wl)
+    minwl=np.min(wl)
+    maxwl=np.max(wl)
+    ol = sorted(orders, key=lambda x: np.abs(x.wl_avg - centerwl))
+    best_order = ol[0]
+    if minwl<best_order.wl_start:
+        warnings.warn('Minimum of WL array out of bounds of order, you cannot get this full interval from the same order')
+    if minwl>best_order.wl_end:
+        warnings.warn('Maximum of WL array out of bounds of order, you cannot get this full interval from the same order')
+    return best_order

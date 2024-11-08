@@ -18,11 +18,14 @@ import os
 import pickle
 
 
-a =[[1,1,1],[2,2,10],[1,1.1]]
-b=[a[0],a[1]]
-c=np.average(b,axis=0,weights=a[2])
-print(c)
+# a =[[1,1,1],[2,2,10],[1,1.1]]
+# b=[a[0],a[1]]
 
+a=6
+b=[7,9]
+
+print(np.min(a),np.max(a))
+print(np.min(b),np.max(b))
 # import seaborn as sns
 # folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
 # Path_check.dir_check(folder_of_this_file)

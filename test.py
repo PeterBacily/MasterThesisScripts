@@ -71,14 +71,52 @@ for obj in data_individual_list:
 new_list = groups.values()
 # day=new_list[0]
 # for day in new_list:
+list_of_day_data = list(new_list)
+testday = list_of_day_data[1]
+wlpiece = [5343, 5358]
+wlarray = airmass.find_order(wlpiece,testday[0]).wl_original[5:-5]
+wl_rebin = np.arange(wlarray[0], wlarray[-1], 0.1)
+day_data = []
+for observation in testday:
+    relevant_order = airmass.find_order(wlpiece,observation)
+    wl1 = relevant_order.wl_original
+    flux1 = relevant_order.flux_original
+    flux_rebin = airmass.rebin_spec(wl1, flux1, wl_rebin)
+    snr_ha2 = airmass.snr_2(wl1, flux1, boundaries=wlpiece)
+    print(snr_ha2)
+    day_data.append([wl1, flux1, wl_rebin, flux_rebin, snr_ha2])
+
+spec_list = []
+weightlist = []
+i=0
+for spec in day_data:
+    spc_avg= np.average(spec[3][10:-10])
+    normspec = spec[3]/spc_avg
+    spec_list.append(normspec)
+    weightlist.append(spec[4]**2)
+    plt.plot(spec[2], normspec + 0.1*i, c='g')
+    i+=0
+avg_spec = np.average(spec_list,axis=0,weights=weightlist)
+print('snr_combined  measured = ',airmass.snr_2(spec[2],avg_spec,boundaries=wlpiece))
+print('snr_combined theoretical = ', np.sqrt(np.sum(weightlist)) )
+
+for value in weightlist:
+    print(np.sqrt(value))
+plt.plot(spec[2],avg_spec,c='r')
+plt.show()
+plt.close()
+
+exit()
+print('test')
 full_data = []
 for day in list(new_list):
     day_data = []
     wlarray = day[0].line6562_order.wl[10:-10]
     wl_rebin = np.arange(wlarray[0], wlarray[-1], 0.1)
     for k in range(len(day)):
-        wl1 = day[k].line6562_order.wl
-        flux1 = day[k].line6562_order.flux
+        relevant_order = day[k].line6562_order
+        wl1 = relevant_order.wl
+        flux1 = relevant_order.flux
         flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
         snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
         snr_ha2 = airmass.snr_2(wl1,flux1)

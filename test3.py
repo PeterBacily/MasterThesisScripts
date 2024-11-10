@@ -21,23 +21,23 @@ import pickle
 # a =[[1,1,1],[2,2,10],[1,1.1]]
 # b=[a[0],a[1]]
 
-a=6
-b=[7,9]
-
-print(np.min(a),np.max(a))
-print(np.min(b),np.max(b))
-# import seaborn as sns
-# folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
-# Path_check.dir_check(folder_of_this_file)
+# a=6
+# b=[7,9]
 #
-# [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
-# data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
-# data_merc = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
-# data_audela = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
-# filelist_merc=open_masterfiles.mercator(data_merc)
-# filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
-# filelist_audela = open_masterfiles.apo(data_audela)
-# data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
+# print(np.min(a),np.max(a))
+# print(np.min(b),np.max(b))
+# import seaborn as sns
+folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
+Path_check.dir_check(folder_of_this_file)
+#
+[converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
+data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
+data_merc = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
+data_audela = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
+filelist_merc=open_masterfiles.mercator(data_merc)
+filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
+filelist_audela = open_masterfiles.apo(data_audela)
+data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
 # # for file in filelist_merc:
 # #     print(file.header['CDELT1'])
 # #     nf_ha = file.line6562.normalizationflux
@@ -51,9 +51,20 @@ print(np.min(b),np.max(b))
 # #         wld = wlarr[i+1]-wlarr[i]
 # #         wldist.append(wld)
 # #     print(wldist)
-# data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
-# data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
-#
+data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
+data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
+datafile_merc=filelist_merc[0]
+wl=datafile_merc.wl_rebin2
+flux=datafile_merc.flux_rebin2
+plt.plot(wl,flux)
+# plt.show()
+# plt.close()
+wlpiece = [5343, 5358]
+order=airmass.find_order(wlpiece,data_individual_list[0])
+demwl, demflux=order.wl_rebin, order.flux_rebin
+# plt.plot(demwl,demflux)
+plt.show()
+plt.close()
 # i=0
 # orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
 # # print(orderfile_comp)

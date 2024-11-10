@@ -1264,6 +1264,6 @@ def find_order(wl , demetra_file):
     best_order = ol[0]
     if minwl<best_order.wl_start:
         warnings.warn('Minimum of WL array out of bounds of order, you cannot get this full interval from the same order')
-    if minwl>best_order.wl_end:
+    if maxwl>best_order.wl_end:
         warnings.warn('Maximum of WL array out of bounds of order, you cannot get this full interval from the same order')
     return best_order

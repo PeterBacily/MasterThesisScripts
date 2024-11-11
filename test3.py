@@ -59,7 +59,7 @@ flux=datafile_merc.flux_rebin2
 plt.plot(wl,flux)
 # plt.show()
 # plt.close()
-wlpiece = [5343, 5358]
+wlpiece = [5335, 5345]
 order=airmass.find_order(wlpiece,data_individual_list[0])
 demwl, demflux=order.wl_rebin, order.flux_rebin
 # plt.plot(demwl,demflux)

@@ -72,17 +72,17 @@ new_list = groups.values()
 # day=new_list[0]
 # for day in new_list:
 list_of_day_data = list(new_list)
-testday = list_of_day_data[1]
-wlpiece = [5343, 5358]
+testday = list_of_day_data[0]
+wlpiece = [5335, 5345]
 wlarray = airmass.find_order(wlpiece,testday[0]).wl_original[5:-5]
-wl_rebin = np.arange(wlarray[0], wlarray[-1], 0.1)
+wl_rebin = np.arange(wlarray[0], wlarray[-1], 0.5)
 day_data = []
 for observation in testday:
     relevant_order = airmass.find_order(wlpiece,observation)
     wl1 = relevant_order.wl_original
     flux1 = relevant_order.flux_original
     flux_rebin = airmass.rebin_spec(wl1, flux1, wl_rebin)
-    snr_ha2 = airmass.snr_2(wl1, flux1, boundaries=wlpiece)
+    snr_ha2 = airmass.snr_2(wl_rebin, flux_rebin, boundaries=wlpiece)
     print(snr_ha2)
     day_data.append([wl1, flux1, wl_rebin, flux_rebin, snr_ha2])
 
@@ -119,7 +119,7 @@ for day in list(new_list):
         flux1 = relevant_order.flux
         flux_rebin = airmass.rebin_spec(wl1,flux1,wl_rebin)
         snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
-        snr_ha2 = airmass.snr_2(wl1,flux1)
+        snr_ha2 = airmass.snr_2(wl_rebin,flux_rebin)
         print(snr_ha,snr_ha2)
         day_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha])
             # plt.plot(wl_rebin,flux_rebin)

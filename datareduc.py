@@ -5,6 +5,7 @@ import astropy.io.fits as pf
 from astropy.time import Time
 import math
 import calendar
+from collections import defaultdict
 import numpy as np
 import airmass
 from scipy.optimize import *
@@ -1154,5 +1155,45 @@ def create_JoO_mercator(filefolder):
         i+=1
     print(r'\end{tabular}')
     print(r'\end{table*}')
-def see_snr_merc(filefolder):
-    files = open_masterfiles.apo(wantedmarks=None, path=filefolder, manual_filelist=None)
+
+def plot_order_stack(data_individual_list,wlpiece= [5335, 5345],rebinstep=0.5):
+    groups = defaultdict(list)
+
+    for obj in data_individual_list:
+        # print(obj.time_and_date)
+        groups[obj.time_and_date[0:5]].append(obj)
+
+    new_list = groups.values()
+    list_of_day_data = list(new_list)
+    for testday in list_of_day_data:
+        wlarray = airmass.find_order(wlpiece, testday[0]).wl_original[5:-5]
+        wl_rebin = np.arange(wlarray[0], wlarray[-1], rebinstep)
+        day_data = []
+        for observation in testday:
+            relevant_order = airmass.find_order(wlpiece, observation)
+            wl1 = relevant_order.wl_original
+            flux1 = relevant_order.flux_original
+            flux_rebin = airmass.rebin_spec(wl1, flux1, wl_rebin)
+            snr2 = airmass.snr_2(wl_rebin, flux_rebin, boundaries=wlpiece)
+            print(snr2)
+            day_data.append([wl1, flux1, wl_rebin, flux_rebin, snr2])
+
+        spec_list = []
+        weightlist = []
+        i = 0
+        for spec in day_data:
+            spc_avg = np.average(spec[3][10:-10])
+            normspec = spec[3] / spc_avg
+            spec_list.append(normspec)
+            weightlist.append(spec[4] ** 2)
+            plt.plot(spec[2], normspec + 0.1 * i, c='g')
+            i += 0
+        avg_spec = np.average(spec_list, axis=0, weights=weightlist)
+        print('snr_combined  measured = ', airmass.snr_2(spec[2], avg_spec, boundaries=wlpiece))
+        print('snr_combined theoretical = ', np.sqrt(np.sum(weightlist)))
+
+        for value in weightlist:
+            print(np.sqrt(value))
+        plt.plot(spec[2], avg_spec, c='r')
+        plt.show()
+        plt.close()

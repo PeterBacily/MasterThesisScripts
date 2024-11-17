@@ -95,7 +95,7 @@ for observation in testday:
     flux_rebin = airmass.rebin_spec(wl2, flux2, wl_rebin)
     snr_ha2 = airmass.snr_2(wl_rebin, flux_rebin, boundaries=wlpiece)
     print(snr_ha2)
-    day_data.append([wl1, flux1, wl_rebin, flux_rebin, snr_ha2])
+    day_data.append([wl1, flux1, wl_rebin, flux_rebin, snr_ha2,observation.time_and_date])
 
 
 
@@ -107,7 +107,7 @@ for spec in day_data:
     normspec = spec[3]/spc_avg
     spec_list.append(normspec)
     weightlist.append(spec[4]**2)
-    plt.plot(spec[2], normspec + 0.1*i, c='g')
+    plt.plot(spec[2], normspec, label=spec[5])
     i+=0
 avg_spec = np.average(spec_list,axis=0,weights=weightlist)
 print('snr_combined  measured = ',airmass.snr_2(spec[2],avg_spec,boundaries=wlpiece))
@@ -115,7 +115,13 @@ print('snr_combined theoretical = ', np.sqrt(np.sum(weightlist)) )
 
 for value in weightlist:
     print(np.sqrt(value))
-plt.plot(spec[2],avg_spec,c='r')
+plt.plot(spec[2],avg_spec, label = 'day average', linewidth=2,color='black')
+testfile_merc= filelist_merc[2]
+wl_m,flux_m = airmass.slice_spec(testfile_merc.wl_rebin2,testfile_merc.flux_rebin2,spec[2][0],spec[2][-1])
+flux_m_norm = flux_m/np.average(flux_m)
+flux_rebin_m = airmass.rebin_spec(wl_m, flux_m_norm, wl_rebin)
+plt.plot(wl_rebin[2:-2],flux_rebin_m[2:-2],label = 'mercator')
+plt.legend()
 plt.show()
 plt.close()
 
@@ -134,7 +140,7 @@ for day in list(new_list):
         snr_ha = airmass.snr_ha(day[k], return_only_snr=True)
         snr_ha2 = airmass.snr_2(wl_rebin,flux_rebin)
         print(snr_ha,snr_ha2)
-        day_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha])
+        day_data.append([wl1,flux1,wl_rebin,flux_rebin,snr_ha,day[k]])
             # plt.plot(wl_rebin,flux_rebin)
 
             # print('wlarraystepmin=',min(np.diff(wl1)))
@@ -161,17 +167,18 @@ for spec in testday:
     normspec = spec[3]/spc_avg
     spec_list.append(normspec)
     weightlist.append(spec[4])
-    plt.plot(spec[2], normspec + 0.1*i, c='g')
+    plt.plot(spec[2], normspec + 0.1*i,label=spec[5].time_and_date)
     i+=0
 avg_spec = np.average(spec_list,axis=0,weights=weightlist)
 print(airmass.snr_2(spec[2],avg_spec))
-plt.plot(spec[2],avg_spec,c='r')
+plt.plot(spec[2],avg_spec)
 
 
 testfile_merc= filelist_merc[2]
 wl_m,flux_m = airmass.slice_spec(testfile_merc.wl_rebin2,testfile_merc.flux_rebin2,spec[2][0],spec[2][-1])
 flux_m_norm = flux_m/np.average(flux_m)
-plt.plot(wl_m,flux_m_norm,c='b')
+# plt.plot(wl_m,flux_m_norm,c='b')
+plt.legend()
 plt.show()
 plt.close()
     # print('cd',file.header['CDELT1'])

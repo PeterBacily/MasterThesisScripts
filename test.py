@@ -61,6 +61,14 @@ orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
 
 from collections import defaultdict
 
+vs, lfs = airmass.overplot_masterfiles(data_individual_list,line='line6562')
+for i in range(len(vs))[:12]:
+    v = vs[i]
+    wl = lfs[i]
+    plt.plot(v,wl)
+plt.show()
+plt.close()
+exit()
 
 groups = defaultdict(list)
 

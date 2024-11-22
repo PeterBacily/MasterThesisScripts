@@ -60,15 +60,34 @@ orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
 # plt.close()
 
 from collections import defaultdict
+wlpiece = [5335, 5345]
+order_instance = airmass.find_order(wlpiece, data_individual_list[0])
+wl_o = order_instance.wl_original
+flux_o = order_instance.flux_original
+wl_ar_slice, flux_ar_slice = airmass.slice_spec(wl_o, flux_o, wlpiece[0] - 20, wlpiece[1] + 20)
+wl_rebin = np.arange(wl_ar_slice[10], wl_ar_slice[-5], 0.5)
 
-vs, lfs = airmass.overplot_masterfiles(data_individual_list,line='line6562')
+for spec in data_individual_list:
+    order_instance = airmass.find_order(wlpiece,spec)
+    wl_o = order_instance.wl_original
+    flux_o = order_instance.flux_original
+    wl_ar_slice, flux_ar_slice = airmass.slice_spec(wl_o, flux_o, wlpiece[0] - 20, wlpiece[1] + 20)
+    flux_rebin = airmass.rebin_spec(wl_ar_slice, flux_ar_slice, wl_rebin)
+    l=int(math.floor(len(wl_rebin)/2))
+    a= wl_rebin[0]
+    b= wl_rebin[l-2]
+    c=wl_rebin[l+2]
+    d=wl_rebin[-1]
+    norm_wl, normflux,_,_,_ = airmass.normalize(wl_rebin, flux_rebin, a, b, c, d, a, d, xtype='wave', linecenter=None)
+exit()
+# vs, lfs = airmass.overplot_masterfiles(data_individual_list,line='line6562')
 for i in range(len(vs))[:12]:
     v = vs[i]
     wl = lfs[i]
     plt.plot(v,wl)
 plt.show()
 plt.close()
-exit()
+
 
 groups = defaultdict(list)
 

@@ -15,6 +15,7 @@ from scipy.optimize import *
 from PyAstronomy import pyasl
 import Path_check
 import os
+from SavitzkyGolay import savitzky_golay
 import pickle
 # import seaborn as sns
 folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
@@ -59,6 +60,15 @@ orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
 # plt.show()
 # plt.close()
 
+def snr_sg(wave,flux_array, avg_flux_array,boundaries=[6549, 6550.7, 6576.0, 6578.0]):
+    [a, b, c, d] = boundaries
+    fit_SG_flux = savitzky_golay(avg_flux_array,25,4)
+    normflux = flux_array/fit_SG_flux
+    normwave_slice = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
+    normflux_slice = np.hstack((normflux[(wave > a) & (wave < b)], normflux[(wave > c) & (wave < d)]))
+    snr_ha = 1 / np.std(normflux_slice)
+    return snr_ha
+
 from collections import defaultdict
 wlpiece = [5335, 5345]
 order_instance = airmass.find_order(wlpiece, data_individual_list[0])
@@ -66,19 +76,34 @@ wl_o = order_instance.wl_original
 flux_o = order_instance.flux_original
 wl_ar_slice, flux_ar_slice = airmass.slice_spec(wl_o, flux_o, wlpiece[0] - 20, wlpiece[1] + 20)
 wl_rebin = np.arange(wl_ar_slice[10], wl_ar_slice[-5], 0.5)
+groups = defaultdict(list)
 
-for spec in data_individual_list:
-    order_instance = airmass.find_order(wlpiece,spec)
-    wl_o = order_instance.wl_original
-    flux_o = order_instance.flux_original
-    wl_ar_slice, flux_ar_slice = airmass.slice_spec(wl_o, flux_o, wlpiece[0] - 20, wlpiece[1] + 20)
-    flux_rebin = airmass.rebin_spec(wl_ar_slice, flux_ar_slice, wl_rebin)
-    l=int(math.floor(len(wl_rebin)/2))
-    a= wl_rebin[0]
-    b= wl_rebin[l-2]
-    c=wl_rebin[l+2]
-    d=wl_rebin[-1]
-    norm_wl, normflux,_,_,_ = airmass.normalize(wl_rebin, flux_rebin, a, b, c, d, a, d, xtype='wave', linecenter=None)
+for obj in data_individual_list:
+    # print(obj.time_and_date)
+    groups[obj.time_and_date[0:5]].append(obj)
+
+new_list = groups.values()
+# day=new_list[0]
+# for day in new_list:
+list_of_day_data = list(new_list)
+
+
+for day in new_list:
+    for spec in day:
+        order_instance = airmass.find_order(wlpiece,spec)
+        wl_o = order_instance.wl_original
+        flux_o = order_instance.flux_original
+        wl_ar_slice, flux_ar_slice = airmass.slice_spec(wl_o, flux_o, wlpiece[0] - 20, wlpiece[1] + 20)
+        flux_rebin = airmass.rebin_spec(wl_ar_slice, flux_ar_slice, wl_rebin)
+        l=int(math.floor(len(wl_rebin)/2))
+        a= wl_rebin[0]
+        b= wl_rebin[l-2]
+        c=wl_rebin[l+2]
+        d=wl_rebin[-1]
+        norm_wl, normflux,_,_,_ = airmass.normalize(wl_rebin, flux_rebin, a, b, c, d, a, d, xtype='wave', linecenter=None)
+        plt.plot(norm_wl,normflux)
+    plt.show()
+    plt.close()
 exit()
 # vs, lfs = airmass.overplot_masterfiles(data_individual_list,line='line6562')
 for i in range(len(vs))[:12]:

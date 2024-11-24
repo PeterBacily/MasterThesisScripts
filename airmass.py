@@ -327,9 +327,9 @@ def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_siz
 
 
 
-def snr_ha(datafile_class_file,return_only_snr=False):
+def snr_ha(datafile_class_file,return_only_snr=False,boundaries=[6549, 6550.7, 6576.0, 6578.0]):
     file=datafile_class_file
-    a, b, c, d = 6549, 6550.7, 6576.0, 6578.0
+    [a, b, c, d] = boundaries
     wave = file.line6562_order_rebin.wl
     flux = file.line6562_order_rebin.flux
     normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))

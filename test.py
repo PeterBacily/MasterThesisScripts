@@ -79,7 +79,8 @@ def snr_avg(wave,flux_array, avg_flux_array,boundaries=[6549, 6550.7, 6576.0, 65
     return snr_ha
 
 from collections import defaultdict
-wlpiece = [5335, 5345]
+# wlpiece = [5335, 5345]
+wlpiece = [6547, 6580]
 order_instance = airmass.find_order(wlpiece, data_individual_list[0])
 wl_o = order_instance.wl_original
 flux_o = order_instance.flux_original
@@ -96,7 +97,37 @@ new_list = groups.values()
 # for day in new_list:
 list_of_day_data = list(new_list)
 
-
+for day in new_list:
+    normfluxes=[]
+    for spec in day:
+        order_instance = airmass.find_order(wlpiece,spec)
+        wl_o = order_instance.wl_original
+        flux_o = order_instance.flux_original
+        wl_ar_slice, flux_ar_slice = airmass.slice_spec(wl_o, flux_o, wlpiece[0] - 20, wlpiece[1] + 20)
+        flux_rebin = airmass.rebin_spec(wl_ar_slice, flux_ar_slice, wl_rebin)
+        l=int(math.floor(len(wl_rebin)/2))
+        a= wl_rebin[0]
+        b= wl_rebin[l-2]
+        c=wl_rebin[l+2]
+        d=wl_rebin[-1]
+        norm_wl, normflux,_,_,_ = airmass.normalize(wl_rebin, flux_rebin, a, b, c, d, a, d, xtype='wave', linecenter=None)
+        normfluxes.append(normflux)
+    day_avg_flux = np.average(normfluxes,axis=0)
+    for spec in day:
+        order_instance = airmass.find_order(wlpiece,spec)
+        wl_o = order_instance.wl_original
+        flux_o = order_instance.flux_original
+        wl_ar_slice, flux_ar_slice = airmass.slice_spec(wl_o, flux_o, wlpiece[0] - 20, wlpiece[1] + 20)
+        flux_rebin = airmass.rebin_spec(wl_ar_slice, flux_ar_slice, wl_rebin)
+        l=int(math.floor(len(wl_rebin)/2))
+        a= wl_rebin[0]
+        b= wl_rebin[l-2]
+        c=wl_rebin[l+2]
+        d=wl_rebin[-1]
+        norm_wl, normflux,_,_,_ = airmass.normalize(wl_rebin, flux_rebin, a, b, c, d, a, d, xtype='wave', linecenter=None)
+        snr = snr_avg(norm_wl,normflux,day_avg_flux) #,boundaries=[5335,5340,5340, 5345]
+        print(spec.time_and_date,'    exp time:',spec.exptime, '   airmass:',spec.airmass,'   snr6563:',snr)
+exit()
 for day in new_list:
     for spec in day:
         order_instance = airmass.find_order(wlpiece,spec)

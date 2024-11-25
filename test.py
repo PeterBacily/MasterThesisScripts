@@ -63,7 +63,16 @@ orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
 def snr_sg(wave,flux_array, avg_flux_array,boundaries=[6549, 6550.7, 6576.0, 6578.0]):
     [a, b, c, d] = boundaries
     fit_SG_flux = savitzky_golay(avg_flux_array,25,4)
-    normflux = flux_array/fit_SG_flux
+    normflux = flux_array-fit_SG_flux
+    normwave_slice = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
+    normflux_slice = np.hstack((normflux[(wave > a) & (wave < b)], normflux[(wave > c) & (wave < d)]))
+    snr_ha = 1 / np.std(normflux_slice)
+    return snr_ha
+
+def snr_avg(wave,flux_array, avg_flux_array,boundaries=[6549, 6550.7, 6576.0, 6578.0]):
+    [a, b, c, d] = boundaries
+    # fit_SG_flux = savitzky_golay(avg_flux_array,25,4)
+    normflux = flux_array-avg_flux_array
     normwave_slice = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
     normflux_slice = np.hstack((normflux[(wave > a) & (wave < b)], normflux[(wave > c) & (wave < d)]))
     snr_ha = 1 / np.std(normflux_slice)
@@ -75,7 +84,7 @@ order_instance = airmass.find_order(wlpiece, data_individual_list[0])
 wl_o = order_instance.wl_original
 flux_o = order_instance.flux_original
 wl_ar_slice, flux_ar_slice = airmass.slice_spec(wl_o, flux_o, wlpiece[0] - 20, wlpiece[1] + 20)
-wl_rebin = np.arange(wl_ar_slice[10], wl_ar_slice[-5], 0.5)
+wl_rebin = np.arange(wl_ar_slice[10], wl_ar_slice[-5], 0.1)
 groups = defaultdict(list)
 
 for obj in data_individual_list:
@@ -101,7 +110,12 @@ for day in new_list:
         c=wl_rebin[l+2]
         d=wl_rebin[-1]
         norm_wl, normflux,_,_,_ = airmass.normalize(wl_rebin, flux_rebin, a, b, c, d, a, d, xtype='wave', linecenter=None)
-        plt.plot(norm_wl,normflux)
+        plt.plot(norm_wl,normflux,label=spec.time_and_date)
+    plt.xlim(wlpiece)
+    plt.legend()
+    plt.xlabel('Wavelength ($\AA$)')
+    plt.ylabel('Normlized Flux')
+    plt.title('APO spectra '+ spec.time_and_date[0:6])
     plt.show()
     plt.close()
 exit()

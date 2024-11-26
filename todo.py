@@ -6,3 +6,5 @@
 # try to take flat wl piece, normalize it, overplot for every individual spectrum and see if noise follows same shape across days.
 
 # test code om de genormalizeerde lijnstukjes uit order te halen
+
+# gebruik alle darks en flatfields van elke nacht samen om dark/flat te maken en kijk of dat een verschil maakt.

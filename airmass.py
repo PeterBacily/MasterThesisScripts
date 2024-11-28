@@ -673,13 +673,14 @@ def overplot_masterfiles(filelist,line,separate_lines=False):
         a += ap
     return vs, lfs
 
-def overplot_masterfiles_order(filelist,line,separate_lines=False):
+def overplot_masterfiles_order(filelist,line,separate_lines=False,wl=False):
     vsini = 127
     lfs = []
     vs = []
+    wls = []
     a = 0.0
     wl_file_1 = getattr(filelist[0], line).wl
-    wavenew = np.arange(wl_file_1[10], wl_file_1[-10], 0.05)
+    wavenew = np.arange(wl_file_1[10], wl_file_1[-10], 0.1)
     lineinfo = getattr(filelist[0], line).lineinfo
     linecenter = lineinfo[1]
     # vrad = -18.5
@@ -700,11 +701,15 @@ def overplot_masterfiles_order(filelist,line,separate_lines=False):
         flux = linedata.flux
         wl = linedata.wl
         flux_rebin = rebin_spec(wl, flux, wavenew)
-        print(flux_rebin.shape,v_new.shape)
+        # print(flux_rebin.shape,v_new.shape)
         lfs.append(np.array(flux_rebin) + a)
         vs.append(v_new)
+        wls.append(wavenew)
         a += ap
-    return vs, lfs
+    if wl is True:
+        return wls,vs,lfs
+    else:
+        return vs, lfs
 
 # def plot_TVS(filelist, linelist ):
 #     for line in linelist:

@@ -730,17 +730,12 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         if show =='on':
             plt.show()
         plt.close()
-def plot_SNR_orders(linelist, plot_save_folder,show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None,style=None,from_order=True,es_top=0,es_bottom=0):
+def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None,style=None,from_order=True,es_top=0,es_bottom=0,day='on'):
     k=0
-    if datafilefolder == None:
-        print('a')
-        filelist = open_masterfiles.apo_demetra_orders()
-    else:
-        filelist = open_masterfiles.apo_demetra_orders(path=datafilefolder)
-        print('b')
-    print(filelist)
+
     bccor = filelist[0].baricentric_correction
     vrad= -18.5
+    date = filelist[0].time_and_date[0:6]
     velo_shift = 0
     if style is not None:
         plt.style.use(style)
@@ -762,14 +757,21 @@ def plot_SNR_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
         # print(v[sgn] - v[0])
         vs,lws = airmass.overplot_masterfiles_order(filelist,line)
+
         ax1 =plt.subplot(211)
         ax2 = plt.subplot(223)
         ax3 = plt.subplot(224)
+
         for i,spec in enumerate(lws):
             ax1.plot(vs[i],spec,linewidth=1 )
-        ax1.set_title(lineinfo[6+k])
+            [normv_1, normv_2, normv_3, normv_4], uselessvar = airmass.wl_to_velocity(
+                [lineinfo[2 + k], lineinfo[3 + k], lineinfo[4 + k], lineinfo[5 + k]], lineinfo[1 + k])
+
+            ax2.plot(vs[i][(vs[i] > normv_1)&(vs[i]<normv_2)],spec[(vs[i]>normv_1)&(vs[i]<normv_2)])
+            ax3.plot(vs[i][(vs[i]>normv_3)&(vs[i]<normv_4)],spec[(vs[i]>normv_3)&(vs[i]<normv_4)])
+        ax1.set_title(lineinfo[6+k]+'  '+ date)
         # ax1.legend()
-        # ax1.set_xlim([-600,600])
+        ax1.set_xlim([-vrange,vrange])
         spec2 = lws[0][(vs[0]>-1000)& (vs[0]<1000)]
         mini = np.floor(20*np.amin(spec2))/20
         maxi = np.ceil(20*np.amax(spec2))/20
@@ -790,9 +792,6 @@ def plot_SNR_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         # ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
         # if line[2]==5875.621:
         #     TVS2 = np.array(TVS)*1.4
-
-        ax2.plot([1,2],[3,4])
-        ax3.plot([1, 2], [3, 4])
         # if sg == 'on':
         #     ax2.plot(v,TVS_smoothed,color='r',linestyle='dashed')
         # if oneline == 'on':
@@ -832,7 +831,7 @@ def plot_SNR_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         # else:
         #     ax2.set_xlim([-vrange,vrange])
         if save =='on':
-            plt.savefig(plot_save_folder + r'\\APO_orders_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_TVS.pdf',format='pdf', dpi=1200)
+            plt.savefig(plot_save_folder + r'\\APO_orders_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+date+'_SNR.pdf',format='pdf', dpi=1200)
         if show =='on':
             plt.show()
         plt.close()

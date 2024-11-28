@@ -14,6 +14,8 @@ import matplotlib.style
 import datareduc
 import os
 import Make_Plots
+import open_masterfiles
+from collections import defaultdict
 matplotlib.style.use('classic')
 vsini =127
 c_light = 299792.458
@@ -79,7 +81,6 @@ Path_check.dir_check(folder_of_this_file)
 # TVS eShel Demetra
 # datareduc.plot_TVS_eShel_masterfile(apo_lines, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\apo\demetra_altair_snr100',show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\snr100\\',datareductionprogram='Demetra', norm_boundaries='on')
 # datareduc.plot_TVS_orders(apo_lines, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\apo\from_orders',show='off',save='on',sg='off',oneline='on', siglvlline=0.01, norm_boundaries='on')
-datareduc.plot_SNR_orders(apo_lines, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\apo\from_orders',show='on',save='o',sg='off',oneline='on', siglvlline=0.01, norm_boundaries='on')
 
 # pf1=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\all'
 # pf2=r'D:\peter\Master_Thesis\Datareduction\Plots\TVS\demetra_from_orders\ll_new\snr_100'
@@ -117,12 +118,22 @@ data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\full_nigh
 data_full_night_110= str(converted_Data_folder)+r'\demetra\with_orders\full_night\snr_110\\'
 data_full_night_100= str(converted_Data_folder)+r'\demetra\with_orders\full_night\snr_100\\'
 data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
-
+data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
 # pfs=[pf_dem_final_all,pf_dem_final_90,pf_dem_final_100]
 # dfs=[df1,df2,df3]
 dfs_full_night = [data_full_night_110,data_full_night_100]
 pfs_full_night = [pf_full_night_110,pf_full_night_100]
 audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
+
+groups = defaultdict(list)
+for obj in data_individual_list:
+    # print(obj.time_and_date)
+    groups[obj.time_and_date[0:5]].append(obj)
+new_list = groups.values()
+list_of_day_data = list(new_list)
+for day in list_of_day_data:
+    datareduc.plot_SNR_orders(apo_lines,day, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR',show='off',save='on',sg='off',oneline='on', siglvlline=0.01, norm_boundaries='on',vrange=1000)
+
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):
 # datareduc.plot_TVS_orders(apo_lines3, plot_save_folder=pf_full_night_all, show='on', save='off', sg='off', oneline='on', siglvlline=0.01,datafilefolder=data_full_night_all, norm_boundaries='on',vrange=1000,from_order=False)
@@ -150,5 +161,5 @@ audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all
 #             datafile_folder_mercator=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\test\\',
 #                     save=True, show=False)
 
-datareduc.create_JoO_apo_demetra(data_individual,stacked=False)
+# datareduc.create_JoO_apo_demetra(data_individual,stacked=False)
 # datareduc.create_JoO_mercator(df_lp)

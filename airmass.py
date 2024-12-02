@@ -276,6 +276,22 @@ def normalize(wls,flux,a,b,c,d,startwl,endwl,xtype = 'wave',linecenter = None):
 
     return linewave, fluxarray,nnf,lineflux, fit
 
+def normalize_single_part(x,y,start=None,stop=None):
+    slope, height = np.polyfit(x, y, 1)
+    # print 'slope and height are', slope, height
+    fit = np.poly1d([slope, height])
+    if start == None and stop ==None:
+        xslice=x
+        yslice=y
+    else:
+        xslice = x[(x > start) & (x < stop)]
+        yslice= y[(x > start) & (x < stop)]
+    norm_y = []
+    # print linewave
+    for i, j in enumerate(xslice):
+        norm_y.append(yslice[i] / fit(j))
+    fluxarray = np.array(norm_y)
+
 def snr(wl,flux):
 
     # wl,data = extractdata(35, file)
@@ -296,7 +312,9 @@ def snr(wl,flux):
     return stnr
 
 
-def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_size=0.1):
+
+    return xslice, fluxarray, fit
+def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_size=0.1,separate=False):
     if len(boundaries)==2:
         [a,d]=boundaries
     elif len(boundaries)==4:
@@ -318,11 +336,21 @@ def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_siz
         lw,lf, _,_,_ = normalize(wl_rebin,flux_rebin,a,b,c,d,wl_rebin[0],wl_rebin[-1])
     else:
         lw,lf, _,_,_ = normalize(wlslice,slice,a,b,c,d,a,d)
-    normwave = np.hstack((lw[(lw > a) & (lw < b)], lw[(lw > c) & (lw < d)]))
-    normflux = np.hstack((lf[(lw > a) & (lw < b)], lf[(lw > c) & (lw < d)]))
-    avgcounts = np.average(normflux)
-    stand_dev = np.std(normflux)
-    stnr = avgcounts/stand_dev
+    if separate is False:
+        normwave = np.hstack((lw[(lw > a) & (lw < b)], lw[(lw > c) & (lw < d)]))
+        normflux = np.hstack((lf[(lw > a) & (lw < b)], lf[(lw > c) & (lw < d)]))
+        avgcounts = np.average(normflux)
+        stand_dev = np.std(normflux)
+        stnr = avgcounts/stand_dev
+    if separate is True:
+        left_part_wl = lw[(lw > a) & (lw < b)]
+        left_part_flux = lf[(lw > a) & (lw < b)]
+        right_part_wl = lw[(lw > c) & (lw < d)]
+        right_part_flux =  lf[(lw > c) & (lw < d)]
+        slope, height = np.polyfit(normwave, normflux, 1)
+        # print 'slope and height are', slope, height
+        fit = np.poly1d([slope, height])
+
     return stnr
 
 

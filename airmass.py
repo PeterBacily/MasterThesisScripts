@@ -291,6 +291,8 @@ def normalize_single_part(x,y,start=None,stop=None):
     for i, j in enumerate(xslice):
         norm_y.append(yslice[i] / fit(j))
     fluxarray = np.array(norm_y)
+    return xslice, fluxarray, fit
+
 
 def snr(wl,flux):
 
@@ -313,7 +315,7 @@ def snr(wl,flux):
 
 
 
-    return xslice, fluxarray, fit
+
 def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_size=0.1,separate=False):
     if len(boundaries)==2:
         [a,d]=boundaries
@@ -347,10 +349,7 @@ def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_siz
         left_part_flux = lf[(lw > a) & (lw < b)]
         right_part_wl = lw[(lw > c) & (lw < d)]
         right_part_flux =  lf[(lw > c) & (lw < d)]
-        slope, height = np.polyfit(normwave, normflux, 1)
-        # print 'slope and height are', slope, height
-        fit = np.poly1d([slope, height])
-
+        left_part_normflux = normalize_single_part(lw,lf)
     return stnr
 
 

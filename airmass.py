@@ -349,7 +349,19 @@ def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_siz
         left_part_flux = lf[(lw > a) & (lw < b)]
         right_part_wl = lw[(lw > c) & (lw < d)]
         right_part_flux =  lf[(lw > c) & (lw < d)]
-        left_part_normflux = normalize_single_part(lw,lf)
+        left_part_normwave,left_part_normflux,left_fit  = normalize_single_part(left_part_wl,left_part_flux)
+        right_part_normwave, right_part_normflux, right_fit = normalize_single_part(right_part_wl, right_part_flux)
+        stds = []
+        weights = []
+        for normflux in [left_part_normflux,right_part_normflux]:
+            avgcounts = np.average(normflux)
+            stand_dev = np.std(normflux)
+            sr_part = avgcounts/stand_dev
+            stds.append(sr_part)
+            weights.append(len(normflux))
+        print(weights)
+        stnr = np.average(stds,weights=weights)
+
     return stnr
 
 

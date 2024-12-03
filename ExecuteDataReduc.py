@@ -45,6 +45,7 @@ apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line46
              'line4861', 'line4921', 'line6678', 'line4471']
 apo_lines2 = ['line6562']
 apo_lines3 =[ 'line5875','line6562','line4861',  'line6678' ]
+ha_hb_linelist = ['line6562','line4861']
 # esb=0
 # est=-0.05
 # # shw,sv = 'on', 'off'
@@ -132,7 +133,7 @@ for obj in data_individual_list:
 new_list = groups.values()
 list_of_day_data = list(new_list)
 for day in list_of_day_data:
-    datareduc.plot_SNR_orders(apo_lines,day, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR',show='on',save='off',sg='off',oneline='on', siglvlline=0.01, norm_boundaries='on',vrange=1000)
+    datareduc.plot_SNR_orders(ha_hb_linelist,day, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR',show='on',save='off',sg='off',oneline='on', siglvlline=0.01, norm_boundaries='on',vrange=1000)
 
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):

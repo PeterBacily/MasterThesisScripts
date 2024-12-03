@@ -133,7 +133,7 @@ for obj in data_individual_list:
 new_list = groups.values()
 list_of_day_data = list(new_list)
 for day in list_of_day_data:
-    datareduc.plot_SNR_orders(ha_hb_linelist,day, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR',show='on',save='off',sg='off',oneline='on', siglvlline=0.01, norm_boundaries='on',vrange=1000)
+    datareduc.plot_SNR_orders(ha_hb_linelist,day, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR',show='on',save='off', norm_boundaries='on',vrange=1000,subplotylim=[0.97,1.03])
 
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):

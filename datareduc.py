@@ -730,7 +730,7 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         if show =='on':
             plt.show()
         plt.close()
-def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',sg='off',oneline='on', siglvlline=0.01,datafilefolder=None,norm_boundaries='on',vrange=None,style=None,from_order=True,es_top=0,es_bottom=0,day='on'):
+def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',norm_boundaries='on',vrange=None,style=None,from_order=True,es_top=0,es_bottom=0,subplotylim = [None,None]):
     k=0
 
     bccor = filelist[0].baricentric_correction
@@ -789,6 +789,10 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',sg=
             # ax1.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)
         ax1.axvline(vsini, color='0.5', linestyle=':', linewidth=1)
         ax1.axvline(-vsini, color='0.5', linestyle=':', linewidth=1)
+        ax2.set_ylim(subplotylim[0],subplotylim[1])
+        ax3.set_ylim(subplotylim[0], subplotylim[1])
+        plt.ylabel('Normalized flux')
+        plt.xlabel('v (km/s)')
         # ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
         # ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
         # if line[2]==5875.621:

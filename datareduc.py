@@ -750,36 +750,37 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',sg=
         # print filelist
         # swl = line[3]-40
         # ewl = line[6]+40
-        lw,TVS,v,n =airmass.TVS_masterfiles_order(filelist,line)
-        print(len(v))
-        print(len(TVS))
-        sgn = 101  # window size for SavitzkyGolay (must be odd integer)
-        TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
+        # lw,TVS,v,n =airmass.TVS_masterfiles_order(filelist,line)
+        # sgn = 101  # window size for SavitzkyGolay (must be odd integer)
+        # TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
         # print(v[sgn] - v[0])
-        vs,lws = airmass.overplot_masterfiles_order(filelist,line)
-
+        wls,vs,lfs = airmass.overplot_masterfiles_order(filelist,line,rebin_size=0.1,return_wl=True)
+        boundary_1,boundary_2,boundary_3,boundary_4 = lineinfo[2 + k], lineinfo[3 + k], lineinfo[4 + k], lineinfo[5 + k]
+        boundaries = [boundary_1,boundary_2,boundary_3,boundary_4]
         ax1 =plt.subplot(211)
         ax2 = plt.subplot(223)
         ax3 = plt.subplot(224)
 
-        for i,spec in enumerate(lws):
+        for i,spec in enumerate(lfs):
+            snr = airmass.snr_2(wls[i],spec,boundaries=boundaries,rebin=False,separate=True)
+            print(snr)
             ax1.plot(vs[i],spec,linewidth=1 )
             [normv_1, normv_2, normv_3, normv_4], uselessvar = airmass.wl_to_velocity(
-                [lineinfo[2 + k], lineinfo[3 + k], lineinfo[4 + k], lineinfo[5 + k]], lineinfo[1 + k])
+                boundaries, lineinfo[1 + k])
 
             ax2.plot(vs[i][(vs[i] > normv_1)&(vs[i]<normv_2)],spec[(vs[i]>normv_1)&(vs[i]<normv_2)])
             ax3.plot(vs[i][(vs[i]>normv_3)&(vs[i]<normv_4)],spec[(vs[i]>normv_3)&(vs[i]<normv_4)])
         ax1.set_title(lineinfo[6+k]+'  '+ date)
         # ax1.legend()
         ax1.set_xlim([-vrange,vrange])
-        spec2 = lws[0][(vs[0]>-1000)& (vs[0]<1000)]
+        spec2 = lfs[0][(vs[0]>-1000)& (vs[0]<1000)]
         mini = np.floor(20*np.amin(spec2))/20
         maxi = np.ceil(20*np.amax(spec2))/20
         # extra_space=0.05
         ax1.set_ylim([mini-es_bottom,maxi+es_top])
         # ax1.set_ylim([0.65,1.05])
         if norm_boundaries == 'on':
-            [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
+            [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([boundary_1,boundary_2,boundary_3,boundary_4],lineinfo[1+k])
             ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
             ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
             # ax1.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)

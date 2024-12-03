@@ -712,14 +712,14 @@ def overplot_masterfiles(filelist,line,separate_lines=False):
         a += ap
     return vs, lfs
 
-def overplot_masterfiles_order(filelist,line,separate_lines=False,wl=False):
+def overplot_masterfiles_order(filelist,line,separate_lines=False,return_wl=False,rebin_size=0.1):
     vsini = 127
     lfs = []
     vs = []
     wls = []
     a = 0.0
     wl_file_1 = getattr(filelist[0], line).wl
-    wavenew = np.arange(wl_file_1[10], wl_file_1[-10], 0.1)
+    wavenew = np.arange(wl_file_1[10], wl_file_1[-10], rebin_size)
     lineinfo = getattr(filelist[0], line).lineinfo
     linecenter = lineinfo[1]
     # vrad = -18.5
@@ -745,7 +745,7 @@ def overplot_masterfiles_order(filelist,line,separate_lines=False,wl=False):
         vs.append(v_new)
         wls.append(wavenew)
         a += ap
-    if wl is True:
+    if return_wl is True:
         return wls,vs,lfs
     else:
         return vs, lfs

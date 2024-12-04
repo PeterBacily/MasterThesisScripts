@@ -757,9 +757,11 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
         wls,vs,lfs = airmass.overplot_masterfiles_order(filelist,line,rebin_size=0.1,return_wl=True)
         boundary_1,boundary_2,boundary_3,boundary_4 = lineinfo[2 + k], lineinfo[3 + k], lineinfo[4 + k], lineinfo[5 + k]
         boundaries = [boundary_1,boundary_2,boundary_3,boundary_4]
-        ax1 =plt.subplot(211)
-        ax2 = plt.subplot(223)
-        ax3 = plt.subplot(224)
+
+        fig = plt.figure()
+        ax1 =fig.add_subplot(211)
+        ax2 = fig.add_subplot(223)
+        ax3 = fig.add_subplot(224)
 
         for i,spec in enumerate(lfs):
             snr = airmass.snr_2(wls[i],spec,boundaries=boundaries,rebin=False,separate=True)
@@ -770,7 +772,7 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
 
             ax2.plot(vs[i][(vs[i] > normv_1)&(vs[i]<normv_2)],spec[(vs[i]>normv_1)&(vs[i]<normv_2)])
             ax3.plot(vs[i][(vs[i]>normv_3)&(vs[i]<normv_4)],spec[(vs[i]>normv_3)&(vs[i]<normv_4)])
-        ax1.set_title(lineinfo[6+k]+'  '+ date)
+        ax1.set_title(lineinfo[6+k]+'  '+ date, fontsize='x-large')
         # ax1.legend()
         ax1.set_xlim([-vrange,vrange])
         spec2 = lfs[0][(vs[0]>-1000)& (vs[0]<1000)]
@@ -791,8 +793,10 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
         ax1.axvline(-vsini, color='0.5', linestyle=':', linewidth=1)
         ax2.set_ylim(subplotylim[0],subplotylim[1])
         ax3.set_ylim(subplotylim[0], subplotylim[1])
-        plt.ylabel('Normalized flux')
-        plt.xlabel('v (km/s)')
+        fig.supylabel('Normalized flux',fontsize='large')
+        fig.supxlabel('v (km/s)',fontsize = 'large')
+        ax2.xaxis.set_major_locator(plt.MaxNLocator(6)) # sets number of ticks on x axis otherwise its too many overlapping ticks
+        ax3.xaxis.set_major_locator(plt.MaxNLocator(6)) # sets number of ticks on x axis to match left plot
         # ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
         # ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
         # if line[2]==5875.621:

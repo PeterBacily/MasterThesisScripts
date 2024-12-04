@@ -736,6 +736,7 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
     bccor = filelist[0].baricentric_correction
     vrad= -18.5
     date = filelist[0].time_and_date[0:6]
+    # velo_shift=bccor+vrad
     velo_shift = 0
     if style is not None:
         plt.style.use(style)
@@ -745,15 +746,7 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
             line=baseline+'_order'
         else:
             line=baseline
-        # line=baseline
         lineinfo = getattr(filelist[0], line).lineinfo
-        # print filelist
-        # swl = line[3]-40
-        # ewl = line[6]+40
-        # lw,TVS,v,n =airmass.TVS_masterfiles_order(filelist,line)
-        # sgn = 101  # window size for SavitzkyGolay (must be odd integer)
-        # TVS_smoothed = SavitzkyGolay.savitzky_golay(TVS, sgn, 4)
-        # print(v[sgn] - v[0])
         wls,vs,lfs = airmass.overplot_masterfiles_order(filelist,line,rebin_size=0.1,return_wl=True)
         boundary_1,boundary_2,boundary_3,boundary_4 = lineinfo[2 + k], lineinfo[3 + k], lineinfo[4 + k], lineinfo[5 + k]
         boundaries = [boundary_1,boundary_2,boundary_3,boundary_4]
@@ -765,7 +758,6 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
 
         for i,spec in enumerate(lfs):
             snr = airmass.snr_2(wls[i],spec,boundaries=boundaries,rebin=False,separate=True)
-            print(snr)
             ax1.plot(vs[i],spec,linewidth=1 )
             [normv_1, normv_2, normv_3, normv_4], uselessvar = airmass.wl_to_velocity(
                 boundaries, lineinfo[1 + k])
@@ -773,22 +765,16 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
             ax2.plot(vs[i][(vs[i] > normv_1)&(vs[i]<normv_2)],spec[(vs[i]>normv_1)&(vs[i]<normv_2)])
             ax3.plot(vs[i][(vs[i]>normv_3)&(vs[i]<normv_4)],spec[(vs[i]>normv_3)&(vs[i]<normv_4)])
         ax1.set_title(lineinfo[6+k]+'  '+ date, fontsize='x-large')
-        # ax1.legend()
         ax1.set_xlim([-vrange,vrange])
         spec2 = lfs[0][(vs[0]>-1000)& (vs[0]<1000)]
         mini = np.floor(20*np.amin(spec2))/20
         maxi = np.ceil(20*np.amax(spec2))/20
-        # extra_space=0.05
         ax1.set_ylim([mini-es_bottom,maxi+es_top])
-        # ax1.set_ylim([0.65,1.05])
+
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([boundary_1,boundary_2,boundary_3,boundary_4],lineinfo[1+k])
             ax1.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
             ax1.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
-            # ax1.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
-            # ax1.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
-            # ax1.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
-            # ax1.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)
         ax1.axvline(vsini, color='0.5', linestyle=':', linewidth=1)
         ax1.axvline(-vsini, color='0.5', linestyle=':', linewidth=1)
         ax2.set_ylim(subplotylim[0],subplotylim[1])
@@ -797,48 +783,6 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
         fig.supxlabel('v (km/s)',fontsize = 'large')
         ax2.xaxis.set_major_locator(plt.MaxNLocator(6)) # sets number of ticks on x axis otherwise its too many overlapping ticks
         ax3.xaxis.set_major_locator(plt.MaxNLocator(6)) # sets number of ticks on x axis to match left plot
-        # ax1.axvline(vsini, color='k', linestyle=':', linewidth=1)
-        # ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
-        # if line[2]==5875.621:
-        #     TVS2 = np.array(TVS)*1.4
-        # if sg == 'on':
-        #     ax2.plot(v,TVS_smoothed,color='r',linestyle='dashed')
-        # if oneline == 'on':
-        #     ax2.axhline(y=1, color='gray', linestyle='--')
-        # if isinstance(siglvlline, float):
-        #     Nfiles = len(filelist)
-        #     p = siglvlline
-        #     siglvl = airmass.TVS_significance_level(Nfiles, p)
-        #     ax2.axhline(y=siglvl, color='salmon', linestyle='--')
-        # # else:
-        # #     ax2.plot(v,TVS)
-        # if norm_boundaries == 'on':
-        #     [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
-        #     ax2.axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
-        #     ax2.axvspan(normv_3 + velo_shift, normv_4 + velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
-        #     # ax2.axvline(normv_1+velo_shift, color='k', linestyle='dashed', linewidth=1)
-        #     # ax2.axvline(normv_2+velo_shift, color='k', linestyle='dashed', linewidth=1)
-        #     # ax2.axvline(normv_3+velo_shift, color='k', linestyle='dashed', linewidth=1)
-        #     # ax2.axvline(normv_4+velo_shift, color='k', linestyle='dashed', linewidth=1)
-        # ax2.axvline(vsini, color='0.5', linestyle=':', linewidth=1)
-        # ax2.axvline(-vsini, color='0.5', linestyle=':', linewidth=1)
-        # # ax2.plot([v[0],v[-1]],[1,1],linestyle='dashed', linewidth=1,c='g')
-        # # ax2.plot([v[0],v[-1]],[p,p], linewidth=1,c='g')
-        # # print len(v)
-        # # print len(TVS)
-        # # print v
-        # TVS2 = np.array(TVS)[(v>-200)& (v<200)]
-        # # print TVS2
-        # # print np.amax(TVS2)
-        # maxi2 = np.ceil(np.amax(TVS2))
-        # ax2.set_ylim([0,maxi2])
-        # ax2.set_xlabel('V (km/s)')
-        # ax1.set_ylabel('Normlized Flux')
-        # ax2.set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
-        # if vrange== None:
-        #     ax2.set_xlim([normv_1-200,normv_4+200])
-        # else:
-        #     ax2.set_xlim([-vrange,vrange])
         if save =='on':
             plt.savefig(plot_save_folder + r'\\APO_orders_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+date+'_SNR.pdf',format='pdf', dpi=1200)
         if show =='on':

@@ -359,7 +359,6 @@ def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_siz
             sr_part = avgcounts/stand_dev
             stds.append(sr_part)
             weights.append(len(normflux))
-        print(weights)
         stnr = np.average(stds,weights=weights)
 
     return stnr

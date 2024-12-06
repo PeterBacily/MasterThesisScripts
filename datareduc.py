@@ -730,14 +730,16 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         if show =='on':
             plt.show()
         plt.close()
-def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',norm_boundaries='on',vrange=None,style=None,from_order=True,es_top=0,es_bottom=0,subplotylim = [None,None]):
+def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,plot_avg=True,show='off',save='on',norm_boundaries='on',vrange=None,style=None,from_order=True,es_top=0,es_bottom=0,subplotylim = [None,None]):
     k=0
-
+    if file_full_night == None:
+        plot_avg=False
     bccor = filelist[0].baricentric_correction
     vrad= -18.5
     date = filelist[0].time_and_date[0:6]
     # velo_shift=bccor+vrad
     velo_shift = 0
+    rebin_bin_size = 0.1
     if style is not None:
         plt.style.use(style)
 
@@ -747,7 +749,7 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
         else:
             line=baseline
         lineinfo = getattr(filelist[0], line).lineinfo
-        wls,vs,lfs = airmass.overplot_masterfiles_order(filelist,line,rebin_size=0.1,return_wl=True)
+        wls,vs,lfs = airmass.overplot_masterfiles_order(filelist,line,rebin_size=rebin_bin_size,return_wl=True)
         boundary_1,boundary_2,boundary_3,boundary_4 = lineinfo[2 + k], lineinfo[3 + k], lineinfo[4 + k], lineinfo[5 + k]
         boundaries = [boundary_1,boundary_2,boundary_3,boundary_4]
 
@@ -755,15 +757,24 @@ def plot_SNR_orders(linelist,filelist, plot_save_folder,show='off',save='on',nor
         ax1 =fig.add_subplot(211)
         ax2 = fig.add_subplot(223)
         ax3 = fig.add_subplot(224)
-
+        [normv_1, normv_2, normv_3, normv_4], uselessvar = airmass.wl_to_velocity(
+            boundaries, lineinfo[1 + k])
         for i,spec in enumerate(lfs):
             snr = airmass.snr_2(wls[i],spec,boundaries=boundaries,rebin=False,separate=True)
             ax1.plot(vs[i],spec,linewidth=1 )
-            [normv_1, normv_2, normv_3, normv_4], uselessvar = airmass.wl_to_velocity(
-                boundaries, lineinfo[1 + k])
-
             ax2.plot(vs[i][(vs[i] > normv_1)&(vs[i]<normv_2)],spec[(vs[i]>normv_1)&(vs[i]<normv_2)])
             ax3.plot(vs[i][(vs[i]>normv_3)&(vs[i]<normv_4)],spec[(vs[i]>normv_3)&(vs[i]<normv_4)])
+        if plot_avg is True:
+            linedata = getattr(file_full_night, line)
+            wl=linedata.wl
+            wavenew = np.arange(wl[10], wl[-10], rebin_bin_size)
+            linecenter = lineinfo[1]
+            v_new = airmass.wl_to_velocity(wavenew, linecenter)[0]
+            flux = linedata.flux
+            flux_rebin = airmass.rebin_spec(wl, flux, wavenew)
+            ax1.plot(vs[i], spec, linewidth=1)
+            ax2.plot(vs[i][(vs[i] > normv_1) & (vs[i] < normv_2)], spec[(vs[i] > normv_1) & (vs[i] < normv_2)])
+            ax3.plot(vs[i][(vs[i] > normv_3) & (vs[i] < normv_4)], spec[(vs[i] > normv_3) & (vs[i] < normv_4)])
         ax1.set_title(lineinfo[6+k]+'  '+ date, fontsize='x-large')
         ax1.set_xlim([-vrange,vrange])
         spec2 = lfs[0][(vs[0]>-1000)& (vs[0]<1000)]

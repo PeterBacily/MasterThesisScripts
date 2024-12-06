@@ -17,9 +17,11 @@ import Path_check
 import os
 import pickle
 
-
-a =[[1,1,1],[10,10,10],[100,100,100]]
-print(np.average(a,axis=0))
+a=[1,2,3]
+print(a[0:])
+print(type(a[0:-2]),type(a[-1]))
+# a =[[1,1,1],[10,10,10],[100,100,100]]
+# print(np.average(a,axis=0))
 # b=[a[0],a[1]]
 exit()
 # a=6

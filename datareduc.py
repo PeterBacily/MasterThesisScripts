@@ -761,7 +761,7 @@ def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,p
             boundaries, lineinfo[1 + k])
         for i,spec in enumerate(lfs):
             snr = airmass.snr_2(wls[i],spec,boundaries=boundaries,rebin=False,separate=True)
-            ax1.plot(vs[i],spec,linewidth=1 )
+            ax1.plot(vs[i],spec,linewidth=1 ,label = filelist[i].time_and_date)
             ax2.plot(vs[i][(vs[i] > normv_1)&(vs[i]<normv_2)],spec[(vs[i]>normv_1)&(vs[i]<normv_2)])
             ax3.plot(vs[i][(vs[i]>normv_3)&(vs[i]<normv_4)],spec[(vs[i]>normv_3)&(vs[i]<normv_4)])
         if plot_avg is True:
@@ -772,9 +772,9 @@ def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,p
             v_new = airmass.wl_to_velocity(wavenew, linecenter)[0]
             flux = linedata.flux
             flux_rebin = airmass.rebin_spec(wl, flux, wavenew)
-            ax1.plot(vs[i], spec, linewidth=1)
-            ax2.plot(vs[i][(vs[i] > normv_1) & (vs[i] < normv_2)], spec[(vs[i] > normv_1) & (vs[i] < normv_2)])
-            ax3.plot(vs[i][(vs[i] > normv_3) & (vs[i] < normv_4)], spec[(vs[i] > normv_3) & (vs[i] < normv_4)])
+            ax1.plot(v_new, flux_rebin, linewidth=2,color='black',label=date+' Average')
+            ax2.plot(v_new[(v_new > normv_1) & (v_new < normv_2)], flux_rebin[(v_new > normv_1) & (v_new < normv_2)],linewidth=2,color='black')
+            ax3.plot(v_new[(v_new > normv_3) & (v_new < normv_4)], flux_rebin[(v_new > normv_3) & (v_new < normv_4)],linewidth=2,color='black')
         ax1.set_title(lineinfo[6+k]+'  '+ date, fontsize='x-large')
         ax1.set_xlim([-vrange,vrange])
         spec2 = lfs[0][(vs[0]>-1000)& (vs[0]<1000)]
@@ -794,6 +794,10 @@ def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,p
         fig.supxlabel('v (km/s)',fontsize = 'large')
         ax2.xaxis.set_major_locator(plt.MaxNLocator(6)) # sets number of ticks on x axis otherwise its too many overlapping ticks
         ax3.xaxis.set_major_locator(plt.MaxNLocator(6)) # sets number of ticks on x axis to match left plot
+        box = ax1.get_position() # get values of ax1 box
+        ax1.set_position([box.x0, box.y0, box.width * 0.9, box.height]) # use values of ax1 box to shrink it horizontally in order to fit legend box
+        ax1.legend(prop={'size':8}, loc='center left', bbox_to_anchor=(1, 0.5),labelspacing = 2)
+                  # fancybox=True, shadow=True
         if save =='on':
             plt.savefig(plot_save_folder + r'\\APO_orders_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+date+'_SNR.pdf',format='pdf', dpi=1200)
         if show =='on':

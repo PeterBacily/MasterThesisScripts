@@ -120,20 +120,25 @@ data_full_night_110= str(converted_Data_folder)+r'\demetra\with_orders\full_nigh
 data_full_night_100= str(converted_Data_folder)+r'\demetra\with_orders\full_night\snr_100\\'
 data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
 data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
+data_full_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
 # pfs=[pf_dem_final_all,pf_dem_final_90,pf_dem_final_100]
 # dfs=[df1,df2,df3]
 dfs_full_night = [data_full_night_110,data_full_night_100]
 pfs_full_night = [pf_full_night_110,pf_full_night_100]
 audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
-
 groups = defaultdict(list)
 for obj in data_individual_list:
     # print(obj.time_and_date)
     groups[obj.time_and_date[0:5]].append(obj)
 new_list = groups.values()
 list_of_day_data = list(new_list)
+# for file in data_full_list:
+#     print(file.time_and_date[0:6])
 for day in list_of_day_data:
-    datareduc.plot_SNR_orders(ha_hb_linelist,day, plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR',show='on',save='off', norm_boundaries='on',vrange=1000,subplotylim=[0.97,1.03])
+    tad= day[0].time_and_date[0:6]
+    # print(tad)
+    full_day_file=[x for x in data_full_list if x.time_and_date[0:6] == tad][0]
+    datareduc.plot_SNR_orders(ha_hb_linelist,day, file_full_night = full_day_file,plot_avg=True,plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR',show='on',save='off', norm_boundaries='on',vrange=1000,subplotylim=[0.97,1.03])
 
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):

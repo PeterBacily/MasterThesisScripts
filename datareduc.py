@@ -730,6 +730,42 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         if show =='on':
             plt.show()
         plt.close()
+
+
+def plot_snr_test(filelist,boundaries,rebin=True,rebin_size=0.1):
+    for file in filelist:
+        wl=file.wl_original
+        flux = file.flux_original
+        if len(boundaries) == 2:
+            [a, d] = boundaries
+        elif len(boundaries) == 4:
+            [a, b, c, d] = boundaries
+        else:
+            raise Exception('boundaries  needs to be either list of either 2 or 4 values')
+        start = a - 2
+        stop = d + 2
+        slice = flux[(wl > start) & (wl < stop)]
+        wlslice = wl[(wl > start) & (wl < stop)]
+
+        if len(boundaries) == 2:
+            l = int((len(wlslice) - 1) / 2)
+            b = l
+            c = l + 1
+        if rebin is True:
+            wl_rebin = np.arange(wlslice[10], wlslice[-10], rebin_size)
+            flux_rebin = airmass.rebin_spec(wlslice, slice, wl_rebin)
+            lw, lf, _, _, _ = airmass.normalize(wl_rebin, flux_rebin, a, b, c, d, wl_rebin[0], wl_rebin[-1])
+        else:
+            lw, lf, _, _, _ = airmass.normalize(wlslice, slice, a, b, c, d, a, d)
+        note=file.mark
+        td = file.time_and_date
+        plt.plot(lw,lf,label = td+note[-12:])
+    plt.legend()
+    plt.show()
+    plt.close()
+
+
+
 def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,plot_avg=True,show='off',save='on',norm_boundaries='on',vrange=None,style=None,from_order=True,es_top=0,es_bottom=0,subplotylim = [None,None]):
     k=0
     if file_full_night == None:

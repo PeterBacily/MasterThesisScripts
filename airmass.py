@@ -992,8 +992,9 @@ def fitfraun_demetra(file):
 
 
 
-def normalize_fluxarray(flux,SG = False):
-    wl = range(len(flux))
+def normalize_fluxarray(flux,wl=None,SG = False):
+    if wl is None:
+        wl = range(len(flux))
     fitparams = np.polyfit(wl,flux,1)
     fitparams2 = np.polyfit(wl,flux,3)
     x1 = fitparams[0]

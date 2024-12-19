@@ -732,7 +732,7 @@ def plot_TVS_orders(linelist, plot_save_folder,show='off',save='on',sg='off',one
         plt.close()
 
 
-def plot_snr_test(filelist,boundaries,rebin=True,rebin_size=0.1):
+def plot_snr_test(filelist,boundaries,rebin=True,rebin_size=0.5):
     for file in filelist:
         wl=file.wl_original
         flux = file.flux_original

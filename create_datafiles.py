@@ -199,8 +199,8 @@ def run_cddo(snr, df,sf,note=0,filename_prefix=''):
     savefolder =sf
     linelist = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_3.txt'
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=True,note=note,filename_prefix=filename_prefix)
-notitie = 'All darks, closest flat flatfields and single night bias, aD_csfF_snB'
-run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response2\final_spectra\full_night\snr_test\20160312\csf\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\SNR_comp\comp\\', note=notitie,filename_prefix='aD_csfF_snB_')
+notitie = 'half darks, closest flat flatfields and single night bias, hD_afF_snB'
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response2\final_spectra\full_night\snr_test\20160312\hd\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\SNR_comp\comp\\', note=notitie,filename_prefix='hD_csfF_snB')
 # run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Individual\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\Individual\\')
 # run_cddo(snr=90)
 def run_test_do():

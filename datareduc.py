@@ -746,7 +746,7 @@ def plot_snr_test(filelist,boundaries,rebin=True,rebin_size=0.5):
         stop = d + 2
         slice = flux[(wl > start) & (wl < stop)]
         wlslice = wl[(wl > start) & (wl < stop)]
-
+        snr=airmass.snr_2(wl, flux, boundaries=boundaries, rebin=True, rebin_size=rebin_size, separate=False)
         if len(boundaries) == 2:
             l = int((len(wlslice) - 1) / 2)
             b = l
@@ -755,10 +755,13 @@ def plot_snr_test(filelist,boundaries,rebin=True,rebin_size=0.5):
             wl_rebin = np.arange(wlslice[10], wlslice[-10], rebin_size)
             flux_rebin = airmass.rebin_spec(wlslice, slice, wl_rebin)
             lw, lf, _, _, _ = airmass.normalize(wl_rebin, flux_rebin, a, b, c, d, wl_rebin[0], wl_rebin[-1])
+            snr = airmass.snr_2(wl, flux, boundaries=boundaries, rebin=True, rebin_size=rebin_size, separate=False)
         else:
             lw, lf, _, _, _ = airmass.normalize(wlslice, slice, a, b, c, d, a, d)
+            snr = airmass.snr_2(wl, flux, boundaries=boundaries, rebin=False, rebin_size=rebin_size, separate=False)
         note=file.mark
         td = file.time_and_date
+        print(note, 'snr=',snr)
         plt.plot(lw,lf,label = td+note[-12:])
     plt.legend()
     plt.show()

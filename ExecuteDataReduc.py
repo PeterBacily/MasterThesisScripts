@@ -130,6 +130,7 @@ snr_comp_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\
 groups = defaultdict(list)
 for obj in data_individual_list:
     # print(obj.time_and_date)
+
     groups[obj.time_and_date[0:5]].append(obj)
 new_list = groups.values()
 list_of_day_data = list(new_list)

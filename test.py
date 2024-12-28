@@ -28,7 +28,8 @@ data_audela = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\
 filelist_merc=open_masterfiles.mercator(data_merc)
 filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
 filelist_audela = open_masterfiles.apo(data_audela)
-data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
+# data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
+data_individual = str(converted_Data_folder)+r'\demetra\with_orders\all_darks\single_obs\\'
 # for file in filelist_merc:
 #     print(file.header['CDELT1'])
 #     nf_ha = file.line6562.normalizationflux
@@ -85,7 +86,7 @@ order_instance = airmass.find_order(wlpiece, data_individual_list[0])
 wl_o = order_instance.wl_original
 flux_o = order_instance.flux_original
 wl_ar_slice, flux_ar_slice = airmass.slice_spec(wl_o, flux_o, wlpiece[0] - 20, wlpiece[1] + 20)
-wl_rebin = np.arange(wl_ar_slice[10], wl_ar_slice[-5], 0.1)
+wl_rebin = np.arange(wl_ar_slice[10], wl_ar_slice[-5], 0.5)
 groups = defaultdict(list)
 
 for obj in data_individual_list:

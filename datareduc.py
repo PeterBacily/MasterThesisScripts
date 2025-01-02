@@ -838,7 +838,7 @@ def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,p
         ax1.legend(prop={'size':8}, loc='center left', bbox_to_anchor=(1, 0.5),labelspacing = 2)
                   # fancybox=True, shadow=True
         if save =='on':
-            plt.savefig(plot_save_folder + r'\\APO_orders_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+date+'_SNR.pdf',format='pdf', dpi=1200)
+            plt.savefig(plot_save_folder + r'\\APO_orders_' + lineinfo[0] + str(int(np.round(lineinfo[1])))+'_'+date.replace(" ", "_")+'_SNR.pdf',format='pdf', dpi=1200)
         if show =='on':
             plt.show()
         plt.close()

@@ -811,7 +811,7 @@ def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,p
             v_new = airmass.wl_to_velocity(wavenew, linecenter)[0]
             flux = linedata.flux
             flux_rebin = airmass.rebin_spec(wl, flux, wavenew)
-            ax1.plot(v_new, flux_rebin, linewidth=2,color='black',label=date+' Average')
+            ax1.plot(v_new, flux_rebin, linewidth=1.5,color='black',label=date+' Average')
             ax2.plot(v_new[(v_new > normv_1) & (v_new < normv_2)], flux_rebin[(v_new > normv_1) & (v_new < normv_2)],linewidth=2,color='black')
             ax3.plot(v_new[(v_new > normv_3) & (v_new < normv_4)], flux_rebin[(v_new > normv_3) & (v_new < normv_4)],linewidth=2,color='black')
         ax1.set_title(lineinfo[6+k]+'  '+ date, fontsize='x-large')

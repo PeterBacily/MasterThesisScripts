@@ -149,7 +149,7 @@ def snr_orders(data_individual_list,data_full_list):
     # for day in list_of_day_data:
     #     li=day[0].line6562.lineinfo
     #     datareduc.plot_snr_test(day,li[2:6] )
-snr_orders(data_individual_list,data_full_list)
+# snr_orders(data_individual_list,data_full_list)
 
 
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')

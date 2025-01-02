@@ -112,7 +112,7 @@ def time_from_filename(filename):
     b=str(a.stem)[-15:]
     c=b[:8]+b[9:]
     return(int(c))
-def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file,snrtreshhold=None,vshift=True,filename_prefix='',note=0):
+def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file,snrtreshhold=None,vshift=True,filename_prefix='',note=0,rebin_size=0.5):
     zipfiles = sorted(glob.glob(datafolder+r'*.zip'), key=lambda x: time_from_filename(x))
     print(zipfiles)
     full_spec_files = sorted(glob.glob(datafolder+r'*.fit'), key=lambda x: time_from_filename(x))
@@ -120,7 +120,7 @@ def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file,snrtresh
     for i in range(len(zipfiles)):
         if str(Path(zipfiles[i]).stem)[-15:] ==str(Path(full_spec_files[i]).stem)[-15:]:
             print(str(i))
-            orders_class_object=Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=linelist_file,velo_shift=vshift,mark=note)
+            orders_class_object=Datafile_apo_demetra_with_orders(zipfiles[i],full_spec_files[i],ll_file=linelist_file,velo_shift=vshift,mark=note,rebin_size=rebin_size)
             dl, dl2 = airmass.split_date(orders_class_object.header['DATE-OBS'])
             snr=orders_class_object.snr_original
             savename = savefolder + filename_prefix + orders_class_object.observatory + '_' + dl[0] + dl[1] + dl[2] + dl[3] + '.txt'
@@ -192,15 +192,19 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,save_folder=datafile_fold
 
 
 
-def run_cddo(snr, df,sf,note=0,filename_prefix=''):
+def run_cddo(snr, df,sf,note=0,filename_prefix='',rebin_size=0.5):
     # datafolder = str(Data_folder)+r'\Demetra\Individual\\'
     datafolder =df
     # savefolder = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
     savefolder =sf
     linelist = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_3.txt'
-    create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=True,note=note,filename_prefix=filename_prefix)
-notitie = 'all darks, same night flat flatfields and same night bias, aD_csfF_snB'
-run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\combined\\', note=notitie)
+    create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=True,note=note,filename_prefix=filename_prefix,rebin_size=rebin_size)
+notitie = 'rebin:0.5A, all darks, same night flat flatfields and same night bias, aD_csfF_snB_05'
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin01\single_obs\\', note=notitie,rebin_size=0.1)
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin01\combined\\', note=notitie,rebin_size=0.1)
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin02\single_obs\\', note=notitie,rebin_size=0.2)
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin02\combined\\', note=notitie,rebin_size=0.2)
+
 # run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Individual\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\Individual\\')
 # run_cddo(snr=90)
 def run_test_do():

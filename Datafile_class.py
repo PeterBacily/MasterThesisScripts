@@ -88,7 +88,7 @@ def open_linelist(path):
     return b
 
 class single_order:
-    def __init__(self, filepath,order_number,order_number_demetra,v_rad=-18.5,velo_shift=True):
+    def __init__(self, filepath,order_number,order_number_demetra,v_rad=-18.5,velo_shift=True,step=0.5):
         self.order_number_demetra =order_number_demetra
         self.order_number = order_number
         with pf.open(filepath) as a:
@@ -110,7 +110,7 @@ class single_order:
             vdif=(self.wl_original[20]/self.wl_original_no_v_cor[20]-1)*299792.458
             # print(self.v_shift,vdif)
             self.flux_original = a[0].data
-            self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original,step=0.1)
+            self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original,step=step)
             self.wl_start = self.wl_original[0]
             self.wl_end = self.wl_original[-1]
             self.wl_avg = np.average([self.wl_start, self.wl_end])
@@ -135,7 +135,7 @@ class Datafile_apo_demetra_with_orders:
      ['O_III', 5592.37, 5586.0, 5587.0, 5598.0, 5599.0, 'O III 5592'],
      ['C_IV', 5801.33, 5793.8, 5796.2, 5817.1, 5819.5, 'C IV 5801']]
 
-    def __init__(self, orderfiles,fullspecfile,ll_file=None,v_rad = -18.5,i='n/a',mark = 0,velo_shift=True):
+    def __init__(self, orderfiles,fullspecfile,ll_file=None,v_rad = -18.5,i='n/a',mark = 0,velo_shift=True,rebin_size=0.5):
         if ll_file == None:
             self.linelist = self.linelist_standard
         else:
@@ -182,7 +182,7 @@ class Datafile_apo_demetra_with_orders:
         self.wl_original_no_v_cor = np.arange(naxis1) * cdelt1 + crval1
         self.wl_original = self.wl_original_no_v_cor * self.wl_offset_factor
         self.flux_original = fullspecdata[0].data
-        self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original)
+        self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original,step=rebin_size)
         self.available_lines = []
         self.snr_original =airmass.snr(self.wl_original,self.flux_original)
         self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
@@ -191,7 +191,7 @@ class Datafile_apo_demetra_with_orders:
         for file in orderfilelist:
             file_name = os.path.basename(file)
             order_number_demetra= os.path.splitext(file_name)[0][-2:]
-            od = single_order(file, order_number=onr, order_number_demetra=order_number_demetra,velo_shift=velo_shift)
+            od = single_order(file, order_number=onr, order_number_demetra=order_number_demetra,velo_shift=velo_shift,step=rebin_size)
             ords.append(od)
             onr += 1
         self.orders = ords

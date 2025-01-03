@@ -711,7 +711,14 @@ def overplot_masterfiles(filelist,line,separate_lines=False):
         a += ap
     return vs, lfs
 
-def overplot_masterfiles_order(filelist,line,separate_lines=False,return_wl=False,rebin_size=0.1):
+def line_separation(bl):
+    if bl is True:
+        return 0.1
+    elif bl is False:
+        return 0.0
+    else:
+        raise SyntaxError('separate_lines needs to be Boolean')
+def overplot_masterfiles_order(filelist,line,separate_lines=False,return_wl=False,manual_rebin=True,rebin_size=0.1):
     vsini = 127
     lfs = []
     vs = []
@@ -724,12 +731,7 @@ def overplot_masterfiles_order(filelist,line,separate_lines=False,return_wl=Fals
     # vrad = -18.5
     # offset_v = filelist[0].baricentric_correction + vrad
     # v = wl_to_velocity_2(wavenew, linecenter, offset_v)
-    if separate_lines:
-        ap = 0.1
-    elif not separate_lines:
-        ap = 0.0
-    else:
-        raise SyntaxError('separate_lines needs to be Boolean')
+    ap=line_separation(separate_lines)
     for file in filelist:
         # offset_v = file.baricentric_correction + vrad
         v_new = wl_to_velocity(wavenew, linecenter)[0]
@@ -740,9 +742,14 @@ def overplot_masterfiles_order(filelist,line,separate_lines=False,return_wl=Fals
         wl = linedata.wl
         flux_rebin = rebin_spec(wl, flux, wavenew)
         # print(flux_rebin.shape,v_new.shape)
-        lfs.append(np.array(flux_rebin) + a)
-        vs.append(v_new)
-        wls.append(wavenew)
+        if manual_rebin is True:
+            lfs.append(np.array(flux_rebin) + a)
+            vs.append(v_new)
+            wls.append(wavenew)
+        elif manual_rebin is False:
+            lfs.append(flux)
+            vs.append(v)
+            wls.append(wl)
         a += ap
     if return_wl is True:
         return wls,vs,lfs

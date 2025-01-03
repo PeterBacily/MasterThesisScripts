@@ -1,5 +1,7 @@
 # todo
-# test different rebin size files
+# test airmass.overplot_masterfiles_order
+# using this test datareduc.plot_SNR_orders
+#t est different rebin size files
 
 
 # write start and end of each order into file, write code to find correct order for given wl

@@ -769,7 +769,7 @@ def plot_snr_test(filelist,boundaries,rebin=True,rebin_size=0.5):
 
 
 
-def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,plot_avg=True,show='off',save='on',norm_boundaries='on',vrange=None,style=None,from_order=True,es_top=0,es_bottom=0,subplotylim = [None,None]):
+def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,plot_avg=True,show='on',save='off',norm_boundaries='on',rebin=False,vrange=None,style=None,from_order=True,es_top=0,es_bottom=0,subplotylim = [None,None]):
     k=0
     if file_full_night == None:
         plot_avg=False
@@ -778,17 +778,25 @@ def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,p
     date = filelist[0].time_and_date[0:6]
     # velo_shift=bccor+vrad
     velo_shift = 0
-    rebin_bin_size = 0.1
+    rebin_bin_size = 0.001
+    if isinstance(rebin, float):
+        rebin_bin_size = rebin
+        man_rebin = True
+    if isinstance(rebin,bool):
+        man_rebin = False
     if style is not None:
         plt.style.use(style)
 
     for baseline in linelist:
         if from_order is True:
-            line=baseline+'_order'
+            if rebin is True:
+                line = baseline + '_order_rebin'
+            else:
+                line=baseline+'_order'
         else:
             line=baseline
         lineinfo = getattr(filelist[0], line).lineinfo
-        wls,vs,lfs = airmass.overplot_masterfiles_order(filelist,line,rebin_size=rebin_bin_size,return_wl=True)
+        wls,vs,lfs = airmass.overplot_masterfiles_order(filelist,line,manual_rebin=man_rebin,rebin_size=rebin_bin_size,return_wl=True)
         boundary_1,boundary_2,boundary_3,boundary_4 = lineinfo[2 + k], lineinfo[3 + k], lineinfo[4 + k], lineinfo[5 + k]
         boundaries = [boundary_1,boundary_2,boundary_3,boundary_4]
 
@@ -799,7 +807,7 @@ def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,p
         [normv_1, normv_2, normv_3, normv_4], uselessvar = airmass.wl_to_velocity(
             boundaries, lineinfo[1 + k])
         for i,spec in enumerate(lfs):
-            snr = airmass.snr_2(wls[i],spec,boundaries=boundaries,rebin=False,separate=True)
+            snr = airmass.snr_2(wls[i],spec,boundaries=boundaries,rebin=rebin,rebin_size=rebin_bin_size,separate=True)
             ax1.plot(vs[i],spec,linewidth=1 ,label = filelist[i].time_and_date)
             ax2.plot(vs[i][(vs[i] > normv_1)&(vs[i]<normv_2)],spec[(vs[i]>normv_1)&(vs[i]<normv_2)])
             ax3.plot(vs[i][(vs[i]>normv_3)&(vs[i]<normv_4)],spec[(vs[i]>normv_3)&(vs[i]<normv_4)])

@@ -17,13 +17,7 @@ import Path_check
 import os
 import pickle
 
-a=[1,2,3]
-print(a[0:])
-print(type(a[0:-2]),type(a[-1]))
-# a =[[1,1,1],[10,10,10],[100,100,100]]
-# print(np.average(a,axis=0))
-# b=[a[0],a[1]]
-exit()
+
 # a=6
 # b=[7,9]
 #
@@ -41,6 +35,9 @@ filelist_merc=open_masterfiles.mercator(data_merc)
 filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
 filelist_audela = open_masterfiles.apo(data_audela)
 data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
+
+di=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin05\single_obs\\'
+fn =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin05\combined\\'
 # # for file in filelist_merc:
 # #     print(file.header['CDELT1'])
 # #     nf_ha = file.line6562.normalizationflux
@@ -54,20 +51,25 @@ data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\
 # #         wld = wlarr[i+1]-wlarr[i]
 # #         wldist.append(wld)
 # #     print(wldist)
-data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
-data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
-datafile_merc=filelist_merc[0]
-wl=datafile_merc.wl_rebin2
-flux=datafile_merc.flux_rebin2
+data_individual_list = open_masterfiles.apo_demetra_orders(path = di,manual_filelist=None,sort_data_files='on')
+data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = fn,manual_filelist=None,sort_data_files='on')
+# datafile_merc=filelist_merc[0]
+tf = data_full_night_all_list[0]
+linedata = tf.line6562_order_rebin
+wl=linedata.wl
+flux=linedata.flux
+
+# wl=datafile_merc.wl_rebin2
+# flux=datafile_merc.flux_rebin2
 plt.plot(wl,flux)
-# plt.show()
-# plt.close()
-wlpiece = [5335, 5345]
-order=airmass.find_order(wlpiece,data_individual_list[0])
-demwl, demflux=order.wl_rebin, order.flux_rebin
-# plt.plot(demwl,demflux)
 plt.show()
 plt.close()
+# wlpiece = [5335, 5345]
+# order=airmass.find_order(wlpiece,data_individual_list[0])
+# demwl, demflux=order.wl_rebin, order.flux_rebin
+# plt.plot(demwl,demflux)
+# plt.show()
+# plt.close()
 # i=0
 # orderfile_comp=[data_individual_list[3],data_full_night_all_list[7]]
 # # print(orderfile_comp)

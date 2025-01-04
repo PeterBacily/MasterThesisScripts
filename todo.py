@@ -1,6 +1,7 @@
 # todo
 # test airmass.overplot_masterfiles_order
 # using this test datareduc.plot_SNR_orders
+# find out why error
 # test different rebin size files
 
 

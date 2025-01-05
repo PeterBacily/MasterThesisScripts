@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Datafile_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExecuteDataReduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExecuteDataReduc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test3.py" beforeDir="false" afterPath="$PROJECT_DIR$/test3.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -371,13 +367,6 @@
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
     </task>
-    <task id="LOCAL-00113" summary="changes">
-      <created>1729980880519</created>
-      <option name="number" value="00113" />
-      <option name="presentableId" value="LOCAL-00113" />
-      <option name="project" value="LOCAL" />
-      <updated>1729980880519</updated>
-    </task>
     <task id="LOCAL-00114" summary="changes">
       <created>1730032136934</created>
       <option name="number" value="00114" />
@@ -714,7 +703,14 @@
       <option name="project" value="LOCAL" />
       <updated>1735996419678</updated>
     </task>
-    <option name="localTasksCounter" value="162" />
+    <task id="LOCAL-00162" summary="changes">
+      <created>1736100527889</created>
+      <option name="number" value="00162" />
+      <option name="presentableId" value="LOCAL-00162" />
+      <option name="project" value="LOCAL" />
+      <updated>1736100527889</updated>
+    </task>
+    <option name="localTasksCounter" value="163" />
     <servers />
   </component>
   <component name="ToolWindowManager">

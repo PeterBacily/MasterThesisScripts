@@ -88,7 +88,7 @@ def open_linelist(path):
     return b
 
 class single_order:
-    def __init__(self, filepath,order_number,order_number_demetra,v_rad=-18.5,velo_shift=True,step=0.5):
+    def __init__(self, filepath,order_number,order_number_demetra,v_rad=-18.5,velo_shift=True,steps=[0.1,0.2,0.5]):
         self.order_number_demetra =order_number_demetra
         self.order_number = order_number
         with pf.open(filepath) as a:
@@ -110,7 +110,11 @@ class single_order:
             vdif=(self.wl_original[20]/self.wl_original_no_v_cor[20]-1)*299792.458
             # print(self.v_shift,vdif)
             self.flux_original = a[0].data
-            self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original,step=step)
+            self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original,step=0.5)
+            for step in steps:
+                self.wl_rebin01, self.flux_rebin01 = airmass.rebin2(self.wl_original, self.flux_original, step=0.1)
+                self.wl_rebin02, self.flux_rebin02 = airmass.rebin2(self.wl_original, self.flux_original, step=0.2)
+                self.wl_rebin05, self.flux_rebin05 = airmass.rebin2(self.wl_original, self.flux_original, step=0.5)
             self.wl_start = self.wl_original[0]
             self.wl_end = self.wl_original[-1]
             self.wl_avg = np.average([self.wl_start, self.wl_end])

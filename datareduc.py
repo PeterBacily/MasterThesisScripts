@@ -807,7 +807,7 @@ def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,p
         [normv_1, normv_2, normv_3, normv_4], uselessvar = airmass.wl_to_velocity(
             boundaries, lineinfo[1 + k])
         for i,spec in enumerate(lfs):
-            snr = airmass.snr_2(wls[i],spec,boundaries=boundaries,rebin=rebin,rebin_size=rebin_bin_size,separate=True)
+            snr = airmass.snr_2(wls[i],spec,boundaries=boundaries,rebin=man_rebin,rebin_size=rebin_bin_size,separate=True)
             ax1.plot(vs[i],spec,linewidth=1 ,label = filelist[i].time_and_date)
             ax2.plot(vs[i][(vs[i] > normv_1)&(vs[i]<normv_2)],spec[(vs[i]>normv_1)&(vs[i]<normv_2)])
             ax3.plot(vs[i][(vs[i]>normv_3)&(vs[i]<normv_4)],spec[(vs[i]>normv_3)&(vs[i]<normv_4)])

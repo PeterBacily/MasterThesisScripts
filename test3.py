@@ -51,20 +51,34 @@ fn =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\al
 # #         wld = wlarr[i+1]-wlarr[i]
 # #         wldist.append(wld)
 # #     print(wldist)
-data_individual_list = open_masterfiles.apo_demetra_orders(path = di,manual_filelist=None,sort_data_files='on')
-data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = fn,manual_filelist=None,sort_data_files='on')
-# datafile_merc=filelist_merc[0]
-tf = data_full_night_all_list[0]
-linedata = tf.line6562_order_rebin
-wl=linedata.wl
-flux=linedata.flux
 
-# wl=datafile_merc.wl_rebin2
-# flux=datafile_merc.flux_rebin2
-plt.plot(wl,flux)
-plt.show()
-plt.close()
-# wlpiece = [5335, 5345]
+def returnfunction(x):
+    return x,x**2
+class HolyGrail:
+
+    def __init__(self,steps = [1,2,3]):
+        self.start = 'start_at_init'
+        setattr(self,'a',returnfunction(2)[0])
+        setattr(self, 'b', returnfunction(2)[1])
+    # function definition in question:
+    # TypeError: 'str' object is not callable
+
+testobj = HolyGrail()
+print(testobj.a,testobj.b)
+# data_individual_list = open_masterfiles.apo_demetra_orders(path = di,manual_filelist=None,sort_data_files='on')
+# data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = fn,manual_filelist=None,sort_data_files='on')
+# # datafile_merc=filelist_merc[0]
+# tf = data_full_night_all_list[0]
+# linedata = tf.line6562_order_rebin
+# wl=linedata.wl
+# flux=linedata.flux
+#
+# # wl=datafile_merc.wl_rebin2
+# # flux=datafile_merc.flux_rebin2
+# plt.plot(wl,flux)
+# plt.show()
+# plt.close()
+# # wlpiece = [5335, 5345]
 # order=airmass.find_order(wlpiece,data_individual_list[0])
 # demwl, demflux=order.wl_rebin, order.flux_rebin
 # plt.plot(demwl,demflux)

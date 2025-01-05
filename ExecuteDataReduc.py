@@ -147,7 +147,7 @@ def snr_orders(data_individual_folder,data_full_night_path,show='off',save='on')
         tad= day[0].time_and_date[0:6]
         print(tad)
         full_day_file=[x for x in data_full_list if x.time_and_date[0:6] == tad][0]
-        datareduc.plot_SNR_orders(ha_hb_linelist,day, file_full_night = full_day_file,plot_avg=True,rebin=False,plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR\aD_snfF',show=show,save=save, norm_boundaries='on',vrange=1000,subplotylim=[0.97,1.03])
+        datareduc.plot_SNR_orders(ha_hb_linelist,day, file_full_night = full_day_file,plot_avg=True,rebin=True,plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR\aD_snfF',show=show,save=save, norm_boundaries='on',vrange=1000,subplotylim=[0.97,1.03])
     # files_snr_test= open_masterfiles.apo_demetra_orders(path=snr_comp_folder)
     # for day in list_of_day_data:
     #     li=day[0].line6562.lineinfo

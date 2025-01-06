@@ -146,6 +146,7 @@ def snr_orders(data_individual_folder,data_full_night_path,show='off',save='on')
     for day in list_of_day_data:
         tad= day[0].time_and_date[0:6]
         print(tad)
+        print(day[0].mark)
         full_day_file=[x for x in data_full_list if x.time_and_date[0:6] == tad][0]
         datareduc.plot_SNR_orders(ha_hb_linelist,day, file_full_night = full_day_file,plot_avg=True,rebin=True,plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR\aD_snfF',show=show,save=save, norm_boundaries='on',vrange=1000,subplotylim=[0.97,1.03])
     # files_snr_test= open_masterfiles.apo_demetra_orders(path=snr_comp_folder)
@@ -154,7 +155,7 @@ def snr_orders(data_individual_folder,data_full_night_path,show='off',save='on')
     #     datareduc.plot_snr_test(day,li[2:6] )
 print(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\single_obs\\')
 rebin_base_path= r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'
-rebin_size = '05'
+rebin_size = '02'
 single_obs_suffix = r'\single_obs\\'
 full_night_suffix =r'\combined\\'
 di_path = rebin_base_path+rebin_size+single_obs_suffix

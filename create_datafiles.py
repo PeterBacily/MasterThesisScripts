@@ -190,8 +190,11 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,save_folder=datafile_fold
         k+=1
 
 
-
-
+def makenote(rebin='0.5'):
+    a=rebin
+    b = a.replace(".", "")
+    notitie = 'rebin:' +rebin+ r'A, all darks, same night flat flatfields and same night bias, aD_csfF_snB_'+b
+    return notitie
 def run_cddo(snr, df,sf,note=0,filename_prefix='',rebin_size=0.5):
     # datafolder = str(Data_folder)+r'\Demetra\Individual\\'
     datafolder =df
@@ -199,11 +202,10 @@ def run_cddo(snr, df,sf,note=0,filename_prefix='',rebin_size=0.5):
     savefolder =sf
     linelist = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_3.txt'
     create_datafiles_demetra_orders(datafolder,savefolder,linelist_file=linelist,snrtreshhold=snr,vshift=True,note=note,filename_prefix=filename_prefix,rebin_size=rebin_size)
-notitie = 'rebin:0.5A, all darks, same night flat flatfields and same night bias, aD_csfF_snB_05'
-run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin01\single_obs\\', note=notitie,rebin_size=0.1)
-run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin01\combined\\', note=notitie,rebin_size=0.1)
-run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin02\single_obs\\', note=notitie,rebin_size=0.2)
-run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin02\combined\\', note=notitie,rebin_size=0.2)
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\\',sf=str(converted_Data_folder)+r'\test\demetra\with_orders\all_darks\rebin01\single_obs\\', note=makenote(rebin='0.1'),rebin_size=0.1)
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\test\demetra\with_orders\all_darks\rebin01\combined\\', note=makenote(rebin='0.1'),rebin_size=0.1)
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\\',sf=str(converted_Data_folder)+r'\test\demetra\with_orders\all_darks\rebin02\single_obs\\', note=makenote(rebin='0.2'),rebin_size=0.2)
+run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\test\demetra\with_orders\all_darks\rebin02\combined\\', note=makenote(rebin='0.2'),rebin_size=0.2)
 
 # run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Individual\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\Individual\\')
 # run_cddo(snr=90)

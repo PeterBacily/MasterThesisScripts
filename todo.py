@@ -1,9 +1,6 @@
 # todo
-# test airmass.overplot_masterfiles_order
-# using this test datareduc.plot_SNR_orders
-# find out why error
-# test different rebin size files
-
+# test files in D:\peter\Master_Thesis\Datareduction\Converted_Data\test\demetra\with_orders\all_darks\rebin02\single_obs
+# if correct, copy to directory
 
 # write start and end of each order into file, write code to find correct order for given wl
 # check if snr weirdness also exists in part of the spectra with no telluric lines.

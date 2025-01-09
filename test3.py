@@ -36,8 +36,7 @@ filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
 filelist_audela = open_masterfiles.apo(data_audela)
 data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
 
-di=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin05\single_obs\\'
-fn =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin05\combined\\'
+
 # # for file in filelist_merc:
 # #     print(file.header['CDELT1'])
 # #     nf_ha = file.line6562.normalizationflux
@@ -52,32 +51,37 @@ fn =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\al
 # #         wldist.append(wld)
 # #     print(wldist)
 
-def returnfunction(x):
-    return x,x**2
-class HolyGrail:
-
-    def __init__(self,steps = [1,2,3]):
-        self.start = 'start_at_init'
-        setattr(self,'a',returnfunction(2)[0])
-        setattr(self, 'b', returnfunction(2)[1])
-    # function definition in question:
-    # TypeError: 'str' object is not callable
-
-testobj = HolyGrail()
-print(testobj.a,testobj.b)
-# data_individual_list = open_masterfiles.apo_demetra_orders(path = di,manual_filelist=None,sort_data_files='on')
-# data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = fn,manual_filelist=None,sort_data_files='on')
-# # datafile_merc=filelist_merc[0]
-# tf = data_full_night_all_list[0]
-# linedata = tf.line6562_order_rebin
-# wl=linedata.wl
-# flux=linedata.flux
+# def returnfunction(x):
+#     return x,x**2
+# class HolyGrail:
 #
+#     def __init__(self,steps = [1,2,3]):
+#         self.start = 'start_at_init'
+#         setattr(self,'a',returnfunction(2)[0])
+#         setattr(self, 'b', returnfunction(2)[1])
+#     # function definition in question:
+#     # TypeError: 'str' object is not callable
+#
+# testobj = HolyGrail()
+# print(testobj.a,testobj.b)
+rebinsizes = ['01','02','05']
+for binsize in rebinsizes:
+    di=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'+binsize+r'\single_obs\\'
+    fn =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'+binsize+r'\combined\\'
+    data_individual_list = open_masterfiles.apo_demetra_orders(path = di,manual_filelist=None,sort_data_files='on')
+    data_full_night_all_list = open_masterfiles.apo_demetra_orders(path = fn,manual_filelist=None,sort_data_files='on')
+    # # datafile_merc=filelist_merc[0]
+    tf = data_full_night_all_list[0]
+    # tf = data_individual_list[0]
+    linedata = tf.line6562_order_rebin
+    wl=linedata.wl
+    flux=linedata.flux
+    print(tf.mark)
+    plt.plot(wl,flux)
+    plt.show()
+    plt.close()
 # # wl=datafile_merc.wl_rebin2
 # # flux=datafile_merc.flux_rebin2
-# plt.plot(wl,flux)
-# plt.show()
-# plt.close()
 # # wlpiece = [5335, 5345]
 # order=airmass.find_order(wlpiece,data_individual_list[0])
 # demwl, demflux=order.wl_rebin, order.flux_rebin

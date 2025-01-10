@@ -64,6 +64,20 @@ data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\
 #
 # testobj = HolyGrail()
 # print(testobj.a,testobj.b)
+
+def test_binsize_raw():
+    binsize='05'
+    di = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin' + binsize + r'\single_obs\\'
+    fn = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin' + binsize + r'\combined\\'
+    data_individual_list = open_masterfiles.apo_demetra_orders(path=di, manual_filelist=None, sort_data_files='on')
+    data_full_night_all_list = open_masterfiles.apo_demetra_orders(path=fn, manual_filelist=None, sort_data_files='on')
+    tf = data_full_night_all_list[0]
+    linedata = tf.line6562_order
+    wl = linedata.wl
+    binsizes = [j-i for i, j in zip(wl[:-1], wl[1:])]
+    print(binsizes)
+    print(np.average(binsizes))
+
 rebinsizes = ['01','02','05']
 for binsize in rebinsizes:
     di=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'+binsize+r'\single_obs\\'

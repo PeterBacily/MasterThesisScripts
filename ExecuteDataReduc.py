@@ -155,7 +155,7 @@ def snr_orders(data_individual_folder,data_full_night_path,show='off',save='on')
     #     datareduc.plot_snr_test(day,li[2:6] )
 print(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\single_obs\\')
 rebin_base_path= r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'
-rebin_size = '02'
+rebin_size = '025'
 single_obs_suffix = r'\single_obs\\'
 full_night_suffix =r'\combined\\'
 di_path = rebin_base_path+rebin_size+single_obs_suffix

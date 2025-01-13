@@ -36,6 +36,18 @@ filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
 filelist_audela = open_masterfiles.apo(data_audela)
 data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
 
+# datafile_merc=filelist_merc[0]
+# wl=datafile_merc.wl_original
+# flux=datafile_merc.flux_original
+# binsizes = [j-i for i, j in zip(wl[:-1], wl[1:])]
+# print(binsizes)
+# print(np.average(binsizes[3:-2]))
+# bs_ratio = []
+# for i in range(len(binsizes)):
+#     bs_ratio.append(wl[i]/binsizes[i])
+# print(sorted(bs_ratio)[:3],sorted((bs_ratio)[-3:]))
+# print(np.average(bs_ratio[3:-2]))
+
 
 # # for file in filelist_merc:
 # #     print(file.header['CDELT1'])
@@ -78,7 +90,7 @@ def test_binsize_raw():
     print(binsizes)
     print(np.average(binsizes))
 
-rebinsizes = ['01','02','05']
+rebinsizes = ['025','01','02','05']
 for binsize in rebinsizes:
     di=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'+binsize+r'\single_obs\\'
     fn =r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'+binsize+r'\combined\\'

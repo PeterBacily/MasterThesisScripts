@@ -47,8 +47,17 @@ data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\
 #     bs_ratio.append(wl[i]/binsizes[i])
 # print(sorted(bs_ratio)[:3],sorted((bs_ratio)[-3:]))
 # print(np.average(bs_ratio[3:-2]))
+axes = {}
+fig = plt.figure()
+axes['ax0'] = fig.add_subplot(212)
+for i in range(3):
+    subplotnum = 330+i+1
+    axes[f'ax{i+1}'] = fig.add_subplot(subplotnum)
 
 
+
+plt.show()
+plt.close()
 # # for file in filelist_merc:
 # #     print(file.header['CDELT1'])
 # #     nf_ha = file.line6562.normalizationflux

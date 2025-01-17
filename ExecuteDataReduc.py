@@ -160,8 +160,10 @@ single_obs_suffix = r'\single_obs\\'
 full_night_suffix =r'\combined\\'
 di_path = rebin_base_path+rebin_size+single_obs_suffix
 fn_path = rebin_base_path+rebin_size+full_night_suffix
-snr_orders(di_path,fn_path,show='on',save='off')
+# snr_orders(di_path,fn_path,show='on',save='off')
 
+
+datareduc.plot_TVS_orders_lines_together(ha_hb_linelist,r'D:\peter\Master_Thesis\Datareduction\Plots\test\demetra_tvs\\',show='on',save='off',datafilefolder=fn_path)
 
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):

@@ -753,13 +753,14 @@ def plot_TVS_orders_lines_together(linelist, plot_save_folder,show='off',save='o
     axes['ax0'] = fig.add_subplot(212)
     for i,baseline in enumerate(linelist):
         if from_order is True:
-            line=baseline+'_order'
+            line=baseline+'_order_rebin'
         else:
             line=baseline
         # line=baseline
         lineinfo = getattr(filelist[0], line).lineinfo
         nlines = len(linelist)
-        subplotnum = 200 + i + 1+10*nlines
+        # subplotnum = (100*nlines)+20+((i+1)*2)
+        subplotnum = 200+nlines*10+i+1
         axes[f'ax{i + 1}'] = fig.add_subplot(subplotnum)
         # print filelist
         # swl = line[3]-40
@@ -776,12 +777,12 @@ def plot_TVS_orders_lines_together(linelist, plot_save_folder,show='off',save='o
             axes[f'ax{i + 1}'].plot(vs[j],spec,linewidth=1 )
         axes[f'ax{i + 1}'].set_title(lineinfo[6+k])
         # ax1.legend()
-        # ax1.set_xlim([-600,600])
+        axes[f'ax{i + 1}'].set_xlim([-600,600])
         spec2 = lws[0][(vs[0]>-1000)& (vs[0]<1000)]
         mini = np.floor(20*np.amin(spec2))/20
         maxi = np.ceil(20*np.amax(spec2))/20
         # extra_space=0.05
-        axes[f'ax{i + 1}'].set_ylim([mini-es_bottom,maxi+es_top])
+        # axes[f'ax{i + 1}'].set_ylim([mini-es_bottom,maxi+es_top])
         # ax1.set_ylim([0.65,1.05])
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
@@ -830,12 +831,12 @@ def plot_TVS_orders_lines_together(linelist, plot_save_folder,show='off',save='o
     # print TVS2
     # print np.amax(TVS2)
     maxi2 = np.ceil(np.amax(TVS2))
-    axes['ax0'].set_ylim([0,maxi2])
+    axes['ax0'].set_ylim([0,6])
     axes['ax0'].set_xlabel('V (km/s)')
 
     axes['ax0'].set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
     if vrange== None:
-        axes['ax0'].set_xlim([normv_1-200,normv_4+200])
+        axes['ax0'].set_xlim([normv_1,normv_4])
     else:
         axes['ax0'].set_xlim([-vrange,vrange])
     if save =='on':

@@ -47,6 +47,7 @@ line_ha ='line6562'
 apo_lines2 = ['line6562']
 apo_lines3 =[ 'line5875','line6562','line4861',  'line6678' ]
 ha_hb_linelist = ['line6562','line4861']
+lines_III = ['line6562','line4861', 'line5875']
 # esb=0
 # est=-0.05
 # # shw,sv = 'on', 'off'
@@ -163,7 +164,7 @@ fn_path = rebin_base_path+rebin_size+full_night_suffix
 # snr_orders(di_path,fn_path,show='on',save='off')
 
 
-datareduc.plot_TVS_orders_lines_together(ha_hb_linelist,r'D:\peter\Master_Thesis\Datareduction\Plots\test\demetra_tvs\\',show='on',save='off',datafilefolder=fn_path)
+datareduc.plot_TVS_orders_lines_together(lines_III,r'D:\peter\Master_Thesis\Datareduction\Plots\test\demetra_tvs\\',show='on',save='off',datafilefolder=fn_path)
 
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):

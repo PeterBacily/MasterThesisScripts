@@ -746,8 +746,6 @@ def plot_TVS_orders_lines_together(linelist, plot_save_folder,show='off',save='o
     velo_shift = 0
     if style is not None:
         plt.style.use(style)
-    fig = plt.figure()
-    axes = {}
     axes = {}
     fig = plt.figure()
     axes['ax0'] = fig.add_subplot(212)
@@ -783,7 +781,9 @@ def plot_TVS_orders_lines_together(linelist, plot_save_folder,show='off',save='o
         maxi = np.ceil(20*np.amax(spec2))/20
         # extra_space=0.05
         # axes[f'ax{i + 1}'].set_ylim([mini-es_bottom,maxi+es_top])
-        # ax1.set_ylim([0.65,1.05])
+        axes[f'ax{i + 1}'].set_ylim([0.65,1.1])
+        axes[f'ax{i + 1}'].xaxis.get_ticklabels()[1].set_visible(False)
+        axes[f'ax{i + 1}'].xaxis.get_ticklabels()[-2].set_visible(False)
         if norm_boundaries == 'on':
             [normv_1,normv_2,normv_3,normv_4],uselessvar = airmass.wl_to_velocity([lineinfo[2+k],lineinfo[3+k],lineinfo[4+k],lineinfo[5+k]],lineinfo[1+k])
             axes[f'ax{i + 1}'].axvspan(normv_1+velo_shift, normv_2+velo_shift, facecolor='0.95', edgecolor='0', linestyle='--',alpha=1)
@@ -798,11 +798,12 @@ def plot_TVS_orders_lines_together(linelist, plot_save_folder,show='off',save='o
         # ax1.axvline(-vsini, color='k', linestyle=':', linewidth=1)
         # if line[2]==5875.621:
         #     TVS2 = np.array(TVS)*1.4
-        axes[f'ax{i + 1}'].set_ylabel('Normlized Flux')
+
         axes['ax0'].plot(v, TVS,linewidth=1,label=lineinfo[k+6])
 
         if sg == 'on':
             axes['ax0'].plot(v,TVS_smoothed,color='r',linestyle='dashed')
+    axes['ax1'].set_ylabel('Normlized Flux')
     if oneline == 'on':
         axes['ax0'].axhline(y=1, color='gray', linestyle='--')
     if isinstance(siglvlline, float):
@@ -833,10 +834,11 @@ def plot_TVS_orders_lines_together(linelist, plot_save_folder,show='off',save='o
     maxi2 = np.ceil(np.amax(TVS2))
     axes['ax0'].set_ylim([0,6])
     axes['ax0'].set_xlabel('V (km/s)')
-
+    axes['ax0'].set_title("TVS")
     axes['ax0'].set_ylabel(r'$\sigma_{obs}$'+ r' \ ' + r'$\sigma_{exp}$',size=16)
+    axes['ax0'].legend(prop={'size': 10})
     if vrange== None:
-        axes['ax0'].set_xlim([normv_1,normv_4])
+        axes['ax0'].set_xlim([normv_1-200,normv_4+200])
     else:
         axes['ax0'].set_xlim([-vrange,vrange])
     if save =='on':

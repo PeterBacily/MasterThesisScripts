@@ -156,15 +156,19 @@ def snr_orders(data_individual_folder,data_full_night_path,show='off',save='on')
     #     datareduc.plot_snr_test(day,li[2:6] )
 print(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\single_obs\\')
 rebin_base_path= r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'
-rebin_size = '01'
+rebin_size = '02'
+snr110=False
 single_obs_suffix = r'\single_obs\\'
-full_night_suffix =r'\combined\high_snr\\'
+if snr110 is True:
+    full_night_suffix =r'\combined\high_snr\\'
+else:
+    full_night_suffix = r'\combined\\'
 di_path = rebin_base_path+rebin_size+single_obs_suffix
 fn_path = rebin_base_path+rebin_size+full_night_suffix
 # snr_orders(di_path,fn_path,show='on',save='off')
 
 
-datareduc.plot_TVS_orders_lines_together(lines_III,r'D:\peter\Master_Thesis\Datareduction\Plots\test\demetra_tvs\\',show='on',save='off',datafilefolder=fn_path,vrange=600)
+datareduc.plot_TVS_orders_lines_together(lines_III,r'D:\peter\Master_Thesis\Datareduction\Plots\test\demetra_tvs\\',show='off',save='on', norm_boundaries='off', datafilefolder=fn_path,vrange=800)
 
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):

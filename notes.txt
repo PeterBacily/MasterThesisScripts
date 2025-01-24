@@ -1,3 +1,7 @@
 hier kan je dingen typen
 - maak TVS plaatje met meerdere lijnen in 1
 - binning 0.2 gebruiken
+
+noirmalisatie:
+    - halpha probeer normaliseren rechts: v=[1200, 1375]
+    - hbeta groter stuk

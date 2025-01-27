@@ -3,5 +3,5 @@ hier kan je dingen typen
 - binning 0.2 gebruiken
 
 noirmalisatie:
-    - halpha probeer normaliseren rechts: v=[1200, 1375]
+    - halpha probeer normaliseren links: [-1160, -950rechts: v=[1200, 1375]
     - hbeta groter stuk

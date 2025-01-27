@@ -76,7 +76,7 @@ def plot_norm_sil_omar(linelist,obs='apo',show='on',save = 'off',datafilefolder_
         filelist=apo_files
     elif obs == 'mercator':
         k = 8
-        filelist=[merc_files[0]]
+        filelist=merc_files
     else:
         raise(Exception("obs needs to be 'apo' or 'mercator'"))
     i=0
@@ -344,5 +344,5 @@ def plot_norm_sil_omar_from_order(linelist,obs='apo',show='on',save = 'off',data
 
 df_apo = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin02\combined\high_snr\\'
 plot_norm_sil_omar(Sil_Omar_normline_list_apo_new_short,obs='mercator',save='off',show='on')
-plot_norm_sil_omar_from_order(Sil_Omar_normline_list_apo_new_short,obs='apo',datafilefolder_apo=df_apo,save='off',show='on')
+# plot_norm_sil_omar_from_order(Sil_Omar_normline_list_apo_new_short,obs='apo',datafilefolder_apo=df_apo,save='off',show='on')
 

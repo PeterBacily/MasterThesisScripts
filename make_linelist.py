@@ -112,11 +112,13 @@ linelist_apo_vshift_revised = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'
 ['He_I', 6678.15, 6669.0, 6670.0, 6684.0, 6685.0, 'He I 6678'],
 ['O_III', 5592.37, 5587.5, 5588.5, 5596.7, 5597.7, 'O III 5592'],
 ['C_IV', 5801.33, 5792.9, 5793.9, 5816.2, 5817.2, 'C IV 5801']]
+linelist_apo_ha_test = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'H$\alpha$ 6563']]
 # datafiles = open_masterfiles.apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\',manual_filelist=None,sorted='off')
 # usefile=datafiles[0]
 # wl_factor=usefile.wl_offset_factor
 
-test_file_name = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_3.txt'
+test_file_name = str(converted_Data_folder)+r'\linelists\linelist_apo_ha_test.txt'
+# test_file_name = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_3.txt'
 # iter = [2,3,4,5]
 # for line in linelist_apo_new:
 # 	for i in iter:
@@ -126,6 +128,6 @@ test_file_name = str(converted_Data_folder)+r'\linelists\linelist_apo_v_cor_3.tx
 # 	print(line,', ')
 
 make_linelist(linelist_apo_vshift_revised,test_file_name)
-
+# make_linelist(linelist_apo_vshift_revised,test_file_name)
 # mylist = open_linelist(test_file_name)
 # print(mylist)

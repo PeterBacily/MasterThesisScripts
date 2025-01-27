@@ -94,7 +94,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder, custom_class_object_li
         ax1.set_title(lineinfo[6+k])
         # ax1.legend()
         # ax1.set_xlim([-600,600])
-        spec2 = spec[(vs[0]>-300)& (vs[0]<300)]
+        spec2 = spec[(vs[0]>-1500)& (vs[0]<1500)]
         mini = np.floor(10*0.9*np.amin(spec2))/10
         maxi = np.ceil(10*1.1*np.amax(spec2))/10
         ax1.set_ylim([mini,maxi])
@@ -137,7 +137,7 @@ def plot_TVS_eShel_masterfile(linelist, plot_save_folder, custom_class_object_li
         ax2.set_xlabel('V (km/s)')
         ax1.set_ylabel('Normlized Flux')
         ax2.set_ylabel('Normlized Flux',size=16)
-        vlim1,vlim2 =normv_1-200,normv_4+200
+        vlim1,vlim2 =-1500,1500
         [wl_lim1,wl_lim2] = velocity_to_wl([vlim1,vlim2],lineinfo[1],v_offset)
         ax2.set_xlim([wl_lim1,wl_lim2])
         ax1.set_xlim([vlim1, vlim2])
@@ -190,6 +190,7 @@ def wl_shift(objectlist,line):
 
 
 demetra_file_dir = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Zet_Ori_Response\final_spectra\good\\'
+
 linelist_apo = [['Ha', 6562.819, 6551, 6552, 6578, 6579, r'H$\alpha$ 6563'],
      ['Hb', 4861.333, 4828.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 4861'],
      ['He_I', 4713.1457, 4701, 4703, 4718, 4720, 'He I 4713'],
@@ -221,8 +222,8 @@ linelist_apo2 = [['Hb', 4861.333, 4838.0, 4839.0, 4880.0, 4891.0, r'H$\beta$ 486
 apo_lines = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
              'line4861', 'line4921', 'line6678', 'line4471']
 apo_lines2 = ['line6562']
-objectlist = generate_custom_class_object_list(demetra_file_dir,r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
+objectlist = generate_custom_class_object_list(demetra_file_dir,r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo_v_cor_3.txt')
 # for line in apo_lines:
 #     wl_shift(objectlist,line)
 
-plot_TVS_eShel_masterfile(apo_lines,r'D:\peter\Master_Thesis\Datareduction\Plots\normalization\test\apo\demetra',custom_class_object_list=objectlist)
+plot_TVS_eShel_masterfile(apo_lines2,r'D:\peter\Master_Thesis\Datareduction\Plots\normalization\test\apo\demetra',custom_class_object_list=objectlist)

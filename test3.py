@@ -28,13 +28,33 @@ folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
 Path_check.dir_check(folder_of_this_file)
 #
 [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
-data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\full_night\\'
+data_full_night_all= str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin02\combined\high_snr\\'
 data_merc = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
 data_audela = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
 filelist_merc=open_masterfiles.mercator(data_merc)
 filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
 filelist_audela = open_masterfiles.apo(data_audela)
 data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
+
+binsize = '02'
+di = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin' + binsize + r'\single_obs\\'
+fn = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin' + binsize + r'\combined\high_snr\\'
+# data_individual_list = open_masterfiles.apo_demetra_orders(path=di, manual_filelist=None, sort_data_files='on')
+data_full_night_all_list = open_masterfiles.apo_demetra_orders(path=fn, manual_filelist=None, sort_data_files='on')
+tf = data_full_night_all_list[0]
+
+list_of_orders = tf.orders
+
+print(airmass.velocity_to_wl([-1000,-1300],6562.819))
+
+ha_order = list(filter(lambda x: x.order_number_demetra == '34', list_of_orders))[0]
+
+wl=ha_order.wl_rebin
+flux = ha_order.flux_rebin
+plt.plot(wl,flux)
+plt.show()
+plt.close()
+exit()
 
 # datafile_merc=filelist_merc[0]
 # wl=datafile_merc.wl_original
@@ -47,17 +67,17 @@ data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\
 #     bs_ratio.append(wl[i]/binsizes[i])
 # print(sorted(bs_ratio)[:3],sorted((bs_ratio)[-3:]))
 # print(np.average(bs_ratio[3:-2]))
-axes = {}
-fig = plt.figure()
-axes['ax0'] = fig.add_subplot(212)
-for i in range(3):
-    subplotnum = 330+i+1
-    axes[f'ax{i+1}'] = fig.add_subplot(subplotnum)
-
-
-
-plt.show()
-plt.close()
+# axes = {}
+# fig = plt.figure()
+# axes['ax0'] = fig.add_subplot(212)
+# for i in range(3):
+#     subplotnum = 330+i+1
+#     axes[f'ax{i+1}'] = fig.add_subplot(subplotnum)
+#
+#
+#
+# plt.show()
+# plt.close()
 # # for file in filelist_merc:
 # #     print(file.header['CDELT1'])
 # #     nf_ha = file.line6562.normalizationflux
@@ -98,7 +118,7 @@ def test_binsize_raw():
     binsizes = [j-i for i, j in zip(wl[:-1], wl[1:])]
     print(binsizes)
     print(np.average(binsizes))
-
+exit()
 rebinsizes = ['025','01','02','05']
 for binsize in rebinsizes:
     di=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'+binsize+r'\single_obs\\'

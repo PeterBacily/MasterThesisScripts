@@ -36,22 +36,54 @@ filelist_apo=open_masterfiles.apo_demetra_orders(data_full_night_all)
 filelist_audela = open_masterfiles.apo(data_audela)
 data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
 
-binsize = '02'
+binsize = '01'
 di = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin' + binsize + r'\single_obs\\'
 fn = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin' + binsize + r'\combined\high_snr\\'
 # data_individual_list = open_masterfiles.apo_demetra_orders(path=di, manual_filelist=None, sort_data_files='on')
 data_full_night_all_list = open_masterfiles.apo_demetra_orders(path=fn, manual_filelist=None, sort_data_files='on')
 tf = data_full_night_all_list[0]
 
+
+ha_hb_linelist = ['line6562','line4861']
+
+def degrade_spectrum(wl,flux):
+    deg_wl = wl
+    deg_flux=flux
+    return deg_wl,deg_flux
+
+def slice_and_norm(wl,flux,start,end,rebin=None):
+    slice_flux = flux[(wl > start) & (wl < end)]
+    slice_wl = wl[(wl > start) & (wl < end)]
+    slice_flux_norm = slice_flux / np.average(slice_flux)
+    if rebin == None:
+        return slice_wl,slice_flux_norm
+    else:
+        slice_wl_rebinned,slice_flux_rebinned = airmass.rebin2(slice_wl,slice_flux_norm,step=rebin)
+        return slice_wl_rebinned,slice_flux_rebinned
+
+
+
+merc_file= filelist_merc[0]
+merc_wl=merc_file.wl_original
+merc_flux=merc_file.flux_original
 list_of_orders = tf.orders
 
-print(airmass.velocity_to_wl([-1000,-1300],6562.819))
+print(airmass.velocity_to_wl([-1174,-985],6562.819))
+wl_apo = tf.line6562_order_rebin.wl
+flux_apo = tf.line6562_order_rebin.flux
+start_wl = wl_apo[0]
+end_wl= wl_apo[-1]
 
-ha_order = list(filter(lambda x: x.order_number_demetra == '34', list_of_orders))[0]
+wl_apo_sn,flux_apo_sn = slice_and_norm(wl_apo,flux_apo,start_wl,end_wl)
+wl_merc_sn,flux_merc_sn = slice_and_norm(merc_wl,merc_flux,start_wl,end_wl,rebin=0.1)
 
-wl=ha_order.wl_rebin
-flux = ha_order.flux_rebin
-plt.plot(wl,flux)
+# ha_order = list(filter(lambda x: x.order_number_demetra == '34', list_of_orders))[0]
+
+# wl=ha_order.wl_rebin
+# flux = ha_order.flux_rebin
+plt.plot(wl_apo_sn,flux_apo_sn,label='apo')
+plt.plot(wl_merc_sn,flux_merc_sn,label = 'merc')
+plt.legend()
 plt.show()
 plt.close()
 exit()

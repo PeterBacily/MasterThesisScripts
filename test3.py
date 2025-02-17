@@ -46,10 +46,40 @@ tf = data_full_night_all_list[0]
 
 ha_hb_linelist = ['line6562','line4861']
 
-def degrade_spectrum(wl,flux):
+def degrade_spectrum(wl,flux,spectral_resolution=10000, desired_snr=110):
     deg_wl = wl
-    deg_flux=flux
-    return deg_wl,deg_flux
+    noise_array=[]
+    deg_flux, fwhm = pyasl.instrBroadGaussFast(wl, flux, spectral_resolution,
+                                         edgeHandling="firstlast", fullout=True, maxsig=5.0)
+
+    for f in deg_flux:
+        noise_exp = f/desired_snr
+        noise = np.random.normal(0, noise_exp)
+        noise_array.append(noise)
+    deg_flux_with_noise = np.array(deg_flux)+np.array(noise_array)
+    return deg_wl,deg_flux_with_noise
+
+def degrade_spectrum2(wl,flux,spectral_resolution=10000, desired_snr=70):
+    deg_wl = wl
+    noise_array=[]
+
+
+
+
+    for f in flux:
+        noise_exp = f/desired_snr
+
+    #     # print(f, noise_exp)
+    #     noise= np.random.poisson(lam=noise_exp, size=None)
+        noise = np.random.normal(0, noise_exp)
+        noise_array.append(noise)
+    flux_with_noise = np.array(flux)+np.array(noise_array)
+    # test_array = np.column_stack((deg_flux, deg_flux_with_noise,noise_array))
+    deg_flux_with_noise, fwhm = pyasl.instrBroadGaussFast(wl, flux_with_noise, spectral_resolution,
+                                         edgeHandling="firstlast", fullout=True, maxsig=5.0)
+    return deg_wl,deg_flux_with_noise
+
+
 
 def slice_and_norm(wl,flux,start,end,rebin=None):
     slice_flux = flux[(wl > start) & (wl < end)]
@@ -64,25 +94,32 @@ def slice_and_norm(wl,flux,start,end,rebin=None):
 
 
 merc_file= filelist_merc[0]
-merc_wl=merc_file.wl_original
-merc_flux=merc_file.flux_original
+merc_wl=merc_file.wl_rebin2
+merc_flux=merc_file.flux_rebin2
 list_of_orders = tf.orders
 
 print(airmass.velocity_to_wl([-1174,-985],6562.819))
-wl_apo = tf.line6562_order_rebin.wl
-flux_apo = tf.line6562_order_rebin.flux
+wl_apo = tf.line4861_order_rebin.wl
+flux_apo = tf.line4861_order_rebin.flux
 start_wl = wl_apo[0]
 end_wl= wl_apo[-1]
 
+# print(merc_wl[4]-merc_wl[3],merc_wl[-9]-merc_wl[-10])
+
+# exit()
+deg_wl,deg_flux = degrade_spectrum(merc_wl,merc_flux)
+
 wl_apo_sn,flux_apo_sn = slice_and_norm(wl_apo,flux_apo,start_wl,end_wl)
-wl_merc_sn,flux_merc_sn = slice_and_norm(merc_wl,merc_flux,start_wl,end_wl,rebin=0.1)
+wl_merc_sn,flux_merc_sn = slice_and_norm(merc_wl,merc_flux,start_wl,end_wl,rebin=None)
+wl_deg_sn, flux_deg_sn = slice_and_norm(deg_wl,deg_flux,start_wl,end_wl,rebin=None)
 
 # ha_order = list(filter(lambda x: x.order_number_demetra == '34', list_of_orders))[0]
 
 # wl=ha_order.wl_rebin
 # flux = ha_order.flux_rebin
 plt.plot(wl_apo_sn,flux_apo_sn,label='apo')
-plt.plot(wl_merc_sn,flux_merc_sn,label = 'merc')
+# plt.plot(wl_merc_sn,flux_merc_sn,label = 'merc')
+plt.plot(wl_deg_sn,flux_deg_sn,label = 'naughty,bad wl')
 plt.legend()
 plt.show()
 plt.close()

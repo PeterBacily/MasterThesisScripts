@@ -7,3 +7,5 @@ noirmalisatie:
     - hbeta groter stuk
 
 https://pyastronomy.readthedocs.io/en/latest/pyaslDoc/aslDoc/dopplerShift.html
+
+measure snr of artificial spectra, see if it macthes.

@@ -91,8 +91,8 @@ def slice_and_norm(wl,flux,start,end,rebin=None):
         slice_wl_rebinned,slice_flux_rebinned = airmass.rebin2(slice_wl,slice_flux_norm,step=rebin)
         return slice_wl_rebinned,slice_flux_rebinned
 
-
-
+# bd = [5170, 5210]
+bd =[6549, 6550.7, 6576.0, 6578.0]
 merc_file= filelist_merc[0]
 merc_wl=merc_file.wl_rebin2
 merc_flux=merc_file.flux_rebin2
@@ -113,8 +113,19 @@ wl_apo_sn,flux_apo_sn = slice_and_norm(wl_apo,flux_apo,start_wl,end_wl)
 wl_merc_sn,flux_merc_sn = slice_and_norm(merc_wl,merc_flux,start_wl,end_wl,rebin=None)
 wl_deg_sn, flux_deg_sn = slice_and_norm(deg_wl,deg_flux,start_wl,end_wl,rebin=None)
 
-# ha_order = list(filter(lambda x: x.order_number_demetra == '34', list_of_orders))[0]
+snr_merc_original = airmass.snr_2(merc_wl,merc_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
+snr_merc_degrade_no_rebin = airmass.snr_2(deg_wl,deg_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
+snr_merc_degrade_yes_rebin = airmass.snr_2(deg_wl,deg_flux,boundaries=bd,rebin=True,rebin_size=0.1,separate=False)
 
+print('orig',snr_merc_original)
+print('deg, no rebin',snr_merc_degrade_no_rebin)
+print('deg, yes rebin',snr_merc_degrade_yes_rebin)
+plt.plot(merc_wl,merc_flux)
+# plt.plot(deg_wl,deg_flux)
+plt.show()
+plt.close()
+# ha_order = list(filter(lambda x: x.order_number_demetra == '34', list_of_orders))[0]
+exit()
 # wl=ha_order.wl_rebin
 # flux = ha_order.flux_rebin
 plt.plot(wl_apo_sn,flux_apo_sn,label='apo')
@@ -123,7 +134,7 @@ plt.plot(wl_deg_sn,flux_deg_sn,label = 'naughty,bad wl')
 plt.legend()
 plt.show()
 plt.close()
-exit()
+
 
 # datafile_merc=filelist_merc[0]
 # wl=datafile_merc.wl_original

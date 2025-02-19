@@ -322,7 +322,7 @@ def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_siz
     elif len(boundaries)==4:
         [a,b,c,d]=boundaries
     else:
-        raise Exception('boundaries  needs to be either list of either 2 or 4 values')
+        raise Exception('boundaries  needs to be a list of either 2 or 4 values')
     start =a-2
     stop = d+2
     slice = flux[(wl>start) & (wl<stop)]

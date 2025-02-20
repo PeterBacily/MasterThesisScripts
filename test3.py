@@ -91,8 +91,8 @@ def slice_and_norm(wl,flux,start,end,rebin=None):
         slice_wl_rebinned,slice_flux_rebinned = airmass.rebin2(slice_wl,slice_flux_norm,step=rebin)
         return slice_wl_rebinned,slice_flux_rebinned
 
-# bd = [5170, 5210]
-bd =[6549, 6550.7, 6576.0, 6578.0]
+bd = [5170, 5210]
+# bd =[6549, 6550.7, 6576.0, 6578.0]
 merc_file= filelist_merc[0]
 merc_wl=merc_file.wl_rebin2
 merc_flux=merc_file.flux_rebin2
@@ -107,7 +107,7 @@ end_wl= wl_apo[-1]
 # print(merc_wl[4]-merc_wl[3],merc_wl[-9]-merc_wl[-10])
 
 # exit()
-deg_wl,deg_flux = degrade_spectrum(merc_wl,merc_flux)
+deg_wl,deg_flux = airmass.degrade_spectrum(merc_wl,merc_flux)
 
 wl_apo_sn,flux_apo_sn = slice_and_norm(wl_apo,flux_apo,start_wl,end_wl)
 wl_merc_sn,flux_merc_sn = slice_and_norm(merc_wl,merc_flux,start_wl,end_wl,rebin=None)

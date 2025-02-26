@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
+      <change afterPath="$PROJECT_DIR$/Specutils_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test3.py" beforeDir="false" afterPath="$PROJECT_DIR$/test3.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -213,7 +213,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test3">
+  <component name="RunManager" selected="Python.Specutils_test">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -275,7 +275,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="create_datafiles" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="Specutils_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -287,7 +287,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/create_datafiles.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Specutils_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -339,19 +339,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.Specutils_test" />
+      <item itemvalue="Python.ExecuteDataReduc" />
       <item itemvalue="Python.Normalization" />
       <item itemvalue="Python.normilization_plot" />
-      <item itemvalue="Python.ExecuteDataReduc" />
-      <item itemvalue="Python.create_datafiles" />
       <item itemvalue="Python.test3" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Specutils_test" />
         <item itemvalue="Python.test3" />
         <item itemvalue="Python.Normalization" />
         <item itemvalue="Python.normilization_plot" />
         <item itemvalue="Python.ExecuteDataReduc" />
-        <item itemvalue="Python.create_datafiles" />
       </list>
     </recent_temporary>
   </component>
@@ -373,20 +373,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00132" summary="changes">
-      <created>1732529377479</created>
-      <option name="number" value="00132" />
-      <option name="presentableId" value="LOCAL-00132" />
-      <option name="project" value="LOCAL" />
-      <updated>1732529377479</updated>
-    </task>
-    <task id="LOCAL-00133" summary="changes">
-      <created>1732531523521</created>
-      <option name="number" value="00133" />
-      <option name="presentableId" value="LOCAL-00133" />
-      <option name="project" value="LOCAL" />
-      <updated>1732531523521</updated>
     </task>
     <task id="LOCAL-00134" summary="changes">
       <created>1732620910072</created>
@@ -717,7 +703,21 @@
       <option name="project" value="LOCAL" />
       <updated>1739922859995</updated>
     </task>
-    <option name="localTasksCounter" value="181" />
+    <task id="LOCAL-00181" summary="changes">
+      <created>1739977877795</created>
+      <option name="number" value="00181" />
+      <option name="presentableId" value="LOCAL-00181" />
+      <option name="project" value="LOCAL" />
+      <updated>1739977877795</updated>
+    </task>
+    <task id="LOCAL-00182" summary="changes">
+      <created>1740072174735</created>
+      <option name="number" value="00182" />
+      <option name="presentableId" value="LOCAL-00182" />
+      <option name="project" value="LOCAL" />
+      <updated>1740072174736</updated>
+    </task>
+    <option name="localTasksCounter" value="183" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -812,7 +812,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test3.py</url>
-          <line>189</line>
+          <line>190</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>

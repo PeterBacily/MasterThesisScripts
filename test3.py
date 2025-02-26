@@ -15,6 +15,7 @@ from scipy.optimize import *
 from PyAstronomy import pyasl
 import Path_check
 import os
+import specutils
 import pickle
 
 

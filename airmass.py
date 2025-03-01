@@ -410,7 +410,7 @@ def rebin2(wlarray, fluxarray,step=None):
     # spl = interpolate.InterpolatedUnivariateSpline(wlarray, fluxarray)
     # xs = np.arange(pars[0], pars[1], pars[2])
     if step==None:
-        dx = 0.05
+        dx = 0.1
     else:
         dx=step
     wlarray2,fluxarray2 = remove_nan(wlarray,fluxarray)
@@ -1339,4 +1339,5 @@ def degrade_spectrum(wl,flux,spectral_resolution=10000, desired_snr=100,pre_rebi
         noise = np.random.normal(0, noise_exp)
         noise_array.append(noise)
     deg_flux_with_noise = np.array(loop_flux)+np.array(noise_array)
+    return rebin_wl,deg_flux_with_noise
     return rebin_wl,deg_flux_with_noise

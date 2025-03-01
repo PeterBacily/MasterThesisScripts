@@ -121,7 +121,22 @@ def plot_normalization_test(apo_eshel_files,mercator_files):
     plt.show()
     plt.close()
 
+bd = [5170, 5210]
+mercfile = mercator_files[1]
+m_wl = mercfile.wl_rebin
+m_flux = mercfile.flux_rebin
+m_wl_rebin,m_flux_rebin = airmass.rebin2(m_wl,m_flux)
+m_wl_deg,m_flux_deg = airmass.degrade_spectrum(m_wl,m_flux,pre_rebin=0.1)
 
+m_snr_straight = airmass.snr_2(m_wl_deg,m_flux_deg,boundaries=bd,rebin=True,rebin_size=0.1,separate=False)
+m_snr_ha = airmass.snr_2(m_wl_deg,m_flux_deg,boundaries=[6614.0, 6625.0],rebin=True,rebin_size=0.1,separate=False)
+
+#write code to make specutils snr
+
+print(m_snr_straight,m_snr_ha)
+plt.plot(m_wl_rebin,m_flux_rebin)
+plt.show()
+plt.close()
 
 
 

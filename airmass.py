@@ -1319,15 +1319,24 @@ def find_order(wl , demetra_file):
         warnings.warn('Maximum of WL array out of bounds of order, you cannot get this full interval from the same order')
     return best_order
 
-def degrade_spectrum(wl,flux,spectral_resolution=10000, desired_snr=100):
+def degrade_spectrum(wl,flux,spectral_resolution=10000, desired_snr=100,pre_rebin=False):
     deg_wl = wl
-    noise_array=[]
+
     deg_flux, fwhm = pyasl.instrBroadGaussFast(wl, flux, spectral_resolution,
                                          edgeHandling="firstlast", fullout=True, maxsig=5.0)
-
-    for f in deg_flux:
+    if type(pre_rebin) is float:
+        rebin_wl,loop_flux = rebin2(deg_wl,deg_flux,step=pre_rebin)
+    elif pre_rebin is False or None:
+        loop_flux = deg_flux
+        rebin_wl = deg_wl
+    else:
+        print('Rebin turned off, to turn on, specify stepsize for wl array')
+        loop_flux = deg_flux
+        rebin_wl = deg_wl
+    noise_array = []
+    for f in loop_flux:
         noise_exp = f/desired_snr
         noise = np.random.normal(0, noise_exp)
         noise_array.append(noise)
-    deg_flux_with_noise = np.array(deg_flux)+np.array(noise_array)
-    return deg_wl,deg_flux_with_noise
+    deg_flux_with_noise = np.array(loop_flux)+np.array(noise_array)
+    return rebin_wl,deg_flux_with_noise

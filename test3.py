@@ -108,21 +108,20 @@ end_wl= wl_apo[-1]
 # print(merc_wl[4]-merc_wl[3],merc_wl[-9]-merc_wl[-10])
 
 # exit()
-deg_wl,deg_flux = airmass.degrade_spectrum(merc_wl,merc_flux)
+deg_wl,deg_flux = airmass.degrade_spectrum(merc_wl,merc_flux,spectral_resolution=10000, desired_snr=100,pre_rebin = 0.1)
 
-wl_apo_sn,flux_apo_sn = slice_and_norm(wl_apo,flux_apo,start_wl,end_wl)
+wl_apo_sn,flux_apo_sn = slice_and_norm(wl_apo,flux_apo,start_wl,end_wl,rebin=None)
 wl_merc_sn,flux_merc_sn = slice_and_norm(merc_wl,merc_flux,start_wl,end_wl,rebin=None)
 wl_deg_sn, flux_deg_sn = slice_and_norm(deg_wl,deg_flux,start_wl,end_wl,rebin=None)
 
 snr_merc_original = airmass.snr_2(merc_wl,merc_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
 snr_merc_degrade_no_rebin = airmass.snr_2(deg_wl,deg_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
-snr_merc_degrade_yes_rebin = airmass.snr_2(deg_wl,deg_flux,boundaries=bd,rebin=True,rebin_size=0.1,separate=False)
+
 
 print('orig',snr_merc_original)
 print('deg, no rebin',snr_merc_degrade_no_rebin)
-print('deg, yes rebin',snr_merc_degrade_yes_rebin)
 plt.plot(merc_wl,merc_flux)
-# plt.plot(deg_wl,deg_flux)
+plt.plot(deg_wl,deg_flux)
 plt.show()
 plt.close()
 # ha_order = list(filter(lambda x: x.order_number_demetra == '34', list_of_orders))[0]

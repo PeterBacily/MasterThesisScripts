@@ -1306,7 +1306,7 @@ def make_linelist(list, filepath):
     pickle.dump(list, workfileresource)
     workfileresource.close()
 
-def find_order(wl , demetra_file):
+def find_order(wl , demetra_file,return_full_order_list=False):
     orders = demetra_file.orders
     centerwl=np.average(wl)
     minwl=np.min(wl)
@@ -1317,7 +1317,10 @@ def find_order(wl , demetra_file):
         warnings.warn('Minimum of WL array out of bounds of order, you cannot get this full interval from the same order')
     if maxwl>best_order.wl_end:
         warnings.warn('Maximum of WL array out of bounds of order, you cannot get this full interval from the same order')
-    return best_order
+    if return_full_order_list is True:
+        return ol
+    else:
+        return best_order
 
 def degrade_spectrum(wl,flux,spectral_resolution=10000, desired_snr=100,pre_rebin=False):
     deg_wl = wl

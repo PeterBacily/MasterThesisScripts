@@ -88,7 +88,7 @@ def open_linelist(path):
     return b
 
 class single_order:
-    def __init__(self, filepath,order_number,order_number_demetra,v_rad=-18.5,velo_shift=True,steps=[0.1,0.2,0.5],step=0.5):
+    def __init__(self, filepath,order_number,order_number_demetra,v_rad=-18.5,velo_shift=True,steps=[0.1,0.2,0.5],step=0.1):
         self.order_number_demetra =order_number_demetra
         self.order_number = order_number
         with pf.open(filepath) as a:

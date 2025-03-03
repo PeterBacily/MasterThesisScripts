@@ -17,9 +17,11 @@ import Path_check
 import os
 import specutils
 from specutils.fitting import fit_generic_continuum
+from specutils import analysis
 import astropy.units as ap_unit
 import pickle
 
+AA = ap_unit.AA
 linelist = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
              'line4861', 'line4921', 'line6678', 'line4471']
 
@@ -32,8 +34,7 @@ def show_specutils_fit(file):
     ha_order = list(filter(lambda x: x.order_number_demetra == '34', list_of_orders))[0]
     wl = ha_order.wl_rebin
     flux = ha_order.flux_rebin
-    spec1d = specutils.Spectrum1D(spectral_axis=wl * ap_unit.AA, flux=flux * ap_unit.Jy)
-    AA =ap_unit.AA
+    spec1d = specutils.Spectrum1D(spectral_axis=wl * AA, flux=flux * ap_unit.Jy)
     linekey = line + '_order_rebin'
     line_instance_order = getattr(file, linekey)
     lineinfo = line_instance_order.lineinfo
@@ -80,7 +81,6 @@ def plot_normalization_test(apo_eshel_files,mercator_files):
         spec1d = specutils.Spectrum1D(spectral_axis=wl* ap_unit.AA, flux=flux*ap_unit.Jy)
         ax2.plot(spec1d.spectral_axis, spec1d.flux)
         norm_boundaries = [6538,6546,6575,6589]
-        AA = ap_unit.AA
         region = [(norm_boundaries[0] * AA, norm_boundaries[1] * AA), (norm_boundaries[2] * AA, norm_boundaries[3] * AA)]
         g1_fit = specutils.fitting.fit_continuum(spec1d)
         continuum_fitted = g1_fit(wl * AA)
@@ -122,16 +122,24 @@ def plot_normalization_test(apo_eshel_files,mercator_files):
     plt.close()
 
 bd = [5170, 5210]
+bd_ha = [6614.0, 6625.0]
 mercfile = mercator_files[1]
 m_wl = mercfile.wl_rebin
 m_flux = mercfile.flux_rebin
 m_wl_rebin,m_flux_rebin = airmass.rebin2(m_wl,m_flux)
-m_wl_deg,m_flux_deg = airmass.degrade_spectrum(m_wl,m_flux,pre_rebin=0.1)
+m_wl_deg,m_flux_deg = airmass.degrade_spectrum(m_wl,m_flux,pre_rebin=0.1,desired_snr=70)
 
-m_snr_straight = airmass.snr_2(m_wl_deg,m_flux_deg,boundaries=bd,rebin=True,rebin_size=0.1,separate=False)
-m_snr_ha = airmass.snr_2(m_wl_deg,m_flux_deg,boundaries=[6614.0, 6625.0],rebin=True,rebin_size=0.1,separate=False)
+m_spec1d_deg = specutils.Spectrum1D(spectral_axis=m_wl_deg * AA, flux=m_flux_deg * ap_unit.Jy)
+print('specutils snr',analysis.snr_derived(m_spec1d_deg,specutils.SpectralRegion(bd_ha[0]*AA, bd_ha[1]*AA)))
 
-#write code to make specutils snr
+m_snr_straight = airmass.snr_2(m_wl_deg,m_flux_deg,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
+m_snr_ha = airmass.snr_2(m_wl_deg,m_flux_deg,boundaries=bd_ha,rebin=False,rebin_size=0.1,separate=False)
+
+apo_test_file = apo_eshel_files[0]
+apo_order_straight_line = airmass.find_order([5170, 5210],apo_test_file)
+
+#write code to measure snr in apo spectra
+
 
 print(m_snr_straight,m_snr_ha)
 plt.plot(m_wl_rebin,m_flux_rebin)

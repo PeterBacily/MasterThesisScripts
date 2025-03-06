@@ -319,6 +319,7 @@ def snr(wl,flux):
 def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_size=0.1,separate=False):
     if len(boundaries)==2:
         [a,d]=boundaries
+        separate = False
     elif len(boundaries)==4:
         [a,b,c,d]=boundaries
     else:
@@ -1342,5 +1343,4 @@ def degrade_spectrum(wl,flux,spectral_resolution=10000, desired_snr=100,pre_rebi
         noise = np.random.normal(0, noise_exp)
         noise_array.append(noise)
     deg_flux_with_noise = np.array(loop_flux)+np.array(noise_array)
-    return rebin_wl,deg_flux_with_noise
     return rebin_wl,deg_flux_with_noise

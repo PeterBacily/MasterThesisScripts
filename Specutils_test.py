@@ -140,9 +140,50 @@ bd = [5170, 5190]
 bd_ha = [6614.0, 6625.0]
 
 
+def SNR_3(wl,flux,boundaries='Halpha',rebin=False,separate=False):
+    if boundaries == 'Halpha':
+        bd = [6614.0, 6625.0]
+    elif boundaries == 'flat_continuum':
+        bd = [5170, 5190]
+    elif (np.array(boundaries).shape ==(4,) or np.array(boundaries).shape ==(2,)):
+        bd = boundaries
+    else:
+        raise TypeError('Boundaries needs to be \'Halpha\', \'flat_continuum\', or a list of 2 or 4 boundaries')
+    snr = airmass.snr_2(wl, flux, boundaries=bd, rebin=rebin, rebin_size=0.1, separate=separate)
+    return snr
+
+def SNR_merc(masterfile):
+    m_wl = masterfile.wl_rebin2
+    m_flux = masterfile.flux_rebin2
+    snr_ha = SNR_3(m_wl,m_flux,boundaries='Halpha',rebin=False,separate=False)
+    snr_straight = SNR_3(m_wl,m_flux,boundaries='flat_continuum',rebin=False,separate=False)
+    return snr_ha,snr_straight
+
+def SNR_merc_degen(wl,flux):
+    m_wl = wl
+    m_flux = flux
+    snr_ha = SNR_3(m_wl,m_flux,boundaries='Halpha',rebin=False,separate=False)
+    snr_straight = SNR_3(m_wl,m_flux,boundaries='flat_continuum',rebin=False,separate=False)
+    return snr_ha,snr_straight
+
+
+def SNR_apo_orders(file):
+    bd_ha = [6614, 6625]
+    bd_straight = [5170, 5190]
+    apo_order_ha = airmass.find_order(bd_ha, file)
+    apo_order_straight_line = airmass.find_order(bd_straight, file)
+    apo_sl_wl = apo_order_straight_line.wl_rebin[2:-3]
+    apo_sl_flux = apo_order_straight_line.flux_rebin[2:-3]
+    apo_ha_wl = apo_order_ha.wl_rebin[2:-3]
+    apo_ha_flux = apo_order_ha.flux_rebin[2:-3]
+    snr_ha = SNR_3(apo_ha_wl,apo_ha_flux,boundaries='Halpha',rebin=False,separate=False)
+    snr_straight = SNR_3(apo_sl_wl,apo_sl_flux,boundaries='flat_continuum',rebin=False,separate=False)
+    return snr_ha,snr_straight
+
 mercfile = mercator_files[1]
-m_wl = mercfile.wl_rebin
-m_flux = mercfile.flux_rebin
+m_wl = mercfile.wl_rebin2
+m_flux = mercfile.flux_rebin2
+print(m_wl[1001]-m_wl[1000])
 m_wl_rebin,m_flux_rebin = airmass.rebin2(m_wl,m_flux)
 m_wl_deg,m_flux_deg = airmass.degrade_spectrum(m_wl,m_flux,pre_rebin=0.1,spectral_resolution=10000,desired_snr=120)
 m_spec1d_deg = specutils.Spectrum1D(spectral_axis=m_wl_deg * AA, flux=m_flux_deg * ap_unit.Jy)
@@ -157,44 +198,87 @@ m_snr_ha = airmass.snr_2(m_wl_deg,m_flux_deg,boundaries=bd_ha,rebin=False,rebin_
 m_snr_specutils_ha = analysis.snr_derived(m_spec1d_deg,specutils.SpectralRegion(bd_ha[0]*AA, bd_ha[1]*AA))
 m_snr_specutils_straight = analysis.snr_derived(m_spec1d_deg,specutils.SpectralRegion(bd[0]*AA, bd[1]*AA))
 
-single_obs_inspect_list = [apo_eshel_files_single_obs[2],apo_eshel_files_single_obs[16],apo_eshel_files_single_obs[25],apo_eshel_files_single_obs[33]]
-
+# single_obs_inspect_list = [apo_eshel_files_single_obs[2],apo_eshel_files_single_obs[16],apo_eshel_files_single_obs[25],apo_eshel_files_single_obs[33]]
+# single_obs_inspect_list = [apo_eshel_files_single_obs[2],apo_eshel_files_single_obs[33]]
 i=0
-for apo_test_file in single_obs_inspect_list :
-    apo_order_straight_line = airmass.find_order(bd,apo_test_file)
-    apo_order_ha = airmass.find_order(bd_ha,apo_test_file)
-    apo_sl_wl = apo_order_straight_line.wl_rebin[2:]
-    apo_sl_flux = apo_order_straight_line.flux_rebin[2:]/np.average(apo_order_straight_line.flux_rebin[2:])
-    apo_spec1d_sl = specutils.Spectrum1D(spectral_axis=apo_sl_wl * AA, flux=apo_sl_flux * ap_unit.Jy)
-    apo_ha_wl = apo_order_ha.wl_rebin[2:]
-    apo_ha_flux = apo_order_ha.flux_rebin[2:]/np.average(apo_order_ha.flux_rebin[2:])
-    apo_spec1d_ha = specutils.Spectrum1D(spectral_axis=apo_ha_wl * AA, flux=apo_ha_flux * ap_unit.Jy)
+snrs_ha=[]
+snrs_str=[]
+
+# for file in mercator_files:
+#     # snr_ha,snr_str= SNR_merc(file)
+#     m_wl = file.wl_rebin2
+#     m_flux = file.flux_rebin2
+#     m_spec1d = specutils.Spectrum1D(spectral_axis=m_wl * AA, flux=m_flux * ap_unit.Jy)
+#     snr_ha=m_snr_specutils_ha = analysis.snr_derived(m_spec1d,specutils.SpectralRegion(bd_ha[0]*AA, bd_ha[1]*AA))
+#     snr_str=analysis.snr_derived(m_spec1d,specutils.SpectralRegion(bd[0]*AA, bd[1]*AA))
+#     snrs_ha.append(snr_ha)
+#     snrs_str.append(snr_str)
+
+deg_list=  np.arange(50, 200, 10)
+m_wl = mercfile.wl_rebin2
+m_flux = mercfile.flux_rebin2
+for deg in deg_list:
+    # snr_ha,snr_str= SNR_merc(file)
+    deg_wl,deg_flux= airmass.degrade_spectrum(m_wl,m_flux,desired_snr=deg)
+    # m_spec1d = specutils.Spectrum1D(spectral_axis=deg_wl * AA, flux=deg_flux * ap_unit.Jy)
+    # snr_ha=m_snr_specutils_ha = analysis.snr_derived(m_spec1d,specutils.SpectralRegion(bd_ha[0]*AA, bd_ha[1]*AA))
+    # snr_str=analysis.snr_derived(m_spec1d,specutils.SpectralRegion(bd[0]*AA, bd[1]*AA))
+    snr_ha,snr_str = SNR_merc_degen(deg_wl,deg_flux)
+    snrs_ha.append(snr_ha)
+    snrs_str.append(snr_str)
 
 
+# for apo_test_file in apo_eshel_files_single_obs:
+#     apo_order_straight_line = airmass.find_order(bd,apo_test_file)
+#     apo_order_ha = airmass.find_order(bd_ha,apo_test_file)
+#     apo_sl_wl = apo_order_straight_line.wl_rebin[2:]
+#     apo_sl_flux = apo_order_straight_line.flux_rebin[2:]/np.average(apo_order_straight_line.flux_rebin[2:])
+#     apo_spec1d_sl = specutils.Spectrum1D(spectral_axis=apo_sl_wl * AA, flux=apo_sl_flux * ap_unit.Jy)
+#     apo_ha_wl = apo_order_ha.wl_rebin[2:]
+#     apo_ha_flux = apo_order_ha.flux_rebin[2:]/np.average(apo_order_ha.flux_rebin[2:])
+#     apo_spec1d_ha = specutils.Spectrum1D(spectral_axis=apo_ha_wl * AA, flux=apo_ha_flux * ap_unit.Jy)
+#
+#
+#
+#     a_snr_straight = airmass.snr_2(apo_sl_wl,apo_sl_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
+#     a_snr_ha = airmass.snr_2(apo_ha_wl,apo_ha_flux,boundaries=bd_ha,rebin=False,rebin_size=0.1,separate=False)
+#     a_snr_specutils_ha = analysis.snr_derived(apo_spec1d_ha,specutils.SpectralRegion(bd_ha[0]*AA, bd_ha[1]*AA))
+#     a_snr_specutils_straight = analysis.snr_derived(apo_spec1d_sl,specutils.SpectralRegion(bd[0]*AA, bd[1]*AA))
+#     # print('Mercator degraded:')
+#     # print('specutils snr straight: ',m_snr_specutils_straight,' ha: ',m_snr_specutils_ha)
+#     # print('my snr straight: ',m_snr_straight,' ha: ',m_snr_ha)
+#     snr_ha_2,snr_str_2 = SNR_apo_orders(apo_test_file)
+#     # snrs_ha.append((snr_ha_2))
+#     # snrs_str.append((snr_str_2))
+#     snrs_ha.append((a_snr_specutils_ha))
+#     snrs_str.append((a_snr_specutils_straight))
+#     print(i,' APO:')
+#     print('specutils snr:    straight:',a_snr_specutils_straight,' ha:',a_snr_specutils_ha)
+#     print('fu snr:    straight: ', snr_str_2, ' ha: ', snr_ha_2, )
+#     print('my snr:    straight: ',a_snr_straight,' ha: ',a_snr_ha,'\n')
+#
+#     m_slice_wl_sl, m_slice_flux_sl = slice_and_norm(m_wl_deg,m_flux_deg,apo_sl_wl[0],apo_sl_wl[-1])
+#     m_slice_wl_ha, m_slice_flux_ha = slice_and_norm(m_wl_deg, m_flux_deg, apo_ha_wl[0], apo_ha_wl[-1])
+#     i+=1
 
-    a_snr_straight = airmass.snr_2(apo_sl_wl,apo_sl_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
-    a_snr_ha = airmass.snr_2(apo_ha_wl,apo_ha_flux,boundaries=bd_ha,rebin=False,rebin_size=0.1,separate=False)
-    a_snr_specutils_ha = analysis.snr_derived(apo_spec1d_ha,specutils.SpectralRegion(bd_ha[0]*AA, bd_ha[1]*AA))
-    a_snr_specutils_straight = analysis.snr_derived(apo_spec1d_sl,specutils.SpectralRegion(bd[0]*AA, bd[1]*AA))
-    # print('Mercator degraded:')
-    # print('specutils snr straight: ',m_snr_specutils_straight,' ha: ',m_snr_specutils_ha)
-    # print('my snr straight: ',m_snr_straight,' ha: ',m_snr_ha)
-    print(i,' APO:')
-    print('specutils snr:    straight:',a_snr_specutils_straight,' ha:',a_snr_specutils_ha)
-    print('my snr:    straight: ',a_snr_straight,' ha: ',a_snr_ha,'\n')
-
-    m_slice_wl_sl, m_slice_flux_sl = slice_and_norm(m_wl_deg,m_flux_deg,apo_sl_wl[0],apo_sl_wl[-1])
-    m_slice_wl_ha, m_slice_flux_ha = slice_and_norm(m_wl_deg, m_flux_deg, apo_ha_wl[0], apo_ha_wl[-1])
-    i+=1
-
-    # plt.plot(m_slice_wl_ha,m_slice_flux_ha, label='mercator degraded to 120SNR')
-    plt.plot(apo_ha_wl,apo_ha_flux,label = str(i))
-    plt.ylim(0.8,1.1)
-plt.axvline(bd_ha[0])
-plt.axvline(bd_ha[1])
-plt.legend()
+plt.scatter(snrs_ha,snrs_str)
+plt.title('SNR from a degenerated Mercator spectra derived with a straight line fit')
+plt.xlabel('SNR Hα 6614Å')
+plt.ylabel('SNR flat continuum 5180Å')
+# plt.title('SNR from Mercator spectra in flat continuum 5180Å')
+# plt.xlabel('SNR from straight line fit')
+# plt.ylabel('SNR from Specutils')
 plt.show()
 plt.close()
+    # plt.plot(m_slice_wl_ha,m_slice_flux_ha, label='mercator degraded to 120SNR')
+#     plt.plot(apo_ha_wl,apo_ha_flux,label = str(i))
+#     plt.ylim(0.8,1.1)
+# plt.axvline(bd_ha[0])
+# plt.axvline(bd_ha[1])
+# plt.legend()
+# plt.show()
+# plt.close()
+
 # print('Mercator degraded:')
 # print('specutils snr: straight: ',m_snr_specutils_straight,' ha: ',m_snr_specutils_ha)
 # print('my snr: straight: ',m_snr_straight,' ha: ',m_snr_ha)

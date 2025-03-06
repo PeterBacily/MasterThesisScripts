@@ -26,6 +26,7 @@ linelist = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line468
              'line4861', 'line4921', 'line6678', 'line4471']
 
 apo_eshel_files= open_masterfiles.apo_demetra_orders(r"D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\combined\high_snr\\")
+apo_eshel_files_single_obs= open_masterfiles.apo_demetra_orders(r"D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\single_obs\\")
 mercator_files = open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo_vcor_2\\')
 
 
@@ -134,36 +135,69 @@ def plot_normalization_test(apo_eshel_files,mercator_files):
     plt.show()
     plt.close()
 
+
 bd = [5170, 5190]
 bd_ha = [6614.0, 6625.0]
+
+
 mercfile = mercator_files[1]
 m_wl = mercfile.wl_rebin
 m_flux = mercfile.flux_rebin
 m_wl_rebin,m_flux_rebin = airmass.rebin2(m_wl,m_flux)
-m_wl_deg,m_flux_deg = airmass.degrade_spectrum(m_wl,m_flux,pre_rebin=0.1,desired_snr=120)
-
+m_wl_deg,m_flux_deg = airmass.degrade_spectrum(m_wl,m_flux,pre_rebin=0.1,spectral_resolution=10000,desired_snr=120)
 m_spec1d_deg = specutils.Spectrum1D(spectral_axis=m_wl_deg * AA, flux=m_flux_deg * ap_unit.Jy)
-print('specutils snr',analysis.snr_derived(m_spec1d_deg,specutils.SpectralRegion(bd_ha[0]*AA, bd_ha[1]*AA)))
+m_spec1d_normal = specutils.Spectrum1D(spectral_axis=m_wl_rebin * AA, flux=m_flux_rebin * ap_unit.Jy)
+
+
+
+
 
 m_snr_straight = airmass.snr_2(m_wl_deg,m_flux_deg,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
 m_snr_ha = airmass.snr_2(m_wl_deg,m_flux_deg,boundaries=bd_ha,rebin=False,rebin_size=0.1,separate=False)
+m_snr_specutils_ha = analysis.snr_derived(m_spec1d_deg,specutils.SpectralRegion(bd_ha[0]*AA, bd_ha[1]*AA))
+m_snr_specutils_straight = analysis.snr_derived(m_spec1d_deg,specutils.SpectralRegion(bd[0]*AA, bd[1]*AA))
 
-apo_test_file = apo_eshel_files[0]
-apo_order_straight_line = airmass.find_order(bd,apo_test_file)
+single_obs_inspect_list = [apo_eshel_files_single_obs[2],apo_eshel_files_single_obs[16],apo_eshel_files_single_obs[25],apo_eshel_files_single_obs[33]]
 
-#write code to measure snr in apo spectra
-apo_sl_wl = apo_order_straight_line.wl_rebin[2:]
-apo_sl_flux = apo_order_straight_line.flux_rebin[2:]/np.average(apo_order_straight_line.flux_rebin[2:])
-m_slice_wl, m_slice_flux = slice_and_norm(m_wl_deg,m_flux_deg,apo_sl_wl[0],apo_sl_wl[-1])
-print(m_snr_straight,m_snr_ha)
-plt.plot(apo_sl_wl,apo_sl_flux)
-plt.plot(m_slice_wl,m_slice_flux)
-plt.ylim(0.8,1.1)
-plt.axvline(bd[0])
-plt.axvline(bd[1])
+i=0
+for apo_test_file in single_obs_inspect_list :
+    apo_order_straight_line = airmass.find_order(bd,apo_test_file)
+    apo_order_ha = airmass.find_order(bd_ha,apo_test_file)
+    apo_sl_wl = apo_order_straight_line.wl_rebin[2:]
+    apo_sl_flux = apo_order_straight_line.flux_rebin[2:]/np.average(apo_order_straight_line.flux_rebin[2:])
+    apo_spec1d_sl = specutils.Spectrum1D(spectral_axis=apo_sl_wl * AA, flux=apo_sl_flux * ap_unit.Jy)
+    apo_ha_wl = apo_order_ha.wl_rebin[2:]
+    apo_ha_flux = apo_order_ha.flux_rebin[2:]/np.average(apo_order_ha.flux_rebin[2:])
+    apo_spec1d_ha = specutils.Spectrum1D(spectral_axis=apo_ha_wl * AA, flux=apo_ha_flux * ap_unit.Jy)
+
+
+
+    a_snr_straight = airmass.snr_2(apo_sl_wl,apo_sl_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
+    a_snr_ha = airmass.snr_2(apo_ha_wl,apo_ha_flux,boundaries=bd_ha,rebin=False,rebin_size=0.1,separate=False)
+    a_snr_specutils_ha = analysis.snr_derived(apo_spec1d_ha,specutils.SpectralRegion(bd_ha[0]*AA, bd_ha[1]*AA))
+    a_snr_specutils_straight = analysis.snr_derived(apo_spec1d_sl,specutils.SpectralRegion(bd[0]*AA, bd[1]*AA))
+    # print('Mercator degraded:')
+    # print('specutils snr straight: ',m_snr_specutils_straight,' ha: ',m_snr_specutils_ha)
+    # print('my snr straight: ',m_snr_straight,' ha: ',m_snr_ha)
+    print(i,' APO:')
+    print('specutils snr:    straight:',a_snr_specutils_straight,' ha:',a_snr_specutils_ha)
+    print('my snr:    straight: ',a_snr_straight,' ha: ',a_snr_ha,'\n')
+
+    m_slice_wl_sl, m_slice_flux_sl = slice_and_norm(m_wl_deg,m_flux_deg,apo_sl_wl[0],apo_sl_wl[-1])
+    m_slice_wl_ha, m_slice_flux_ha = slice_and_norm(m_wl_deg, m_flux_deg, apo_ha_wl[0], apo_ha_wl[-1])
+    i+=1
+
+    # plt.plot(m_slice_wl_ha,m_slice_flux_ha, label='mercator degraded to 120SNR')
+    plt.plot(apo_ha_wl,apo_ha_flux,label = str(i))
+    plt.ylim(0.8,1.1)
+plt.axvline(bd_ha[0])
+plt.axvline(bd_ha[1])
+plt.legend()
 plt.show()
 plt.close()
-
+# print('Mercator degraded:')
+# print('specutils snr: straight: ',m_snr_specutils_straight,' ha: ',m_snr_specutils_ha)
+# print('my snr: straight: ',m_snr_straight,' ha: ',m_snr_ha)
 
 
 

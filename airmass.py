@@ -365,6 +365,50 @@ def snr_2(wl,flux,boundaries=[6549, 6550.7, 6576.0, 6578.0],rebin=True,rebin_siz
     return stnr
 
 
+def SNR_3(wl,flux,boundaries='Halpha',rebin=False,separate=False):
+    if boundaries == 'Halpha':
+        bd = [6614.0, 6625.0]
+    elif boundaries == 'flat_continuum':
+        bd = [5170, 5190]
+    elif (np.array(boundaries).shape ==(4,) or np.array(boundaries).shape ==(2,)):
+        bd = boundaries
+    else:
+        raise TypeError('Boundaries needs to be \'Halpha\', \'flat_continuum\', or a list of 2 or 4 boundaries')
+    snr = airmass.snr_2(wl, flux, boundaries=bd, rebin=rebin, rebin_size=0.1, separate=separate)
+    return snr
+
+def SNR_merc(masterfile):
+    m_wl = masterfile.wl_rebin2
+    m_flux = masterfile.flux_rebin2
+    snr_ha = SNR_3(m_wl,m_flux,boundaries='Halpha',rebin=False,separate=False)
+    snr_straight = SNR_3(m_wl,m_flux,boundaries='flat_continuum',rebin=False,separate=False)
+    return snr_ha,snr_straight
+
+def SNR_merc_degen(wl,flux):
+    m_wl = wl
+    m_flux = flux
+    snr_ha = SNR_3(m_wl,m_flux,boundaries='Halpha',rebin=False,separate=False)
+    snr_straight = SNR_3(m_wl,m_flux,boundaries='flat_continuum',rebin=False,separate=False)
+    return snr_ha,snr_straight
+
+
+def SNR_apo_orders(file):
+    bd_ha = [6614, 6625]
+    bd_straight = [5170, 5190]
+    apo_order_ha = airmass.find_order(bd_ha, file)
+    apo_order_straight_line = airmass.find_order(bd_straight, file)
+    apo_sl_wl = apo_order_straight_line.wl_rebin[2:-3]
+    apo_sl_flux = apo_order_straight_line.flux_rebin[2:-3]
+    apo_ha_wl = apo_order_ha.wl_rebin[2:-3]
+    apo_ha_flux = apo_order_ha.flux_rebin[2:-3]
+    snr_ha = SNR_3(apo_ha_wl,apo_ha_flux,boundaries='Halpha',rebin=False,separate=False)
+    snr_straight = SNR_3(apo_sl_wl,apo_sl_flux,boundaries='flat_continuum',rebin=False,separate=False)
+    return snr_ha,snr_straight
+
+
+
+
+
 
 def snr_ha(datafile_class_file,return_only_snr=False,boundaries=[6549, 6550.7, 6576.0, 6578.0]):
     file=datafile_class_file

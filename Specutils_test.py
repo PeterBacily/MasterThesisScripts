@@ -24,7 +24,7 @@ import pickle
 AA = ap_unit.AA
 linelist = ['line6562', 'line4713', 'line5411', 'line5801', 'line4541', 'line4685', 'line5875', 'line5592',
              'line4861', 'line4921', 'line6678', 'line4471']
-
+apo_eshel_files_combined = open_masterfiles.apo_demetra_orders(r"D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\combined\\")
 apo_eshel_files= open_masterfiles.apo_demetra_orders(r"D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\combined\high_snr\\")
 apo_eshel_files_single_obs= open_masterfiles.apo_demetra_orders(r"D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\single_obs\\")
 mercator_files = open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo_vcor_2\\')
@@ -226,18 +226,34 @@ for deg in deg_list:
     snr_ha,snr_str = SNR_merc_degen(deg_wl,deg_flux)
     snrs_ha.append(snr_ha)
     snrs_str.append(snr_str)
+i=0
+apo_eshel_files
+for apo_test_file in apo_eshel_files_combined:
+# for apo_test_file in [apo_eshel_files_single_obs[19]]:
+# for apo_test_file in [apo_eshel_files[3]]:
+    apo_order_straight_line = airmass.find_order(bd,apo_test_file)
+    apo_order_ha = airmass.find_order(bd_ha,apo_test_file)
+    apo_sl_wl = apo_order_straight_line.wl_rebin[2:]
+    apo_sl_flux = apo_order_straight_line.flux_rebin[2:]/np.average(apo_order_straight_line.flux_rebin[2:])
+    apo_spec1d_sl = specutils.Spectrum1D(spectral_axis=apo_sl_wl * AA, flux=apo_sl_flux * ap_unit.Jy)
+    apo_ha_wl = apo_order_ha.wl_rebin[2:]
+    apo_ha_flux = apo_order_ha.flux_rebin[2:]/np.average(apo_order_ha.flux_rebin[2:])
+    apo_spec1d_ha = specutils.Spectrum1D(spectral_axis=apo_ha_wl * AA, flux=apo_ha_flux * ap_unit.Jy)
+    snr_ha,snr_straight = SNR_apo_orders(apo_test_file)
+    print('No.',i, 'SNR:',str(np.round(snr_ha,1)))
+    i+=1
+exit()
+deg_merc_wl,deg_merc_flux = slice_and_norm(m_wl_deg,m_flux_deg,start=apo_ha_wl[2],end=apo_ha_wl[-3])
 
-
-# for apo_test_file in apo_eshel_files_single_obs:
-#     apo_order_straight_line = airmass.find_order(bd,apo_test_file)
-#     apo_order_ha = airmass.find_order(bd_ha,apo_test_file)
-#     apo_sl_wl = apo_order_straight_line.wl_rebin[2:]
-#     apo_sl_flux = apo_order_straight_line.flux_rebin[2:]/np.average(apo_order_straight_line.flux_rebin[2:])
-#     apo_spec1d_sl = specutils.Spectrum1D(spectral_axis=apo_sl_wl * AA, flux=apo_sl_flux * ap_unit.Jy)
-#     apo_ha_wl = apo_order_ha.wl_rebin[2:]
-#     apo_ha_flux = apo_order_ha.flux_rebin[2:]/np.average(apo_order_ha.flux_rebin[2:])
-#     apo_spec1d_ha = specutils.Spectrum1D(spectral_axis=apo_ha_wl * AA, flux=apo_ha_flux * ap_unit.Jy)
-#
+plt.plot(apo_ha_wl,apo_ha_flux,label = 'APO, SNR = '+str(np.round(snr_ha,0)))
+plt.plot(deg_merc_wl,deg_merc_flux,label='Mercator degraded, SNR = 120')
+plt.xlim(6614,6625)
+plt.ylim(0.9,1.1)
+plt.xlabel('Wavelength (Å)')
+plt.ylabel('Relative Flux')
+plt.legend()
+plt.show()
+plt.close()
 #
 #
 #     a_snr_straight = airmass.snr_2(apo_sl_wl,apo_sl_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
@@ -261,15 +277,15 @@ for deg in deg_list:
 #     m_slice_wl_ha, m_slice_flux_ha = slice_and_norm(m_wl_deg, m_flux_deg, apo_ha_wl[0], apo_ha_wl[-1])
 #     i+=1
 
-plt.scatter(snrs_ha,snrs_str)
-plt.title('SNR from a degenerated Mercator spectra derived with a straight line fit')
-plt.xlabel('SNR Hα 6614Å')
-plt.ylabel('SNR flat continuum 5180Å')
-# plt.title('SNR from Mercator spectra in flat continuum 5180Å')
-# plt.xlabel('SNR from straight line fit')
-# plt.ylabel('SNR from Specutils')
-plt.show()
-plt.close()
+# plt.scatter(snrs_ha,snrs_str)
+# plt.title('SNR from a degenerated Mercator spectra derived with a straight line fit')
+# plt.xlabel('SNR Hα 6614Å')
+# plt.ylabel('SNR flat continuum 5180Å')
+# # plt.title('SNR from Mercator spectra in flat continuum 5180Å')
+# # plt.xlabel('SNR from straight line fit')
+# # plt.ylabel('SNR from Specutils')
+# plt.show()
+# plt.close()
     # plt.plot(m_slice_wl_ha,m_slice_flux_ha, label='mercator degraded to 120SNR')
 #     plt.plot(apo_ha_wl,apo_ha_flux,label = str(i))
 #     plt.ylim(0.8,1.1)

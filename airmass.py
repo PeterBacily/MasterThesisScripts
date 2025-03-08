@@ -1388,3 +1388,23 @@ def degrade_spectrum(wl,flux,spectral_resolution=10000, desired_snr=100,pre_rebi
         noise_array.append(noise)
     deg_flux_with_noise = np.array(loop_flux)+np.array(noise_array)
     return rebin_wl,deg_flux_with_noise
+
+def degrade_spectrum_noise_first(wl,flux,spectral_resolution=10000, desired_snr=100,pre_rebin=0.05):
+    noise_array = []
+    for f in flux:
+        noise_exp = f/desired_snr
+        noise = np.random.normal(0, noise_exp)
+        noise_array.append(noise)
+    noisy_flux = np.array(flux)+noise_array
+    if type(pre_rebin) == float or type(pre_rebin) == int:
+        rebin_wl,rebin_noisy_flux = rebin2(wl,noisy_flux,step=pre_rebin)
+    elif pre_rebin is False or None:
+        rebin_noisy_flux = noisy_flux
+        rebin_wl = wl
+    else:
+        print('incorrect import for pre_rebin parameter. Rebin set to 0.05, to customize either specify stepsize or set to None')
+        rebin_wl, rebin_noisy_flux = rebin2(wl, noisy_flux, step=0.05)
+    deg_noisy_flux, fwhm = pyasl.instrBroadGaussFast(rebin_wl, rebin_noisy_flux, spectral_resolution,
+                                         edgeHandling="firstlast", fullout=True, maxsig=5.0)
+
+    return rebin_wl,deg_noisy_flux

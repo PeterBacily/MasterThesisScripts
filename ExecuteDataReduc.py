@@ -123,8 +123,8 @@ data_full_night_110= str(converted_Data_folder)+r'\demetra\with_orders\full_nigh
 data_full_night_100= str(converted_Data_folder)+r'\demetra\with_orders\full_night\snr_100\\'
 # data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
 data_individual = str(converted_Data_folder)+r'\demetra\with_orders\all_darks\single_obs\\'
-data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
-data_full_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
+# data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
+# data_full_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
 # pfs=[pf_dem_final_all,pf_dem_final_90,pf_dem_final_100]
 # dfs=[df1,df2,df3]
 dfs_full_night = [data_full_night_110,data_full_night_100]
@@ -156,7 +156,7 @@ def snr_orders(data_individual_folder,data_full_night_path,show='off',save='on')
     #     datareduc.plot_snr_test(day,li[2:6] )
 print(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\single_obs\\')
 rebin_base_path= r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin'
-rebin_size = '02'
+rebin_size = '01'
 snr110=False
 single_obs_suffix = r'\single_obs\\'
 if snr110 is True:
@@ -166,9 +166,10 @@ else:
 di_path = rebin_base_path+rebin_size+single_obs_suffix
 fn_path = rebin_base_path+rebin_size+full_night_suffix
 # snr_orders(di_path,fn_path,show='on',save='off')
+data_individual_list = open_masterfiles.apo_demetra_orders(path=di_path, manual_filelist=None, sort_data_files='on')
+datareduc.plot_order_stack(data_individual_list,wlpiece= [5315, 5365],rebinstep=0.5,day=0,from_order=False)
 
-
-datareduc.plot_TVS_orders_lines_together(lines_III,r'D:\peter\Master_Thesis\Datareduction\Plots\test\demetra_tvs\\',show='off',save='on', norm_boundaries='off', datafilefolder=fn_path,vrange=800)
+# datareduc.plot_TVS_orders_lines_together(lines_III,r'D:\peter\Master_Thesis\Datareduction\Plots\test\demetra_tvs\\',show='off',save='on', norm_boundaries='off', datafilefolder=fn_path,vrange=800)
 
 # datareduc.plot_TVS_together(linelist=apo_lines3,filefolder_apo=data_full_night_100,filefolder_merc=df_lp,show='on',save='off')
 # for i in range(len(dfs_full_night)):

@@ -1395,7 +1395,7 @@ def create_JoO_mercator(filefolder):
     print(r'\end{tabular}')
     print(r'\end{table*}')
 
-def plot_order_stack(data_individual_list,wlpiece= [5335, 5345],rebinstep=0.5):
+def plot_order_stack(data_individual_list,wlpiece= [5335, 5345],rebinstep=0.1,day = 'All',from_order=True):
     groups = defaultdict(list)
 
     for obj in data_individual_list:
@@ -1404,18 +1404,28 @@ def plot_order_stack(data_individual_list,wlpiece= [5335, 5345],rebinstep=0.5):
 
     new_list = groups.values()
     list_of_day_data = list(new_list)
-    for testday in list_of_day_data:
+    if day == 'All':
+        list_of_day_data_slice = list_of_day_data
+    else:
+        list_of_day_data_slice = [list_of_day_data[day]]
+    for testday in list_of_day_data_slice:
         wlarray = airmass.find_order(wlpiece, testday[0]).wl_original[5:-5]
         wl_rebin = np.arange(wlarray[0], wlarray[-1], rebinstep)
         day_data = []
         for observation in testday:
             relevant_order = airmass.find_order(wlpiece, observation)
-            wl1 = relevant_order.wl_original
-            flux1 = relevant_order.flux_original
+            if from_order is True:
+                wl1 = relevant_order.wl_original
+                flux1 = relevant_order.flux_original
+                addtext = 'taken from individual orders'
+            elif from_order is False:
+                wl1 = observation.wl_original
+                flux1 = observation.flux_original
+                addtext = 'taken from order merged spectra'
             flux_rebin = airmass.rebin_spec(wl1, flux1, wl_rebin)
             snr2 = airmass.snr_2(wl_rebin, flux_rebin, boundaries=wlpiece)
             print(snr2)
-            day_data.append([wl1, flux1, wl_rebin, flux_rebin, snr2])
+            day_data.append([wl1, flux1, wl_rebin, flux_rebin, snr2,observation])
 
         spec_list = []
         weightlist = []
@@ -1425,14 +1435,21 @@ def plot_order_stack(data_individual_list,wlpiece= [5335, 5345],rebinstep=0.5):
             normspec = spec[3] / spc_avg
             spec_list.append(normspec)
             weightlist.append(spec[4] ** 2)
-            plt.plot(spec[2], normspec + 0.1 * i, c='g')
+            plt.plot(spec[2], normspec + 0.1 * i,label=spec[5].time_and_date)
             i += 0
         avg_spec = np.average(spec_list, axis=0, weights=weightlist)
-        print('snr_combined  measured = ', airmass.snr_2(spec[2], avg_spec, boundaries=wlpiece))
-        print('snr_combined theoretical = ', np.sqrt(np.sum(weightlist)))
+        # print('snr_combined  measured = ', airmass.snr_2(spec[2], avg_spec, boundaries=wlpiece))
+        # print('snr_combined theoretical = ', np.sqrt(np.sum(weightlist)))
 
         for value in weightlist:
             print(np.sqrt(value))
-        plt.plot(spec[2], avg_spec, c='r')
+        plt.plot(spec[2], avg_spec, c='black',label = 'Day Average',linewidth=1.5)
+        plt.xlim(wlpiece[0],wlpiece[1])
+        plt.xlabel('Wavelength (Å)')
+        plt.ylabel('Relative Flux')
+        plt.title('Flat piece of continuum in APO data '+addtext)
+        plt.ylim(0.96,1.05)
+        plt.ticklabel_format(useOffset=False)
+        plt.legend()
         plt.show()
         plt.close()

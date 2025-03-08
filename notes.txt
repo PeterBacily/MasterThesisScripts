@@ -9,3 +9,13 @@ noirmalisatie:
 https://pyastronomy.readthedocs.io/en/latest/pyaslDoc/aslDoc/dopplerShift.html
 
 measure snr of artificial spectra, see if it macthes.
+
+
+
+plot continuum stukje voor alle spectra uit 1 nacht uit order en uit volledige spectra,
+plot darks?
+plot flatfields?
+
+omwisselen volgorde ruis en spectrale resolutie degraden
+
+proberen true snr van degraded spectra te vinden

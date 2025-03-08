@@ -92,27 +92,50 @@ def slice_and_norm(wl,flux,start,end,rebin=None):
         slice_wl_rebinned,slice_flux_rebinned = airmass.rebin2(slice_wl,slice_flux_norm,step=rebin)
         return slice_wl_rebinned,slice_flux_rebinned
 
+dark_path = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\20160228\20160304-210922-DARK-600s-1.fit'
+flat_path = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\20160228\20160228-224418-FLAT-85s-1.fit'
+
+# flat_file = pf.open(dark_path)
+# print(flat_file.info())
+# flatdata = flat_file[0].data
+# plt.imshow(flatdata,clim=(185, 230))
+# # plt.hist(flatdata.ravel(), bins=range(256), fc='k', ec='k')
+# plt.show()
+# plt.close()
+# exit()
+
 bd = [5170, 5210]
 # bd =[6549, 6550.7, 6576.0, 6578.0]
 merc_file= filelist_merc[0]
-merc_wl=merc_file.wl_rebin2
-merc_flux=merc_file.flux_rebin2
+merc_wl=merc_file.wl_rebin
+merc_flux=merc_file.flux_rebin
 list_of_orders = tf.orders
-
-print(airmass.velocity_to_wl([-1174,-985],6562.819))
-wl_apo = tf.line4861_order_rebin.wl
-flux_apo = tf.line4861_order_rebin.flux
-start_wl = wl_apo[0]
-end_wl= wl_apo[-1]
+order_file = airmass.find_order(bd,tf)
+apo_wl = order_file.wl_rebin
+apo_flux = order_file.flux_rebin
+apo_wl_slice,apo_flux_slice = slice_and_norm(apo_wl,apo_flux,bd[0],bd[1])
+# print(airmass.velocity_to_wl([-1174,-985],6562.819))
+# wl_apo = tf.line4861_order_rebin.wl
+# flux_apo = tf.line4861_order_rebin.flux
+# start_wl = wl_apo[0]
+# end_wl= wl_apo[-1]
 
 # print(merc_wl[4]-merc_wl[3],merc_wl[-9]-merc_wl[-10])
 
 # exit()
-deg_wl,deg_flux = airmass.degrade_spectrum(merc_wl,merc_flux,spectral_resolution=10000, desired_snr=100,pre_rebin = 0.1)
+deg_wl,deg_flux = airmass.degrade_spectrum_noise_first(merc_wl,merc_flux,spectral_resolution=30000, desired_snr=70,pre_rebin = 0.05)
+# deg_wl,deg_flux = airmass.degrade_spectrum(merc_wl,merc_flux,spectral_resolution=10000, desired_snr=120,pre_rebin = 0.05)
+deg_wl_rebin,deg_flux_rebin = airmass.rebin2(deg_wl,deg_flux,0.1)
+# wl_apo_sn,flux_apo_sn = slice_and_norm(wl_apo,flux_apo,start_wl,end_wl,rebin=None)
+# wl_merc_sn,flux_merc_sn = slice_and_norm(merc_wl,merc_flux,start_wl,end_wl,rebin=None)
+wl_deg_sn, flux_deg_sn = slice_and_norm(deg_wl_rebin,deg_flux_rebin,bd[0],bd[1],rebin=None)
+plt.plot(wl_deg_sn,flux_deg_sn,label='merc deg')
+plt.plot(apo_wl_slice,apo_flux_slice,label='apo')
+plt.legend()
+plt.show()
+plt.close()
 
-wl_apo_sn,flux_apo_sn = slice_and_norm(wl_apo,flux_apo,start_wl,end_wl,rebin=None)
-wl_merc_sn,flux_merc_sn = slice_and_norm(merc_wl,merc_flux,start_wl,end_wl,rebin=None)
-wl_deg_sn, flux_deg_sn = slice_and_norm(deg_wl,deg_flux,start_wl,end_wl,rebin=None)
+exit()
 
 snr_merc_original = airmass.snr_2(merc_wl,merc_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
 snr_merc_degrade_no_rebin = airmass.snr_2(deg_wl,deg_flux,boundaries=bd,rebin=False,rebin_size=0.1,separate=False)
@@ -122,6 +145,7 @@ print('orig',snr_merc_original)
 print('deg, no rebin',snr_merc_degrade_no_rebin)
 plt.plot(merc_wl,merc_flux)
 plt.plot(deg_wl,deg_flux)
+plt.legend()
 plt.show()
 plt.close()
 # ha_order = list(filter(lambda x: x.order_number_demetra == '34', list_of_orders))[0]

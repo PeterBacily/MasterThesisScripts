@@ -374,7 +374,7 @@ def SNR_3(wl,flux,boundaries='Halpha',rebin=False,separate=False):
         bd = boundaries
     else:
         raise TypeError('Boundaries needs to be \'Halpha\', \'flat_continuum\', or a list of 2 or 4 boundaries')
-    snr = airmass.snr_2(wl, flux, boundaries=bd, rebin=rebin, rebin_size=0.1, separate=separate)
+    snr = snr_2(wl, flux, boundaries=bd, rebin=rebin, rebin_size=0.1, separate=separate)
     return snr
 
 def SNR_merc(masterfile):
@@ -395,8 +395,8 @@ def SNR_merc_degen(wl,flux):
 def SNR_apo_orders(file):
     bd_ha = [6614, 6625]
     bd_straight = [5170, 5190]
-    apo_order_ha = airmass.find_order(bd_ha, file)
-    apo_order_straight_line = airmass.find_order(bd_straight, file)
+    apo_order_ha = find_order(bd_ha, file)
+    apo_order_straight_line = find_order(bd_straight, file)
     apo_sl_wl = apo_order_straight_line.wl_rebin[2:-3]
     apo_sl_flux = apo_order_straight_line.flux_rebin[2:-3]
     apo_ha_wl = apo_order_ha.wl_rebin[2:-3]

@@ -21,6 +21,7 @@ import ast
 import open_masterfiles
 import os
 import Path_check
+from linedict import linedict
 
 
 folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
@@ -1394,6 +1395,72 @@ def create_JoO_mercator(filefolder):
         i+=1
     print(r'\end{tabular}')
     print(r'\end{table*}')
+
+def equivalent_width_array_apo_orders(folder,line,vlim=[-500,500]):
+    if folder[-2] == r'\\':
+        path=folder
+    else:
+        path=folder+r'\\'
+    filelist = open_masterfiles.apo_demetra_orders(path)
+    ews = []
+    hjds = []
+    phases = []
+    ers = []
+    for file in filelist:
+        line_instance = getattr(file,line+'_order_rebin')
+        line_info = line_instance.lineinfo
+        line_center = line_info[1]
+        wl=line_instance.wl
+        flux=line_instance.flux
+        v=line_instance.v_cor
+        snr_ha,snr_straight = airmass.SNR_apo_orders(file)
+        er,ew = airmass.equivalent_width(v,wl,flux,line_center,snr_straight,vlim = vlim)
+        hjd = file.HJD
+        phase=file.phase
+        ews.append(ew)
+        hjds.append(hjd)
+        phases.append(phase)
+        ers.append(er)
+    return ews,hjds,phases,ers
+
+def equivalent_width_array_mercator(folder,line,vlim=[-500,500]):
+    if folder[-2] == r'\\':
+        path=folder
+    else:
+        path=folder+r'\\'
+    filelist = open_masterfiles.mercator(path)
+    ews = []
+    hjds = []
+    phases = []
+    ers = []
+    for file in filelist:
+        line_instance = getattr(file,line+'_rebin')
+        line_info = line_instance.lineinfo
+        line_center = line_info[1]
+        wl=line_instance.wl
+        flux=line_instance.flux
+        v=line_instance.v_cor
+        snr_ha,snr_straight = airmass.SNR_merc(file)
+        er,ew = airmass.equivalent_width(v,wl,flux,line_center,snr_straight,vlim = vlim)
+        hjd = file.HJD
+        phase=file.phase
+        ews.append(ew)
+        hjds.append(hjd)
+        phases.append(phase)
+        ers.append(er)
+    return ews,hjds,phases,ers
+
+# ews,hjds,phases,errs = datareduc.equivalent_width_array_mercator(df_lp,'line4861')
+def LS_periodogram_merc(folderpath,line,searchrange=[1,20],vlim = [-500,500]):
+
+    ews, hjds, phases, ers = equivalent_width_array_mercator(folderpath,line,vlim = vlim)
+    period_array, ls_periodogram = airmass.ls_periodogram(hjds,ews, searchrange=searchrange)
+    plt.plot(period_array,ls_periodogram)
+    plt.xlabel('Period (d)')
+    plt.ylabel('signal power')
+    plt.title('LS-Periodogram for ' + linedict[line])
+    plt.show()
+    plt.close()
 
 def plot_order_stack(data_individual_list,wlpiece= [5335, 5345],rebinstep=0.1,day = 'All',from_order=True):
     groups = defaultdict(list)

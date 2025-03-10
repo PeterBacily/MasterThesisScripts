@@ -165,9 +165,16 @@ else:
     full_night_suffix = r'\combined\\'
 di_path = rebin_base_path+rebin_size+single_obs_suffix
 fn_path = rebin_base_path+rebin_size+full_night_suffix
+for line in apo_lines:
+    datareduc.LS_periodogram_merc(df_lp,line,searchrange=[1,8])
+# ews,hjds,phases,errs = datareduc.equivalent_width_array_mercator(df_lp,'line4861')
+# pr,pdg = airmass.ls_periodogram(hjds,ews,searchrange=[1,8])
+# plt.plot(pr,pdg)
+# plt.show()
+# plt.close()
 # snr_orders(di_path,fn_path,show='on',save='off')
-data_individual_list = open_masterfiles.apo_demetra_orders(path=di_path, manual_filelist=None, sort_data_files='on')
-datareduc.plot_order_stack(data_individual_list,wlpiece= [5315, 5365],rebinstep=0.5,day=0,from_order=False)
+# data_individual_list = open_masterfiles.apo_demetra_orders(path=di_path, manual_filelist=None, sort_data_files='on')
+# datareduc.plot_order_stack(data_individual_list,wlpiece= [5315, 5365],rebinstep=0.5,day=0,from_order=False)
 
 # datareduc.plot_TVS_orders_lines_together(lines_III,r'D:\peter\Master_Thesis\Datareduction\Plots\test\demetra_tvs\\',show='off',save='on', norm_boundaries='off', datafilefolder=fn_path,vrange=800)
 

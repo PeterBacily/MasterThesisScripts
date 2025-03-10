@@ -13,12 +13,14 @@ from scipy import interpolate
 from scipy.optimize import *
 from PyAstronomy import pyasl
 import scipy.stats as ss
+import scipy.signal as scisig
 from collections import defaultdict
 warnings.simplefilter('ignore')
 from SavitzkyGolay import savitzky_golay
 from pysynphot import observation
 from pysynphot import spectrum
 warnings.resetwarnings()
+from linedict import linedict
 import Datafile_class
 c_light = 299792.458
 # filelist = glob.glob('C:/peter/School/Master Scriptie/Data/data/*.fit')
@@ -908,8 +910,31 @@ def overplot(filelist,lapalmafilelist,line,lapalmaline,v_rad,startwl,endwl,toget
 #     return er, ew
 
 
-def equivalent_width(velo,wl,flux,linecenter,snr):
-    vlim=500
+def equivalent_width(velo,wl,flux,linecenter,snr,vlim=[-500,500]):
+    if 6560 <= linecenter <=6565 and vlim=='Ha':
+        ll = -380
+        ul = 620
+    else:
+        ll = vlim[0]
+        ul = vlim[1]
+    # print(linecenter,vlim)
+    wl_linepart = wl[(velo > ll) & (velo < ul)]
+    dwl = wl_linepart[-1] - wl_linepart[0]
+    v_linepart = velo[(velo > ll) & (velo < ul)]
+    # print velo
+    flux_linepart = flux[(velo > ll) & (velo < ul)]
+    # print flux_linepart
+    F_avg = np.average(flux_linepart)
+    # print F_avg
+    ew = dwl * (1 - F_avg)
+    # print F_avg,dwl,ew,snr
+    er = np.sqrt(1 + (1 / F_avg)) * (dwl - ew) / snr
+    # print er
+    return er, ew
+
+
+
+def t_ew(velo,wl,flux,linecenter,snr,vlim=200):
     ll=-vlim
     ul = vlim
     if 6560 <= linecenter <=6565:
@@ -929,32 +954,14 @@ def equivalent_width(velo,wl,flux,linecenter,snr):
     # print F_avg,dwl,ew,snr
     er = np.sqrt(1 + (1 / F_avg)) * (dwl - ew) / snr
     # print er
-    return er, ew
-
-
-
-def t_ew(velo,wl,flux,linecenter,snr):
-    vlim=200
-    ll=-vlim
-    ul = vlim
-    if 6560 <= linecenter <=6565:
-        vlim = 800
-        ll = -380
-        ul = 620
-    print(linecenter,vlim)
-    wl_linepart = wl[(velo > ll) & (velo < ul)]
-    dwl = wl_linepart[-1] - wl_linepart[0]
-    v_linepart = velo[(velo > ll) & (velo < ul)]
-    # print velo
-    flux_linepart = flux[(velo > ll) & (velo < ul)]
-    # print flux_linepart
-    F_avg = np.average(flux_linepart)
-    # print F_avg
-    ew = dwl * (1 - F_avg)
-    # print F_avg,dwl,ew,snr
-    er = np.sqrt(1 + (1 / F_avg)) * (dwl - ew) / snr
-    # print er
     return er, ew, wl_linepart,v_linepart,flux_linepart
+
+def ls_periodogram(times,ews, searchrange=[2,20]):
+    rotational_periods = np.linspace(searchrange[0],searchrange[1],1000)
+    frequency_array =(2*np.pi)/rotational_periods
+
+    ls = scisig.lombscargle(times,ews,frequency_array)
+    return rotational_periods, ls
 
 def double_line(x,x0,a1,b1,tau1,a2,b2,tau2):
     # return a1*np.exp(-tau1*np.exp(-((x-x0)/2*b1)**2))+a2*np.exp(-tau2*np.exp(-((x-x0-14.332)/2*b2)**2))+c

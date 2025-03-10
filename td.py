@@ -1,19 +1,40 @@
 from __future__ import division
 import matplotlib.pyplot as plt
 import glob
-import pyfits as pf
+# import pyfits as pf
 from astropy.time import Time
 import math
 import calendar
 import numpy as np
-import airmass
+# import airmass
 from scipy.optimize import *
 from scipy.stats import chi2
 from PyAstronomy import pyasl
-filelist_lapalma = glob.glob('C:\peter\School\LaPalma\Data\All_data\zet Ori/*.fits')
-filelist2 =  glob.glob(r'C:/peter/School/Master Scriptie/Data/eShelData/data/*.fit')
-header = pf.open(filelist_lapalma[0])[0].header
-asdf = airmass.fitfraunlp(filelist_lapalma[4])
+rng = np.random.default_rng()
+
+A = 2.  # amplitude
+c = 2.  # offset
+
+prot = 4
+w0 = 2*np.pi/prot  # rad/sec
+nin = 150
+nout = 1002
+x = rng.uniform(1, 20, nin)
+w = (2*np.pi)/np.linspace(1,10,1000)
+t= (2*np.pi)/w
+print(np.linspace(1,10,1000),t)
+y = A * np.cos(w0*x) + c
+
+# w = np.linspace(0.25, 10, nout)
+from scipy.signal import lombscargle
+pgram_power = lombscargle(x, y, w, normalize=False)
+plt.plot(t,pgram_power)
+plt.show()
+plt.close()
+#
+# a = np.linspace(1,10,10)
+# b=1/a
+# print(b)
 
 # print header['RA'],header['DEC']
 # def suck():

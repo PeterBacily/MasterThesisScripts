@@ -59,6 +59,7 @@ fl_goodSNR = glob.glob(fl_eshel_goodSNR_folder+r'\*.fit')
 filelist_lapalma = glob.glob(filelist_lapalma_folder+r'\*.fits')
 
 datafile_folder_merc = str(converted_Data_folder)+r'\mercator\\'
+datafile_folder_omar = str(converted_Data_folder)+r'\dataset_omar\\'
 datafile_folder_apo = str(converted_Data_folder)+r'\apo\\'
 datafile_folder_demetra = str(converted_Data_folder)+r'\demetra\\'
 datafile_folder_demetra_test= str(converted_Data_folder)+r'\test\demetra\\'
@@ -71,6 +72,7 @@ fl_demetra_good = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\
 fl_demetra_all_alt = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\final_spectra\*.fit')
 fl_demetra_good_alt = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\final_spectra\good\*.fit')
 fl_apo_audela_all = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\eShelData\data\AlleSpectra\*.fit')
+fl_dataset_omar = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Dataset_Omar\fits\*.fits')
 
 
 
@@ -78,15 +80,26 @@ fl_apo_audela_all = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\eShelD
 def bjd(file):
     fits = pf.open(file)
     header = fits[0].header
-    HJD =  float(header['BJD'])
-    fits.close()
-    return HJD
+    if 'BJD' in header:
+        HJD =  float(header['BJD'])
+        fits.close()
+        return HJD
+    elif 'HJD' in header:
+        HJD = float(header['HJD'])
+        fits.close()
+        return HJD
+    else:
+        print(file)
+        fits.close()
 
 
-
+# testfile = pf.open(fl_dataset_omar[0])
+# header = testfile[0].header
+# for item in header:
+#     print(item, header[item])
+# sortedfl_omar = sorted(fl_dataset_omar, key=lambda x: bjd(x), reverse=False)
 sortedfl_lapalma = sorted(filelist_lapalma, key=lambda x: bjd(x), reverse=False)
 k = 1
-
 def create_datafiles_demetra(filelist=fl_eshel_demetra,savefolder=datafile_folder_demetra_test,linelist_file_path=None):
     i=0
     for file in filelist:
@@ -190,6 +203,19 @@ def create_datafiles_lapalma(filelist=sortedfl_lapalma,save_folder=datafile_fold
         k+=1
 
 
+def create_datafiles_lapalma_omar(filelist=fl_dataset_omar,save_folder=datafile_folder_omar,linelist_file=None):
+    k=1
+    for file in filelist:
+        print(k)
+        startdate = airmass.timeanddatelp(file)
+        a = Datafile_mercator_omar(file,i=k,ll_file=linelist_file)
+        dl, dl2 = airmass.split_date(a.header['DATE-OBS'])
+        savename = save_folder+a.observatory+'{num:03d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(a, workfileresource)
+        workfileresource.close()
+        k+=1
+
 def makenote(rebin='0.5'):
     a=rebin
     b = a.replace(".", "")
@@ -208,8 +234,8 @@ def run_cddo(snr, df,sf,note=0,filename_prefix='',rebin_size=0.5):
 # run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin02\combined\\', note=makenote(rebin='0.2'),rebin_size=0.2)
 # run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin05\single_obs\\', note=makenote(rebin='0.5'),rebin_size=0.5)
 # run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin05\combined\\', note=makenote(rebin='0.5'),rebin_size=0.5)
-run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin025\single_obs\\', note=makenote(rebin='0.25'),rebin_size=0.25)
-run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin025\combined\\', note=makenote(rebin='0.25'),rebin_size=0.25)
+# run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin025\single_obs\\', note=makenote(rebin='0.25'),rebin_size=0.25)
+# run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Zet_Ori_Data_Zet_Ori_Response3\final_spectra\combined\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\all_darks\rebin025\combined\\', note=makenote(rebin='0.25'),rebin_size=0.25)
 
 
 # run_cddo(snr=None,df=str(Data_folder)+r'\Demetra\Individual\\',sf=str(converted_Data_folder)+r'\demetra\with_orders\Individual\\')
@@ -232,6 +258,14 @@ def run_cdm():
     savefolder = str(converted_Data_folder)+r'\mercator\ll_apo_vcor_2\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
     create_datafiles_lapalma(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
+
+def run_cdm_omar():
+    filelist = fl_dataset_omar
+    print('attention',filelist)
+    savefolder = str(converted_Data_folder)+r'\dataset_omar\\'
+    linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
+    create_datafiles_lapalma_omar(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
+run_cdm_omar()
 # run_cdm()
 # print(fl_apo_audela_all[7:10])
 def run_cda():

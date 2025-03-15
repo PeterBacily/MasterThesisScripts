@@ -111,6 +111,8 @@ merc_wl=merc_file.wl_rebin
 merc_flux=merc_file.flux_rebin
 list_of_orders = tf.orders
 order_file = airmass.find_order(bd,tf)
+print(order_file.order_number_demetra)
+exit()
 apo_wl = order_file.wl_rebin
 apo_flux = order_file.flux_rebin
 apo_wl_slice,apo_flux_slice = slice_and_norm(apo_wl,apo_flux,bd[0],bd[1])

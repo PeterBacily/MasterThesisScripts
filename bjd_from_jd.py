@@ -9,7 +9,7 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord
 from astropy.time import Time
 
-KERNEL = SPK.open('de430.bsp')
+KERNEL = SPK.open(r'D:\peter\Master_Thesis\Datareduction\Scripts\nasadatafiles/de442s.bsp')
 
 def bjd_tdb(jd_utc, sky_position):
     """

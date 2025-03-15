@@ -254,10 +254,16 @@ class Datafile_mercator_omar:
         self.time_and_date = airmass.timeanddate2(self.header['DATE-OBS'])
         self.original_filepath = file
         if 'BJD' in self.header:
-            self.HJD = float(self.header['BJD'])
+            if self.header['BJD'] is None:
+                self.HJD = airmass.bjd_lapalma_from_date_zet_ori(self.header['DATE-OBS'])
+            else:
+                self.HJD = float(self.header['BJD'])
             self.phase =  airmass.aphase(self.HJD)
         elif 'HJD' in self.header:
-            self.HJD = float(self.header['BJD'])
+            if self.header['HJD'] is None:
+                self.HJD = airmass.bjd_lapalma_from_date_zet_ori(self.header['DATE-OBS'])
+            else:
+                self.HJD = float(self.header['HJD'])
             self.phase =  airmass.aphase(self.HJD)
         self.exptime = self.header['EXPTIME']
         self.altitude = float(self.header['TELALT'])

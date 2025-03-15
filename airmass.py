@@ -19,6 +19,10 @@ warnings.simplefilter('ignore')
 from SavitzkyGolay import savitzky_golay
 from pysynphot import observation
 from pysynphot import spectrum
+from astropy.coordinates import SkyCoord
+from astropy.coordinates import ICRS, Galactic, FK4, FK5  # Low-level frames
+from astropy.coordinates import Angle, Latitude, Longitude  # Angles
+import astropy.units as u
 warnings.resetwarnings()
 from linedict import linedict
 import Datafile_class
@@ -27,7 +31,7 @@ c_light = 299792.458
 # print filelist
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
-
+import bjd_from_jd
 
 def my_sin(x,  amplitude, phase, offset):
     return amplitude*np.sin(2*np.pi*x  + phase)  + offset
@@ -117,7 +121,12 @@ def airmass(file, JDOBS=None):
     datafile.close()
     return airmass,alt,JD
 
-
+def bjd_lapalma_from_date_zet_ori(header_time_and_date):
+    coordinates = SkyCoord("05h40m45.50s -01d56m34.30s", frame=Galactic)
+    timeobject = Time(header_time_and_date, format='isot')
+    bjd= bjd_from_jd.bjd_tdb(jd_utc=timeobject.jd,sky_position=coordinates)
+    bjd_float=float(bjd.to_value('jd', subfmt='str'))
+    return bjd_float
 def timeanddate(file):
     datafile = pf.open(file)
     header =  datafile[0].header

@@ -12,6 +12,9 @@ import numpy as np
 from scipy.optimize import *
 from scipy.stats import chi2
 from PyAstronomy import pyasl
+
+import airmass
+
 folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
 Path_check.dir_check(folder_of_this_file)
 [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
@@ -20,9 +23,12 @@ fl_dataset_omar = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Dataset_
 testfile=pf.open(fl_dataset_omar[0])
 header=testfile[0].header
 time = header['DATE-OBS']
-t = Time(time, format='isot')
-print(t.mjd)
-print(t.bjd)
+bjd1=airmass.bjd_lapalma_from_date_zet_ori(time)
+bjd2 =header['BJD']
+dif = (bjd1-bjd2)*24*60*60
+print(bjd1)
+print(bjd2)
+print(dif)
 # rng = np.random.default_rng()
 #
 # A = 2.  # amplitude

@@ -263,7 +263,7 @@ def run_cdm_omar():
     filelist = fl_dataset_omar
     print('attention',filelist)
     savefolder = str(converted_Data_folder)+r'\dataset_omar\\'
-    linelist = str(converted_Data_folder)+r'\linelists\linelist_v_cor_2.txt'
+    linelist = str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt'
     create_datafiles_lapalma_omar(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
 run_cdm_omar()
 # run_cdm()

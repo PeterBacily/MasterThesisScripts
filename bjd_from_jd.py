@@ -9,9 +9,10 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord
 from astropy.time import Time
 
-KERNEL = SPK.open(r'D:\peter\Master_Thesis\Datareduction\Scripts\nasadatafiles/de442s.bsp')
+
 
 def bjd_tdb(jd_utc, sky_position):
+    KERNEL = SPK.open(r'D:\peter\Master_Thesis\Datareduction\Scripts\nasadatafiles/de442s.bsp')
     """
     Return BJD_TDB from JD_UTC at geocenter for object at desired RA/Dec.
     Parameters
@@ -40,5 +41,5 @@ def bjd_tdb(jd_utc, sky_position):
 
     # Add that offset to jd_tdb to obtain bjd_tdb
     bjd_tdb = jd_tdb + delta_t_utc
-
+    KERNEL.close()
     return bjd_tdb

@@ -272,7 +272,7 @@ class Datafile_mercator_omar:
             self.baricentric_correction = float(self.header['BVCOR'])
             self.velo_cor = self.baricentric_correction - v_rad
         try:
-            frwl = airmass.fitfraun(file)
+            frwl = airmass.fitfraunlp(file)
         except RuntimeError:
             frwl = 5895.92
         self.fwl = frwl

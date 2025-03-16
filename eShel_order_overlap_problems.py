@@ -2,7 +2,7 @@ from __future__ import division
 import matplotlib.pyplot as plt
 import glob
 import warnings
-import pyfits as pf
+import astropy.io.fits as pf
 from astropy.time import Time
 import math
 import calendar
@@ -49,8 +49,8 @@ def raw_apo_image():
     # for file in fl_clean:
     # wl,flux,header = airmass.extractdata(j,file,header='on')
     for item in header:
-        print item
-    print header['DATE-OBS']
+        print(item)
+    print(header['DATE-OBS'])
     # plt.plot(wl,flux)
     # plt.show()
     # plt.close()
@@ -61,5 +61,5 @@ def raw_apo_image():
     plt.savefig(r'E:\Peter\School\MasterThesis\2018-05-20\Master Thesis\figures\CompareApoMercator\raw_apo_image.pdf',format='pdf', dpi=1200)
     plt.show()
 
-file = filelist_lapalma[0]
-datafile = pf.open(file)
+# file = filelist_lapalma[0]
+# datafile = pf.open(file)

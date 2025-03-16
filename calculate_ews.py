@@ -28,7 +28,7 @@ def make_ew_file_normal(folder,target_file_path,linelist):
     for line in linelist:
         header = [line,folder,]
         ews, hjds, phases, ers = datareduc.equivalent_width_array_mercator(folder, line, vlim=[-500, 500])
-        data = []
+        data = [ ]
         with open(target_file_path, 'w') as f:
             write = csv.writer(f)
             write.writerow(header)

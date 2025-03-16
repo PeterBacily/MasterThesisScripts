@@ -271,27 +271,37 @@ class Datafile_mercator_omar:
         if 'BVCOR' in self.header:
             self.baricentric_correction = float(self.header['BVCOR'])
             self.velo_cor = self.baricentric_correction - v_rad
-        # self.fwl = airmass.fitfraunlp(file)
+        try:
+            frwl = airmass.fitfraun(file)
+        except RuntimeError:
+            frwl = 5895.92
+        self.fwl = frwl
 
-        # self.velshift = 299792.458*(self.fwl-5895.92)/5895.92
+        self.velshift = 299792.458*(self.fwl-5895.92)/5895.92
         naxis1 = self.header['NAXIS1']
         crval1 = self.header['CRVAL1']
         cdelt1 = self.header['CDELT1']
         self.wl_original = np.exp(np.arange(naxis1) * cdelt1 + crval1 - v_rad / 299792.458)
         self.flux_original = data[0].data
-        self.wl_rebin, self.flux_rebin = airmass.rebin2(self.wl_original,self.flux_original)
-        self.wl_rebin2, self.flux_rebin2 = airmass.rebin2(self.wl_original, self.flux_original,step=0.1)
+        self.wl_rebin05, self.flux_rebin05 = airmass.rebin2(self.wl_original, self.flux_original, step=0.5)
+        self.wl_rebin02, self.flux_rebin02 = airmass.rebin2(self.wl_original,self.flux_original,step=0.2)
+        self.wl_rebin01, self.flux_rebin01 = airmass.rebin2(self.wl_original, self.flux_original,step=0.1)
+        self.wl_rebin005, self.flux_rebin005 = airmass.rebin2(self.wl_original, self.flux_original, step=0.05)
         self.available_lines = []
         self.snr_original =airmass.snr(self.wl_original,self.flux_original)
-        self.snr = airmass.snr(self.wl_rebin,self.flux_rebin)
+        self.snr = airmass.snr(self.wl_rebin01,self.flux_rebin01)
         for line in self.linelist:
-            linedata,linekey = line_data(line,self.wl_rebin,self.flux_rebin,self.observatory,self.snr,0,0)
-            linedata_original, lk = line_data(line,self.wl_original,self.flux_original,self.observatory,self.snr_original,0,0)
-            linedata_rebin, lk = line_data(line, self.wl_rebin2, self.flux_rebin2, self.observatory, self.snr_original, 0, 0)
-            setattr(self,linekey , linedata)
+            linedata_original, linekey = line_data(line, self.wl_original, self.flux_original, self.observatory,self.snr_original, 0, 0)
+            linedata_rebin005,lk = line_data(line,self.wl_rebin005,self.flux_rebin005,self.observatory,self.snr,0,0)
+            linedata_rebin01, lk = line_data(line, self.wl_rebin01, self.flux_rebin01, self.observatory,self.snr, 0, 0)
+            linedata_rebin02, lk = line_data(line, self.wl_rebin02, self.flux_rebin02, self.observatory, self.snr,0, 0)
+            linedata_rebin05, lk = line_data(line, self.wl_rebin05, self.flux_rebin05, self.observatory, self.snr,0, 0)
             setattr(self,linekey+'_original',linedata_original)
-            setattr(self, linekey + '_rebin', linedata_rebin)
-            self.available_lines.append(linekey)
+            setattr(self, linekey + '_rebin005', linedata_rebin005)
+            setattr(self, linekey + '_rebin01', linedata_rebin01)
+            setattr(self, linekey + '_rebin02', linedata_rebin02)
+            setattr(self, linekey + '_rebin05', linedata_rebin05)
+            self.available_lines.extend([linekey+'_original',linekey + '_rebin005',linekey + '_rebin01',linekey + '_rebin02',linekey + '_rebin05'])
         data.close()
 
 

@@ -112,7 +112,22 @@ linelist_apo_vshift_revised = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'
 ['He_I', 6678.15, 6669.0, 6670.0, 6684.0, 6685.0, 'He I 6678'],
 ['O_III', 5592.37, 5587.5, 5588.5, 5596.7, 5597.7, 'O III 5592'],
 ['C_IV', 5801.33, 5792.9, 5793.9, 5816.2, 5817.2, 'C IV 5801']]
+
+linelist_apo_vshift_revised = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'H$\alpha$ 6563'],
+['Hb', 4861.333, 4847.3, 4848.3, 4876.3, 4877.3, r'H$\beta$ 4861'],
+['He_I', 4713.1457, 4707.6, 4708.6, 4717.3, 4718.3, 'He I 4713'],
+['He_I', 5875.621, 5866.3, 5867.3, 5883.5, 5884.5, 'He I 5875'],
+['He_II', 4541.6, 4536.8, 4537.8, 4545.9, 4546.9, 'He II 4541'],
+['He_II', 4685.804, 4681.6, 4682.6, 4689.8, 4690.8, 'He II 4685'],
+['He_II', 5411.521, 5404.4, 5405.4, 5416.2, 5417.4, 'He II 5411'],
+['He_I', 4471.4802, 4462.3, 4463.3, 4475.5, 4476.5, 'He I 4471'],
+['He_I', 4921.93, 4913.5, 4914.5, 4927.5, 4928.5, 'He I 4921'],
+['He_I', 6678.15, 6669.0, 6670.0, 6684.0, 6685.0, 'He I 6678'],
+['O_III', 5592.37, 5587.5, 5588.5, 5596.7, 5597.7, 'O III 5592'],
+['C_IV', 5801.33, 5792.9, 5793.9, 5816.2, 5817.2, 'C IV 5801'],
+['Hy',4340.472,4326.0, 4330.3, 4355.0, 4362.2,r'H$\gamma$ 4861']                               ]
 linelist_apo_ha_test = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'H$\alpha$ 6563']]
+# print(airmass.velocity_to_wl([-1000, -700, 1000, 1500],4340.472))
 # datafiles = open_masterfiles.apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\',manual_filelist=None,sorted='off')
 # usefile=datafiles[0]
 # wl_factor=usefile.wl_offset_factor
@@ -127,7 +142,7 @@ test_file_name = str(converted_Data_folder)+r'\linelists\linelist_apo_ha_test.tx
 # 		line[i]=b
 # 	print(line,', ')
 
-make_linelist(linelist_apo_vshift_revised,test_file_name)
+# make_linelist(linelist_apo_vshift_revised,test_file_name)
 # make_linelist(linelist_apo_vshift_revised,test_file_name)
 # mylist = open_linelist(test_file_name)
 # print(mylist)

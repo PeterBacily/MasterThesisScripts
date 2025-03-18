@@ -1423,7 +1423,7 @@ def equivalent_width_array_apo_orders(folder,line,vlim=[-500,500]):
         ers.append(er)
     return ews,hjds,phases,ers
 
-def equivalent_width_array_mercator(folder,line,vlim=[-500,500]):
+def equivalent_width_array_mercator(folder,line,vlim=[-500,500],binsize='01'):
     if folder[-2] == r'\\':
         path=folder
     else:
@@ -1434,7 +1434,13 @@ def equivalent_width_array_mercator(folder,line,vlim=[-500,500]):
     phases = []
     ers = []
     for file in filelist:
-        line_instance = getattr(file,line+'_rebin')
+        if binsize == 'original':
+            lk = line+'_original'
+        elif binsize in ['005','01','02','025','03','05']:
+            lk=line+'_rebin'+binsize
+        else:
+            lk = line+'_original'
+        line_instance = getattr(file,lk)
         line_info = line_instance.lineinfo
         line_center = line_info[1]
         wl=line_instance.wl

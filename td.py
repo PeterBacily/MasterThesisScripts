@@ -6,6 +6,7 @@ from astropy.time import Time
 import math
 import Path_check
 import os
+import pickle
 import calendar
 import numpy as np
 # import airmass
@@ -20,15 +21,32 @@ Path_check.dir_check(folder_of_this_file)
 [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
 datafile_folder_omar = str(converted_Data_folder)+r'\dataset_omar\\'
 fl_dataset_omar = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Dataset_Omar\fits\*.fits')
-testfile=pf.open(fl_dataset_omar[0])
-header=testfile[0].header
-time = header['DATE-OBS']
-bjd1=airmass.bjd_lapalma_from_date_zet_ori(time)
-bjd2 =header['BJD']
-dif = (bjd1-bjd2)*24*60*60
-print(bjd1)
-print(bjd2)
-print(dif)
+converted_datafiles_omar = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'+r'*.txt')
+datafiles = []
+for filepath in converted_datafiles_omar:
+    a = open(filepath, 'rb')
+    b = pickle.load(a)
+    datafiles.append(b)
+    a.close()
+i=0
+for file in datafiles:
+    print(i, file.filename, file.header['DATE-OBS'])
+    print(file.HJD)
+    print('-------------')
+    i+=1
+# testfile=pf.open(fl_dataset_omar[0])
+# header=testfile[0].header
+# time = header['DATE-OBS']
+# bjd1=airmass.bjd_lapalma_from_date_zet_ori(time)
+# bjd2 =header['BJD']
+# dif = (bjd1-bjd2)*24*60*60
+# a=[1,2,3,4]
+# b=str(a)
+# print(b[0])
+# testfile.close()
+# print(bjd1)
+# print(bjd2)
+# print(dif)
 # rng = np.random.default_rng()
 #
 # A = 2.  # amplitude

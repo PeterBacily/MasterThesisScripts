@@ -23,7 +23,7 @@ Path_check.dir_check(folder_of_this_file)
 
 [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
 datafolder_omar = str(converted_Data_folder)+r'\dataset_omar\\'
-def make_ew_file_normal(folder,target_folder_path,linelist,binsize='05'):
+def make_ew_file_normal(folder,target_folder_path,linelist,binsize='05',vlim=[-500, 500], ha_vlim=[-380,620]):
 
     for line in linelist:
         if binsize == 'original':
@@ -32,9 +32,9 @@ def make_ew_file_normal(folder,target_folder_path,linelist,binsize='05'):
             lk=line+'_rebin'+binsize
         else:
             lk = line+'_original'
-        ews, hjds, phases, ers = datareduc.equivalent_width_array_mercator(folder, line, vlim=[-500, 500],binsize=binsize)
+        ews, hjds, phases, ers = datareduc.equivalent_width_array_mercator(folder, line, vlim=vlim,ha_vlim= ha_vlim,binsize=binsize)
         datastructure = ['Header','Equivalent Widths','HJDs','Phases','Errors']
-        header = [line, folder, binsize, datastructure]
+        header = [line, folder, binsize, str(vlim),datastructure]
         data = [ews,hjds,phases,ers]
         with open(target_folder_path+lk+'_EW.csv', 'w',newline='') as f:
             write = csv.writer(f)
@@ -57,8 +57,11 @@ def open_ew_file(filepath):
 # r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\ew\test.csv'
 
 # make_ew_file_normal(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo_vcor_2',r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\ew\\',linelist= ['line6562'],binsize='original')
+make_ew_file_normal(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar',r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\ew\\omar_',linelist= ['line6562'],binsize='original')
 
-data = open_ew_file(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\ew\line6562_original_EW.csv')
+
+
+data = open_ew_file(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\ew\omar_line6562_original_EW.csv')
 
 # for item in data:
 #     print(item)

@@ -919,13 +919,13 @@ def overplot(filelist,lapalmafilelist,line,lapalmaline,v_rad,startwl,endwl,toget
 #     return er, ew
 
 
-def equivalent_width(velo,wl,flux,linecenter,snr,vlim=[-500,500]):
-    if 6560 <= linecenter <=6565 and vlim=='Ha':
-        ll = -380
-        ul = 620
+def equivalent_width(velo,wl,flux,linecenter,snr,vlim=[-500,500],ha_vlim=[-380,620]):
+    if 6560 <= linecenter <= 6565:
+        ll = ha_vlim[0]
+        ul = ha_vlim[1]
     else:
-        ll = vlim[0]
-        ul = vlim[1]
+        ll=vlim[0]
+        ul=vlim[1]
     # print(linecenter,vlim)
     wl_linepart = wl[(velo > ll) & (velo < ul)]
     dwl = wl_linepart[-1] - wl_linepart[0]

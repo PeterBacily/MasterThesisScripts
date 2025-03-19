@@ -57,7 +57,7 @@ def mercator(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercat
         # print b.line6562.ew
         datafiles.append(b)
         a.close()
-    sortednewlist = sorted(datafiles,key=lambda x: float(x.header['BJD']))
+    sortednewlist = sorted(datafiles,key=lambda x: float(x.HJD))
     return sortednewlist
 
 def apo_demetra(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\demetra\\',manual_filelist=None,sorted='off'):

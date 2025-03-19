@@ -1423,7 +1423,7 @@ def equivalent_width_array_apo_orders(folder,line,vlim=[-500,500]):
         ers.append(er)
     return ews,hjds,phases,ers
 
-def equivalent_width_array_mercator(folder,line,vlim=[-500,500],binsize='01'):
+def equivalent_width_array_mercator(folder,line,vlim=[-500,500], ha_vlim=[-380,620],binsize='01'):
     if folder[-2] == r'\\':
         path=folder
     else:
@@ -1447,7 +1447,7 @@ def equivalent_width_array_mercator(folder,line,vlim=[-500,500],binsize='01'):
         flux=line_instance.flux
         v=line_instance.v_cor
         snr_ha,snr_straight = airmass.SNR_merc(file)
-        er,ew = airmass.equivalent_width(v,wl,flux,line_center,snr_straight,vlim = vlim)
+        er,ew = airmass.equivalent_width(v,wl,flux,line_center,snr_straight,vlim = vlim, ha_vlim=ha_vlim)
         hjd = file.HJD
         phase=file.phase
         ews.append(ew)

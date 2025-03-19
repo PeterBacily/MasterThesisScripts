@@ -23,7 +23,7 @@ Path_check.dir_check(folder_of_this_file)
 
 [converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
 datafolder_omar = str(converted_Data_folder)+r'\dataset_omar\\'
-def make_ew_file_normal(folder,target_folder_path,linelist,binsize='05',vlim=[-500, 500], ha_vlim=[-380,620]):
+def make_ew_file_normal(folder,target_folder_path,linelist,binsize='05',vlim=[-500, 500], ha_vlim=[-500,500]):
 
     for line in linelist:
         if binsize == 'original':
@@ -57,7 +57,7 @@ def open_ew_file(filepath):
 # r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\ew\test.csv'
 
 # make_ew_file_normal(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\mercator\ll_apo_vcor_2',r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\ew\\',linelist= ['line6562'],binsize='original')
-make_ew_file_normal(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar',r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\ew\\omar_',linelist= ['line6562'],binsize='original')
+make_ew_file_normal(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar',r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\ew\\omar_',linelist= ['line4340'],binsize='original')
 
 
 
@@ -67,8 +67,5 @@ data = open_ew_file(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\e
 #     print(item)
 ews = data[1][0]
 hjds = data[1][1]
-print(hjds)
-print(ews)
-plt.scatter(hjds,ews)
-plt.show()
-plt.close()
+
+datareduc.LS_periodogram_from_EW(hjds,ews,r'H\alpha',searchrange=[1,20])

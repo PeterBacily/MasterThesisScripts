@@ -388,9 +388,9 @@ def SNR_3(wl,flux,boundaries='Halpha',rebin=False,separate=False):
     snr = snr_2(wl, flux, boundaries=bd, rebin=rebin, rebin_size=0.1, separate=separate)
     return snr
 
-def SNR_merc(masterfile):
-    m_wl = masterfile.wl_rebin2
-    m_flux = masterfile.flux_rebin2
+def SNR_merc(masterfile,binsize = '01'):
+    m_wl = getattr(masterfile,'wl'+'_rebin'+binsize)
+    m_flux = getattr(masterfile,'flux'+'_rebin'+binsize)
     snr_ha = SNR_3(m_wl,m_flux,boundaries='Halpha',rebin=False,separate=False)
     snr_straight = SNR_3(m_wl,m_flux,boundaries='flat_continuum',rebin=False,separate=False)
     return snr_ha,snr_straight

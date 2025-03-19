@@ -6,12 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datafile_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/calculate_ews.py" beforeDir="false" afterPath="$PROJECT_DIR$/calculate_ews.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open_masterfiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/open_masterfiles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/td.py" beforeDir="false" afterPath="$PROJECT_DIR$/td.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,7 +214,7 @@
       <recent name="C:\peter\School\Master Scriptie" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.create_datafiles">
+  <component name="RunManager" selected="Python.calculate_ews">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -351,9 +348,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.calculate_ews" />
         <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.td" />
-        <item itemvalue="Python.calculate_ews" />
         <item itemvalue="Python.make_linelist" />
         <item itemvalue="Python.normilization_plot" />
       </list>
@@ -377,13 +374,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00153" summary="changes">
-      <created>1735301935970</created>
-      <option name="number" value="00153" />
-      <option name="presentableId" value="LOCAL-00153" />
-      <option name="project" value="LOCAL" />
-      <updated>1735301935970</updated>
     </task>
     <task id="LOCAL-00154" summary="changes">
       <created>1735395910989</created>
@@ -721,7 +711,14 @@
       <option name="project" value="LOCAL" />
       <updated>1742318368038</updated>
     </task>
-    <option name="localTasksCounter" value="202" />
+    <task id="LOCAL-00202" summary="changes">
+      <created>1742381217428</created>
+      <option name="number" value="00202" />
+      <option name="presentableId" value="LOCAL-00202" />
+      <option name="project" value="LOCAL" />
+      <updated>1742381217429</updated>
+    </task>
+    <option name="localTasksCounter" value="203" />
     <servers />
   </component>
   <component name="ToolWindowManager">

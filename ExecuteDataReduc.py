@@ -132,7 +132,7 @@ pfs_full_night = [pf_full_night_110,pf_full_night_100]
 audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
 snr_comp_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\SNR_comp\comp\\'
 
-def snr_orders(data_individual_folder,data_full_night_path,show='off',save='on'):
+def get_day_data_list(data_individual_folder,data_full_night_path):
 
     data_full_list = open_masterfiles.apo_demetra_orders(path = data_full_night_path,manual_filelist=None,sort_data_files='on')
     data_individual_list= open_masterfiles.apo_demetra_orders(path = data_individual_folder,manual_filelist=None,sort_data_files='on')
@@ -144,12 +144,12 @@ def snr_orders(data_individual_folder,data_full_night_path,show='off',save='on')
     list_of_day_data = list(new_list)
     # for file in data_full_list:
     #     print(file.time_and_date[0:6])
+    daydatalist = []
     for day in list_of_day_data:
         tad= day[0].time_and_date[0:6]
-        print(tad)
-        print(day[0].mark)
         full_day_file=[x for x in data_full_list if x.time_and_date[0:6] == tad][0]
-        datareduc.plot_SNR_orders(ha_hb_linelist,day, file_full_night = full_day_file,plot_avg=True,rebin=True,plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR\aD_snfF',show=show,save=save, norm_boundaries='on',vrange=1000,subplotylim=[0.97,1.03])
+        daydatalist.append([day,full_day_file])
+    return daydatalist
     # files_snr_test= open_masterfiles.apo_demetra_orders(path=snr_comp_folder)
     # for day in list_of_day_data:
     #     li=day[0].line6562.lineinfo
@@ -165,14 +165,21 @@ else:
     full_night_suffix = r'\combined\\'
 di_path = rebin_base_path+rebin_size+single_obs_suffix
 fn_path = rebin_base_path+rebin_size+full_night_suffix
-for line in apo_lines:
-    datareduc.LS_periodogram_merc(df_lp,line,searchrange=[1,8])
+ddl= get_day_data_list(di_path,fn_path)
+day1 = ddl[0]
+indiv = day1[1]
+fn = day1[0]
+# datareduc.plot_SNR_orders(['line4861'],indiv, file_full_night = fn,plot_avg=True,rebin=0.5,plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR\aD_snfF',show='on',save='off', norm_boundaries='on',vrange=1000,subplotylim=[0.97,1.03])
+datareduc.rebin_and_overplot_demetra_orders(fn,indiv,rebin_size=0.5,boundaries=[5310,5370])
+# for line in apo_lines:
+#     datareduc.LS_periodogram_merc(df_lp,line,searchrange=[1,8])
 # ews,hjds,phases,errs = datareduc.equivalent_width_array_mercator(df_lp,'line4861')
 # pr,pdg = airmass.ls_periodogram(hjds,ews,searchrange=[1,8])
 # plt.plot(pr,pdg)
 # plt.show()
 # plt.close()
 # snr_orders(di_path,fn_path,show='on',save='off')
+
 # data_individual_list = open_masterfiles.apo_demetra_orders(path=di_path, manual_filelist=None, sort_data_files='on')
 # datareduc.plot_order_stack(data_individual_list,wlpiece= [5315, 5365],rebinstep=0.5,day=0,from_order=False)
 

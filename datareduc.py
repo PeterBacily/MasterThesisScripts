@@ -899,7 +899,7 @@ def plot_SNR_orders(linelist,filelist,plot_save_folder, file_full_night = None,p
     date = filelist[0].time_and_date[0:6]
     # velo_shift=bccor+vrad
     velo_shift = 0
-    rebin_bin_size = 0.001
+    rebin_bin_size = 0.1
     if isinstance(rebin, float):
         rebin_bin_size = rebin
         man_rebin = True
@@ -1537,3 +1537,20 @@ def plot_order_stack(data_individual_list,wlpiece= [5335, 5345],rebinstep=0.1,da
         plt.legend()
         plt.show()
         plt.close()
+
+
+def rebin_and_overplot_demetra_orders(individual_files,full_night_file,rebin_size, boundaries):
+    fn_order = airmass.find_order(boundaries,full_night_file)
+    wl_fn = fn_order.wl_original
+    flux_fn = fn_order.flux_original/np.average(fn_order.flux_original)
+    wl_rebin_fn, flux_rebin_fn = airmass.rebin2(wl_fn, flux_fn, step=rebin_size)
+    for file in individual_files:
+        indiv_order = airmass.find_order(boundaries,file)
+        wl = indiv_order.wl_original
+        flux = indiv_order.flux_original/np.average(indiv_order.flux_original)
+        wl_rebin, flux_rebin = airmass.rebin2(wl,flux,step=rebin_size)
+        plt.plot(wl_rebin,flux_rebin)
+    plt.plot(wl_rebin_fn,flux_rebin_fn,color='black')
+    plt.xlim(boundaries[0],boundaries[-1])
+    plt.show()
+    plt.close()

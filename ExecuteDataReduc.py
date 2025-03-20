@@ -166,11 +166,13 @@ else:
 di_path = rebin_base_path+rebin_size+single_obs_suffix
 fn_path = rebin_base_path+rebin_size+full_night_suffix
 ddl= get_day_data_list(di_path,fn_path)
-day1 = ddl[0]
-indiv = day1[1]
-fn = day1[0]
+mercator_files = open_masterfiles.mercator(df_lp)
+for day in ddl:
+    indiv = day[1]
+    fn = day[0]
+    datareduc.rebin_and_overplot_demetra_orders(fn,indiv,mercator_files[0],rebin_size=0.5,boundaries=[5310,5370])
 # datareduc.plot_SNR_orders(['line4861'],indiv, file_full_night = fn,plot_avg=True,rebin=0.5,plot_save_folder=r'D:\peter\Master_Thesis\Datareduction\Plots\SNR\aD_snfF',show='on',save='off', norm_boundaries='on',vrange=1000,subplotylim=[0.97,1.03])
-datareduc.rebin_and_overplot_demetra_orders(fn,indiv,rebin_size=0.5,boundaries=[5310,5370])
+
 # for line in apo_lines:
 #     datareduc.LS_periodogram_merc(df_lp,line,searchrange=[1,8])
 # ews,hjds,phases,errs = datareduc.equivalent_width_array_mercator(df_lp,'line4861')

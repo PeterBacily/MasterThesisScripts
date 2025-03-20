@@ -1539,18 +1539,33 @@ def plot_order_stack(data_individual_list,wlpiece= [5335, 5345],rebinstep=0.1,da
         plt.close()
 
 
-def rebin_and_overplot_demetra_orders(individual_files,full_night_file,rebin_size, boundaries):
+def slice_and_norm(wl,flux,start,end,rebin=None):
+    slice_flux = flux[(wl > start) & (wl < end)]
+    slice_wl = wl[(wl > start) & (wl < end)]
+    slice_flux_norm = slice_flux / np.average(slice_flux)
+    if rebin == None:
+        return slice_wl,slice_flux_norm
+    else:
+        slice_wl_rebinned,slice_flux_rebinned = airmass.rebin2(slice_wl,slice_flux_norm,step=rebin)
+        return slice_wl_rebinned,slice_flux_rebinned
+
+def rebin_and_overplot_demetra_orders(individual_files,full_night_file, mercator_file,rebin_size,boundaries):
     fn_order = airmass.find_order(boundaries,full_night_file)
     wl_fn = fn_order.wl_original
     flux_fn = fn_order.flux_original/np.average(fn_order.flux_original)
     wl_rebin_fn, flux_rebin_fn = airmass.rebin2(wl_fn, flux_fn, step=rebin_size)
+    m_wl,m_flux = slice_and_norm(mercator_file.wl_original, mercator_file.flux_original,boundaries[0], boundaries[-1],rebin=rebin_size)
     for file in individual_files:
         indiv_order = airmass.find_order(boundaries,file)
         wl = indiv_order.wl_original
         flux = indiv_order.flux_original/np.average(indiv_order.flux_original)
         wl_rebin, flux_rebin = airmass.rebin2(wl,flux,step=rebin_size)
-        plt.plot(wl_rebin,flux_rebin)
-    plt.plot(wl_rebin_fn,flux_rebin_fn,color='black')
-    plt.xlim(boundaries[0],boundaries[-1])
+        plt.plot(wl_rebin,flux_rebin,label=file.time_and_date)
+    plt.plot(wl_rebin_fn,flux_rebin_fn, color='black',linewidth=1.5, label = full_night_file.time_and_date[:6] +' Average')
+    plt.plot(m_wl,m_flux,label = 'Mercator Spectrum')
+    plt.xlim(boundaries[0]+20,boundaries[-1])
+    plt.ylim(0.95,1.05)
+    plt.legend()
+    plt.ticklabel_format(useOffset=False)
     plt.show()
     plt.close()

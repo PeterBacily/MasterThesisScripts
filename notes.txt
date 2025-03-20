@@ -32,6 +32,6 @@ Todo data van Omar:
 Todo met info van Sarah:
     * overplot maken van 1 dag met verschillende binsizes.
     * kijken of binsize uitmaakt voor systematische noise.
-    kijken of het bij elke dat zo is
+    * kijken of het bij elke dag zo is
     plotjes mooi maken voor in verslag.
-    kies correcte binsize.
+    * kies correcte binsize.

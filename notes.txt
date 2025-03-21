@@ -34,4 +34,4 @@ Todo met info van Sarah:
     * kijken of binsize uitmaakt voor systematische noise.
     * kijken of het bij elke dag zo is
     plotjes mooi maken voor in verslag.
-    * kies correcte binsize.
+    * kies correcte binsize.:0.5A

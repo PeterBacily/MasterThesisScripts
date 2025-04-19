@@ -216,6 +216,40 @@ def create_datafiles_lapalma_omar(filelist=fl_dataset_omar,save_folder=datafile_
         workfileresource.close()
         k+=1
 
+def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
+    linekey = line+'_original'
+    rebinv_lim = 1000
+    firstfile = masterfilelist[0]
+    centerwl = getattr(firstfile,linekey).lineinfo[1]
+    rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
+    wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
+    v_rebin = airmass.wl_to_velocity(wavenew, centerwl)[0]
+    speed_index = np.where((v_rebin > v_min) & (v_rebin < v_max))
+    wl_bound = wavenew[speed_index]
+    speed_bound = v_rebin[speed_index]
+    fluxarraylist = []
+    bjdlist = []
+    headerlist = []
+    for file in masterfilelist:
+        header = file.header
+        BJD = file.BJD
+        wl = getattr(file,linekey).wl
+        v= getattr(file,linekey).v
+        v_cor = getattr(file,linekey).v_cor
+        flux = getattr(file,linekey).flux
+        flux_rebin = airmass.rebin_spec(wl,flux,wavenew)
+        flux_bound = flux_rebin[speed_index]
+        bjdlist.append(BJD)
+        headerlist.append(header)
+        fluxarraylist.append(flux_bound)
+    datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist)
+    # datadict[flux]=fluxarraylist
+    # datadict[wl]=wl_bound
+    # datadict[v]=speed_bound
+    # # datadict[bjd]=bjdlist
+    # datadict[header]=headerlist
+    return datadict
+
 def makenote(rebin='0.5'):
     a=rebin
     b = a.replace(".", "")
@@ -265,7 +299,7 @@ def run_cdm_omar():
     savefolder = str(converted_Data_folder)+r'\dataset_omar\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt'
     create_datafiles_lapalma_omar(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
-run_cdm_omar()
+# run_cdm_omar()
 # run_cdm()
 # print(fl_apo_audela_all[7:10])
 def run_cda():

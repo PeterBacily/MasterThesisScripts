@@ -1424,3 +1424,9 @@ def degrade_spectrum_noise_first(wl,flux,spectral_resolution=10000, desired_snr=
                                          edgeHandling="firstlast", fullout=True, maxsig=5.0)
 
     return rebin_wl,deg_noisy_flux
+
+
+
+
+
+

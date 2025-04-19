@@ -29,11 +29,14 @@ for filepath in converted_datafiles_omar:
     datafiles.append(b)
     a.close()
 i=0
-for file in datafiles:
-    print(i, file.filename, file.header['DATE-OBS'])
-    print(file.HJD)
-    print('-------------')
-    i+=1
+dd = airmass.make_data_grid(datafiles,'line4861',-150,150,rebin_size=0.1)
+for bjd in dd['BJD']:
+    print(bjd)
+# for file in datafiles:
+#     print(i, file.filename, file.header['DATE-OBS'])
+#     print(file.HJD)
+#     print('-------------')
+#     i+=1
 # testfile=pf.open(fl_dataset_omar[0])
 # header=testfile[0].header
 # time = header['DATE-OBS']

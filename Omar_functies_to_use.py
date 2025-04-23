@@ -19,7 +19,7 @@ from scipy.optimize import curve_fit
 #Packages to convert time to BJD
 from astropy import time, coordinates as coord, units as u
 from astropy.coordinates import FK5
-from astropy.constants import c
+# from astropy.constants import c
 
 #package to extract names from a directory
 import glob
@@ -31,7 +31,7 @@ pd.set_option('float_format', '{:f}'.format)
 
 
 # hier nog een optie inzetten om apo te gebruiken
-def BJD_calculator(FITStime, RA_source, DEC_source):
+def BJD_calculator(FITStime, source_coordinates):
     "Function which calculates the BJD based on a timestamp and coordinates"
     "Only works for la palma observations"
 
@@ -41,7 +41,7 @@ def BJD_calculator(FITStime, RA_source, DEC_source):
     time_variable = Time(FITStime, format='fits')
 
     # Creating a skycoordinate,
-    sc = coord.SkyCoord(ra=RA_source, dec=DEC_source, unit='deg', frame=FK5)
+    sc = coord.SkyCoord(source_coordinates, frame=FK5)
 
     # Importing the location of lapalma observatorium.
     palma = coord.EarthLocation.of_site('lapalma')

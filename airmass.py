@@ -31,6 +31,7 @@ c_light = 299792.458
 # print filelist
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
+import Omar_functies_to_use
 import bjd_from_jd
 
 def my_sin(x,  amplitude, phase, offset):
@@ -127,6 +128,10 @@ def bjd_lapalma_from_date_zet_ori(header_time_and_date):
     bjd= bjd_from_jd.bjd_tdb(jd_utc=timeobject.jd,sky_position=coordinates)
     bjd_float=float(bjd.to_value('jd', subfmt='str'))
     return bjd_float
+def bjd_lapalma_from_date_zet_ori_omar(header_time_and_date):
+    coord_zet_ori = "05h40m45.50s -01d56m34.30s"
+    (bjd,bccor) = Omar_functies_to_use.BJD_calculator(header_time_and_date,coord_zet_ori)
+    return bjd,bccor
 def timeanddate(file):
     datafile = pf.open(file)
     header =  datafile[0].header

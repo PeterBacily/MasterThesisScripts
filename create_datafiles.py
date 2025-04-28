@@ -299,7 +299,7 @@ def run_cdm_omar():
     savefolder = str(converted_Data_folder)+r'\dataset_omar\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt'
     create_datafiles_lapalma_omar(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
-# run_cdm_omar()
+run_cdm_omar()
 # run_cdm()
 # print(fl_apo_audela_all[7:10])
 def run_cda():

@@ -256,27 +256,33 @@ class Datafile_mercator_omar:
         if 'BJD' in self.header:
             print('BJD',self.header['BJD'])
             if self.header['BJD'] is None:
-                self.HJD = airmass.bjd_lapalma_from_date_zet_ori(self.header['DATE-OBS'])
+                self.HJD,bc = airmass.bjd_lapalma_from_date_zet_ori_omar(self.header['DATE-OBS'])
             else:
                 self.HJD = float(self.header['BJD'])
             self.phase =  airmass.aphase(self.HJD)
         elif 'HJD' in self.header:
             print('HJD',self.header['HJD'])
             if self.header['HJD'] is None:
-                self.HJD = airmass.bjd_lapalma_from_date_zet_ori(self.header['DATE-OBS'])
+                self.HJD,bc = airmass.bjd_lapalma_from_date_zet_ori_omar(self.header['DATE-OBS'])
             else:
                 self.HJD = float(self.header['HJD'])
             self.phase =  airmass.aphase(self.HJD)
         else:
-            self.HJD= airmass.bjd_lapalma_from_date_zet_ori(self.header['DATE-OBS'])
+            self.HJD,bc= airmass.bjd_lapalma_from_date_zet_ori_omar(self.header['DATE-OBS'])
             self.phase = airmass.aphase(self.HJD)
         self.BJD = self.HJD
         self.exptime = self.header['EXPTIME']
         self.altitude = float(self.header['TELALT'])
         self.airmass = 1/np.sin(2*np.pi*self.altitude/360)
         if 'BVCOR' in self.header:
-            self.baricentric_correction = float(self.header['BVCOR'])
-            self.velo_cor = self.baricentric_correction - v_rad
+            if float(self.header['BVCOR']) != 0.0:
+                bc = float(self.header['BVCOR'])
+            else:
+                _, bc= airmass.bjd_lapalma_from_date_zet_ori_omar(self.header['DATE-OBS'])
+        else:
+            _, bc= airmass.bjd_lapalma_from_date_zet_ori_omar(self.header['DATE-OBS'])
+        self.baricentric_correction=bc
+        self.velo_cor = self.baricentric_correction - v_rad
         try:
             frwl = airmass.fitfraunlp(file)
         except RuntimeError:

@@ -29,9 +29,13 @@ for filepath in converted_datafiles_omar:
     datafiles.append(b)
     a.close()
 i=0
-dd = airmass.make_data_grid(datafiles,'line4861',-150,150,rebin_size=0.1)
-for bjd in dd['BJD']:
-    print(bjd)
+# dd = airmass.make_data_grid(datafiles,'line4861',-150,150,rebin_size=0.1)
+for f in datafiles:
+    htd = f.header['DATE-OBS']
+    bjd = f.BJD
+    bjd_new = airmass.bjd_lapalma_from_date_zet_ori_omar(htd)
+    bjd_zelf = airmass.bjd_lapalma_from_date_zet_ori(htd)
+    print('file:',bjd,' Omar:',np.abs(bjd_new[0]-bjd),' Zelf:',np.abs(bjd_zelf-bjd))
 # for file in datafiles:
 #     print(i, file.filename, file.header['DATE-OBS'])
 #     print(file.HJD)

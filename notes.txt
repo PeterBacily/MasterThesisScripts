@@ -23,13 +23,13 @@ omwisselen volgorde ruis en spectrale resolutie degraden
 
 proberen true snr van degraded spectra te vinden
 
-Todo data van Omar:
-    Baricentric correction check.
+To do data van Omar:
+    [x]Baricentric correction check.
     make LS periodogram per velocity bin
     make total LS periodogram by summing.
 
 
-Todo met info van Sarah:
+To do met info van Sarah:
     * overplot maken van 1 dag met verschillende binsizes.
     * kijken of binsize uitmaakt voor systematische noise.
     * kijken of het bij elke dag zo is

@@ -9,6 +9,8 @@ import os
 import Path_check
 import pathlib
 import sys
+
+import open_masterfiles
 from Datafile_class import *
 # sys.modules['Line'] = Line
 # sys.modules['Datafile_mercator'] = Datafile_mercator
@@ -228,6 +230,7 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     wl_bound = wavenew[speed_index]
     speed_bound = v_rebin[speed_index]
     fluxarraylist = []
+
     bjdlist = []
     headerlist = []
     for file in masterfilelist:
@@ -235,7 +238,10 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
         BJD = file.BJD
         wl = getattr(file,linekey).wl
         v= getattr(file,linekey).v
-        v_cor = getattr(file,linekey).v_cor
+        bvcor_check = file.bc_from_header
+        if bvcor_check is False:
+            v=v-file.baricentric_correction
+            wl = airmass.velocity_to_wl(v,centerwl)
         flux = getattr(file,linekey).flux
         flux_rebin = airmass.rebin_spec(wl,flux,wavenew)
         flux_bound = flux_rebin[speed_index]
@@ -299,13 +305,31 @@ def run_cdm_omar():
     savefolder = str(converted_Data_folder)+r'\dataset_omar\\'
     linelist = str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt'
     create_datafiles_lapalma_omar(filelist=filelist,save_folder=savefolder,linelist_file=linelist)
-run_cdm_omar()
+# run_cdm_omar()
 # run_cdm()
 # print(fl_apo_audela_all[7:10])
 def run_cda():
     linelist = str(converted_Data_folder) + r'\linelists\linelist_apo_v_cor_2.txt'
     create_datafiles_audela(filelist=fl_apo_audela_all, savefolder=datafile_folder_audela_all,
+
                                 linelist_file_path=linelist, vshift=True)
+def run_mdg():
+    filelist = open_masterfiles.mercator(str(converted_Data_folder)+r'\dataset_omar\\')
+    linelist = open_masterfiles.open_linelist(str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt')
+    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\\'
+
+    for i,line in enumerate(linelist):
+        vmin = -800
+        vmax = 800
+        linekey = 'line' + str(int(line[k]))
+        print(i+1)
+        data_grid = make_data_grid(filelist,linekey, vmin,vmax,rebin_size=0.1)
+        savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+str(vmin)+'_'+str(vmax)+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(data_grid, workfileresource)
+        workfileresource.close()
+run_mdg()
+
 # run_cda()
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')
 # testfile_apo = fl_clean[12]

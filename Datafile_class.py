@@ -276,11 +276,14 @@ class Datafile_mercator_omar:
         self.airmass = 1/np.sin(2*np.pi*self.altitude/360)
         if 'BVCOR' in self.header:
             if float(self.header['BVCOR']) != 0.0:
+                self.bc_from_header=True
                 bc = float(self.header['BVCOR'])
             else:
                 _, bc= airmass.bjd_lapalma_from_date_zet_ori_omar(self.header['DATE-OBS'])
+                self.bc_from_header = False
         else:
             _, bc= airmass.bjd_lapalma_from_date_zet_ori_omar(self.header['DATE-OBS'])
+            self.bc_from_header = False
         self.baricentric_correction=bc
         self.velo_cor = self.baricentric_correction - v_rad
         try:

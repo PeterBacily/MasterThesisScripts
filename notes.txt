@@ -24,9 +24,15 @@ omwisselen volgorde ruis en spectrale resolutie degraden
 proberen true snr van degraded spectra te vinden
 
 To do data van Omar:
-    [x]Baricentric correction check.
-    make LS periodogram per velocity bin
-    make total LS periodogram by summing.
+    [x] Baricentric correction check.
+    [x] make LS periodogram per velocity bin
+    [_] migrate function from td.py to datareduc
+    [_] make list of omar's boundaries per line and put this in function
+    [_] make title dependant on line
+    [_] make final LS plots, same as omar
+
+    [_] read Omars article and figure out how he does period search
+    [_] copy his work
 
 
 To do met info van Sarah:

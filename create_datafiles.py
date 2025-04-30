@@ -222,7 +222,8 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     linekey = line+'_original'
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
-    centerwl = getattr(firstfile,linekey).lineinfo[1]
+    li = getattr(firstfile,linekey).lineinfo
+    centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
     v_rebin = airmass.wl_to_velocity(wavenew, centerwl)[0]
@@ -248,7 +249,7 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
         bjdlist.append(BJD)
         headerlist.append(header)
         fluxarraylist.append(flux_bound)
-    datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist)
+    datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist,li=li)
     # datadict[flux]=fluxarraylist
     # datadict[wl]=wl_bound
     # datadict[v]=speed_bound

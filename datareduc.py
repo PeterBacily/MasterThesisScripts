@@ -1574,3 +1574,5 @@ def rebin_and_overplot_demetra_orders(individual_files,full_night_file, mercator
     plt.savefig(r'E:\Peter\thesis\Plots\rebinning\\'+dayname+'.png')
     # plt.show()
     plt.close()
+
+

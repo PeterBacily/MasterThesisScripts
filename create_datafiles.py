@@ -257,7 +257,7 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     # datadict[header]=headerlist
     return datadict
 
-def make_ls_brick(fluxbrick_filepath,output_filepath):
+def make_ls_brick(fluxbrick_filepath,output_filefolder):
     a = open(fluxbrick_filepath, 'rb')
     b = pickle.load(a)
     a.close()
@@ -283,7 +283,8 @@ def make_ls_brick(fluxbrick_filepath,output_filepath):
 
         power_ls_list.append(power_LS)
     power_ls_array = np.asarray(power_ls_list)
-    lombscl_dict = [power_ls_array, frequency_LS, v, BJDlist]
+    lombscl_dict = [power_ls_array, frequency_LS, v, BJDlist,lineinfo]
+    output_filepath=output_filefolder+lineinfo[0]+str(int(lineinfo[1]))+'ls_brick.txt'
     workfileresource = open(output_filepath, 'wb')
     pickle.dump(lombscl_dict, workfileresource)
     workfileresource.close()
@@ -363,7 +364,10 @@ def run_mdg():
 def run_mlb():
     input_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\\'
     output_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\\'
-
+    fl = glob.glob(input_folder + r'*.txt')
+    for filepath in fl:
+        make_ls_brick(filepath,output_folder)
+# run_mlb()
 # run_mdg()
 
 # run_cda()

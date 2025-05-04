@@ -10,7 +10,7 @@ import numpy as np
 import airmass
 from scipy.optimize import *
 from scipy.stats import chi2
-from PyAstronomy import pyasl
+import pickle
 import matplotlib.style
 import warnings
 with warnings.catch_warnings():
@@ -22,7 +22,7 @@ import open_masterfiles
 import os
 import Path_check
 from linedict import linedict
-
+from matplotlib import ticker, cm
 
 folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
 Path_check.dir_check(folder_of_this_file)
@@ -1575,8 +1575,10 @@ def rebin_and_overplot_demetra_orders(individual_files,full_night_file, mercator
     # plt.show()
     plt.close()
 
-def ls_brick_plotter(line_period_info,v_min,v_max):
-
+def ls_brick_plotter(filepath,v_min,v_max):
+    a = open(filepath, 'rb')
+    line_period_info = pickle.load(a)
+    a.close()
     # line_number = star_pickle['roundline'].values
     # plot_titles = star_pickle['plottitle'].values
     #
@@ -1593,7 +1595,7 @@ def ls_brick_plotter(line_period_info,v_min,v_max):
     frequency_ls = line_period_info[1]
 
     BJDlist = line_period_info[3]
-
+    lineinfo = line_period_info[4]
     x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)
     power_ls_trans = power_ls.T
 
@@ -1612,7 +1614,7 @@ def ls_brick_plotter(line_period_info,v_min,v_max):
 
     ax1 = fig5.add_subplot(spec5[0, 0])
     # ax1.set_title(fr'${plot_titles[index]} \ {line_number[index]}$', fontsize=26, pad=10)
-
+    ax1.set_title(lineinfo[-1], fontsize=26, pad=10)
     ax1.plot(wave_grid, som_wave, lw=1.0, color='k')
     ax1.set_xlim(np.min(wave_grid), np.max(wave_grid))
     ax1.tick_params(labelsize=23, bottom=False, left=False, right=True)
@@ -1647,6 +1649,7 @@ def ls_brick_plotter(line_period_info,v_min,v_max):
     # plt.savefig(fname=source_location + '/rel_flux/' + line + '_' + star_name + '.png', format='png', \
     #             bbox_inches='tight', dpi=200)
     plt.clf()
+    plt.close()
     del (cs, power_ls_trans)
 
     return

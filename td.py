@@ -101,7 +101,7 @@ datafile_folder_omar = str(converted_Data_folder)+r'\dataset_omar\\'
 
 file = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\data_grid_O_III_5592-800_800.txt'
 # file = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\data_grid_Hy_4340-800_800.txt'
-a = open(filepath, 'rb')
+a = open(file, 'rb')
 b = pickle.load(a)
 a.close()
 fluxgrid = np.array(b['flux'])

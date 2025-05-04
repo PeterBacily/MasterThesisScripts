@@ -23,6 +23,7 @@ from astropy.coordinates import SkyCoord
 from astropy.coordinates import ICRS, Galactic, FK4, FK5  # Low-level frames
 from astropy.coordinates import Angle, Latitude, Longitude  # Angles
 import astropy.units as u
+from astropy.timeseries import LombScargle
 warnings.resetwarnings()
 from linedict import linedict
 import Datafile_class
@@ -1429,6 +1430,7 @@ def degrade_spectrum_noise_first(wl,flux,spectral_resolution=10000, desired_snr=
                                          edgeHandling="firstlast", fullout=True, maxsig=5.0)
 
     return rebin_wl,deg_noisy_flux
+
 
 
 

@@ -1575,4 +1575,78 @@ def rebin_and_overplot_demetra_orders(individual_files,full_night_file, mercator
     # plt.show()
     plt.close()
 
+def ls_brick_plotter(line_period_info,v_min,v_max):
 
+    # line_number = star_pickle['roundline'].values
+    # plot_titles = star_pickle['plottitle'].values
+    #
+    # infile_LS = open(pickle_location, "rb")
+    # period_dict = pickle.load(infile_LS)
+    #
+    # line_period_info = period_dict[line]
+    v = line_period_info[2]
+    # print(line_period_info[0].shape,line_period_info[1].shape,line_period_info[2].shape,line_period_info[3].shape)
+    speed_index = np.where((v > v_min) & (v < v_max))
+    # print(speed_index)
+    wave_grid = line_period_info[2][speed_index]
+    power_ls = line_period_info[0][speed_index]
+    frequency_ls = line_period_info[1]
+
+    BJDlist = line_period_info[3]
+
+    x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)
+    power_ls_trans = power_ls.T
+
+    # print(min(list(map(min, power_ls))))
+    # print(max(list(map(max, power_ls))))
+
+    som_frequency = np.sum(power_ls_trans, axis=1)
+    som_wave_place = np.sum(power_ls_trans, axis=0)
+    som_wave = som_wave_place / np.max(som_wave_place)
+
+    fig5 = plt.figure(figsize=(15, 13.333))
+    widths = [15, 5]
+    heights = [5, 20]
+    spec5 = fig5.add_gridspec(ncols=2, nrows=2, width_ratios=widths, height_ratios=heights, \
+                              wspace=0.0, hspace=0.0)
+
+    ax1 = fig5.add_subplot(spec5[0, 0])
+    # ax1.set_title(fr'${plot_titles[index]} \ {line_number[index]}$', fontsize=26, pad=10)
+
+    ax1.plot(wave_grid, som_wave, lw=1.0, color='k')
+    ax1.set_xlim(np.min(wave_grid), np.max(wave_grid))
+    ax1.tick_params(labelsize=23, bottom=False, left=False, right=True)
+    ax1.tick_params(axis='y', which='major', length=8)
+    ax1.yaxis.tick_right()
+    ax1.yaxis.set_label_position("right")
+
+    ax2 = fig5.add_subplot(spec5[1, 0])
+    ax2.set_yscale('log')
+    cs = ax2.contourf(x_wave, y_freq, power_ls_trans, cmap=cm.YlOrBr)
+    ax2.set_ylabel("Period (d)", fontsize=25)
+    ax2.set_xlabel("Velocity (km/s)", fontsize=25)
+    ax2.tick_params(labelsize=23)
+    ax2.tick_params(which='major', length=8)
+    ax2.tick_params(which='minor', length=4)
+    # ax2.yaxis.set_minor_formatter(NullFormatter())
+
+    ax3 = fig5.add_subplot(spec5[1, 1])
+    ax3.set_yscale('log')
+    ax3.plot(som_frequency, 1 / frequency_ls, lw=0.5, color='k')
+    ax3.set_ylim(np.min(1 / frequency_ls), np.max(1 / frequency_ls))
+    cbar = fig5.colorbar(cs)
+
+    # set ticks left and right, turn ylabels off
+    ax3.tick_params(axis='y', which='both', direction='in', left=True, right=True)
+    ax3.tick_params(axis='y', which='major', length=8)
+    ax3.tick_params(axis='y', which='minor', length=4)
+    # ax3.yaxis.set_minor_formatter(NullFormatter())
+    ax3.tick_params(axis='x', direction='in', labelsize=23)
+    ax3.set_yticklabels([])
+    plt.show()
+    # plt.savefig(fname=source_location + '/rel_flux/' + line + '_' + star_name + '.png', format='png', \
+    #             bbox_inches='tight', dpi=200)
+    plt.clf()
+    del (cs, power_ls_trans)
+
+    return

@@ -99,8 +99,9 @@ datafile_folder_omar = str(converted_Data_folder)+r'\dataset_omar\\'
 # print alt
 # datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist)
 
-file = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\data_grid_Hy_4340-800_800.txt'
-a = open(file, 'rb')
+file = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\data_grid_O_III_5592-800_800.txt'
+# file = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\data_grid_Hy_4340-800_800.txt'
+a = open(filepath, 'rb')
 b = pickle.load(a)
 a.close()
 fluxgrid = np.array(b['flux'])
@@ -111,7 +112,7 @@ header = b['header']
 lineinfo = b['li']
 power_ls_list = []
 min_freq=1/10
-max_freq=1
+max_freq=1/2
 # looping over single observation per v bin
 # Here use Lomb Scargle
 for single_vbin in fluxgrid_T:
@@ -128,7 +129,7 @@ power_ls_array = np.asarray(power_ls_list)
 lombscl_dict = [power_ls_array, frequency_LS, v, BJDlist]
 
 
-def period_plotter(line_period_info):
+def period_plotter(line_period_info,v_min,v_max):
 
     # line_number = star_pickle['roundline'].values
     # plot_titles = star_pickle['plottitle'].values
@@ -137,10 +138,14 @@ def period_plotter(line_period_info):
     # period_dict = pickle.load(infile_LS)
     #
     # line_period_info = period_dict[line]
-
-    power_ls = line_period_info[0]
+    v = line_period_info[2]
+    # print(line_period_info[0].shape,line_period_info[1].shape,line_period_info[2].shape,line_period_info[3].shape)
+    speed_index = np.where((v > v_min) & (v < v_max))
+    # print(speed_index)
+    wave_grid = line_period_info[2][speed_index]
+    power_ls = line_period_info[0][speed_index]
     frequency_ls = line_period_info[1]
-    wave_grid = line_period_info[2]
+
     BJDlist = line_period_info[3]
 
     x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)
@@ -200,4 +205,4 @@ def period_plotter(line_period_info):
 
     return
 
-period_plotter(lombscl_dict)
+period_plotter(lombscl_dict,-127,127)

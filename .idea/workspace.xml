@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/td.py" beforeDir="false" afterPath="$PROJECT_DIR$/td.py" afterDir="false" />
@@ -142,7 +143,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -337,10 +338,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.create_datafiles" />
-      <item itemvalue="Python.td" />
       <item itemvalue="Python.ExecuteDataReduc" />
+      <item itemvalue="Python.create_datafiles" />
       <item itemvalue="Python.oversampling" />
+      <item itemvalue="Python.td" />
       <item itemvalue="Python tests.Python tests in test3.py" />
     </list>
     <recent_temporary>
@@ -371,13 +372,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00162" summary="changes">
-      <created>1736100527889</created>
-      <option name="number" value="00162" />
-      <option name="presentableId" value="LOCAL-00162" />
-      <option name="project" value="LOCAL" />
-      <updated>1736100527889</updated>
     </task>
     <task id="LOCAL-00163" summary="changes">
       <created>1736101544985</created>
@@ -715,7 +709,14 @@
       <option name="project" value="LOCAL" />
       <updated>1746001569528</updated>
     </task>
-    <option name="localTasksCounter" value="211" />
+    <task id="LOCAL-00211" summary="changes">
+      <created>1746008818708</created>
+      <option name="number" value="00211" />
+      <option name="presentableId" value="LOCAL-00211" />
+      <option name="project" value="LOCAL" />
+      <updated>1746008818708</updated>
+    </task>
+    <option name="localTasksCounter" value="212" />
     <servers />
   </component>
   <component name="ToolWindowManager">

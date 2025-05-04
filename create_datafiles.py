@@ -9,7 +9,7 @@ import os
 import Path_check
 import pathlib
 import sys
-
+from astropy.timeseries import LombScargle
 import open_masterfiles
 from Datafile_class import *
 # sys.modules['Line'] = Line
@@ -257,6 +257,37 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     # datadict[header]=headerlist
     return datadict
 
+def make_ls_brick(fluxbrick_filepath,output_filepath):
+    a = open(fluxbrick_filepath, 'rb')
+    b = pickle.load(a)
+    a.close()
+    fluxgrid = np.array(b['flux'])
+    fluxgrid_T = np.transpose(fluxgrid)
+    BJDlist = np.array(b['BJD'])
+    v = np.array(b['v'])
+    header = b['header']
+    lineinfo = b['li']
+    power_ls_list = []
+    min_freq = 1 / 20
+    max_freq = 1/2
+    # looping over single observation per v bin
+    # Here use Lomb Scargle
+    for single_vbin in fluxgrid_T:
+        # print(single_vbin)
+        # print(len(BJDlist), len(single_vbin), len(single_vbin_err))
+
+        # autopower code
+        frequency_LS, power_LS = LombScargle(BJDlist, single_vbin).autopower(
+            minimum_frequency=min_freq,
+            maximum_frequency=max_freq)
+
+        power_ls_list.append(power_LS)
+    power_ls_array = np.asarray(power_ls_list)
+    lombscl_dict = [power_ls_array, frequency_LS, v, BJDlist]
+    workfileresource = open(output_filepath, 'wb')
+    pickle.dump(lombscl_dict, workfileresource)
+    workfileresource.close()
+
 def makenote(rebin='0.5'):
     a=rebin
     b = a.replace(".", "")
@@ -329,7 +360,11 @@ def run_mdg():
         workfileresource = open(savename, 'wb')
         pickle.dump(data_grid, workfileresource)
         workfileresource.close()
-run_mdg()
+def run_mlb():
+    input_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\\'
+    output_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\\'
+
+# run_mdg()
 
 # run_cda()
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')

@@ -1336,9 +1336,10 @@ def create_JoO_apo_demetra(filefolder,stacked=True):
         elif stacked is False:
             obs_prefix='APO'
         print(obs_prefix,i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
-            file.exptime), '&', "{:.0f}".format(snr_ha), '&',"{:.0f}".format(snr_per_60), '&',"{:.0f}".format(count_per_60), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
-            file.alt), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
-            file.baricentric_correction), '&', "{:.0f}".format(file.velshift),r'\\')
+              file.exptime), '&', "{:.0f}".format(snr_ha), '&',"{:.0f}".format(snr_per_60), '&',
+              "{:.0f}".format(count_per_60), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
+              file.alt), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
+              file.baricentric_correction), '&', "{:.0f}".format(file.velshift),r'\\')
         i+=1
     print(r'\end{tabular}')
     print(r'\end{table*}')
@@ -1389,9 +1390,10 @@ def create_JoO_mercator(filefolder):
         snr_per_60 = snr_ha*60/file.exptime
         count_per_60 = (snr_ha**2)*60/file.exptime
         print('MERC', file.i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
-            file.exptime), '&', "{:.0f}".format(snr_ha), '&',"{:.0f}".format(snr_per_60), '&',"{:.0f}".format(count_per_60), '&', "{:.1f}".format(file.airmass), '&', "{:.0f}".format(
-            file.altitude), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
-            file.baricentric_correction), '&', "{:.0f}".format(file.velshift),  r'\\')
+              file.exptime), '&', "{:.0f}".format(snr_ha), '&',"{:.0f}".format(snr_per_60), '&',
+              "{:.0f}".format(count_per_60), '&', "{:.1f}".format(file.airmass), '&',
+              "{:.0f}".format(file.altitude), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
+              file.baricentric_correction), '&', "{:.0f}".format(file.velshift),  r'\\')
         i+=1
     print(r'\end{tabular}')
     print(r'\end{table*}')
@@ -1554,14 +1556,16 @@ def rebin_and_overplot_demetra_orders(individual_files,full_night_file, mercator
     wl_fn = fn_order.wl_original
     flux_fn = fn_order.flux_original/np.average(fn_order.flux_original)
     wl_rebin_fn, flux_rebin_fn = airmass.rebin2(wl_fn, flux_fn, step=rebin_size)
-    m_wl,m_flux = slice_and_norm(mercator_file.wl_original, mercator_file.flux_original,boundaries[0], boundaries[-1],rebin=rebin_size)
+    m_wl,m_flux = slice_and_norm(mercator_file.wl_original, mercator_file.flux_original,boundaries[0], boundaries[-1],
+                                 rebin=rebin_size)
     for file in individual_files:
         indiv_order = airmass.find_order(boundaries,file)
         wl = indiv_order.wl_original
         flux = indiv_order.flux_original/np.average(indiv_order.flux_original)
         wl_rebin, flux_rebin = airmass.rebin2(wl,flux,step=rebin_size)
         plt.plot(wl_rebin,flux_rebin,label=file.time_and_date)
-    plt.plot(wl_rebin_fn,flux_rebin_fn, color='black',linewidth=1.5, label = full_night_file.time_and_date[:6] +' Average')
+    plt.plot(wl_rebin_fn,flux_rebin_fn, color='black',linewidth=1.5,
+             label = full_night_file.time_and_date[:6] +' Average')
     dayname = full_night_file.time_and_date[:6].replace(" ", "")
     plt.plot(m_wl,m_flux,label = 'Mercator Spectrum')
     plt.xlim(boundaries[0]+20,boundaries[-1])
@@ -1575,7 +1579,7 @@ def rebin_and_overplot_demetra_orders(individual_files,full_night_file, mercator
     # plt.show()
     plt.close()
 
-def ls_brick_plotter(filepath,v_min,v_max):
+def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='off'):
     a = open(filepath, 'rb')
     line_period_info = pickle.load(a)
     a.close()
@@ -1617,7 +1621,7 @@ def ls_brick_plotter(filepath,v_min,v_max):
     ax1.set_title(lineinfo[-1], fontsize=26, pad=10)
     ax1.plot(wave_grid, som_wave, lw=1.0, color='k')
     ax1.set_xlim(np.min(wave_grid), np.max(wave_grid))
-    ax1.tick_params(labelsize=23, bottom=False, left=False, right=True)
+    ax1.tick_params(labelsize=10, bottom=False, left=False, right=True)
     ax1.tick_params(axis='y', which='major', length=8)
     ax1.yaxis.tick_right()
     ax1.yaxis.set_label_position("right")
@@ -1628,11 +1632,16 @@ def ls_brick_plotter(filepath,v_min,v_max):
     ax2.set_ylabel("Period (d)", fontsize=25)
     ax2.set_xlabel("Velocity (km/s)", fontsize=25)
     ax2.tick_params(labelsize=23)
-    ax2.tick_params(which='major', length=8)
-    ax2.tick_params(which='minor', length=4)
-    # ax2.yaxis.set_minor_formatter(NullFormatter())
+    ax2.tick_params(which='major', length=10,width=1.5)
+    ax2.tick_params(which='minor', length=10)
+    ax2.yaxis.set_major_locator(ticker.MultipleLocator(5))
+    ax2.yaxis.set_minor_locator(ticker.MultipleLocator(1))
+    ax2.set_yticks([2,5,10],[2,5,10])
+    # ax2.yaxis.set_minor_formatter(ticker.NullFormatter())
 
     ax3 = fig5.add_subplot(spec5[1, 1])
+    ax3.axhline(6.83,linestyle='--', color='silver' )
+    ax3.axhline(3.415, linestyle='--', color='silver')
     ax3.set_yscale('log')
     ax3.plot(som_frequency, 1 / frequency_ls, lw=0.5, color='k')
     ax3.set_ylim(np.min(1 / frequency_ls), np.max(1 / frequency_ls))
@@ -1642,14 +1651,26 @@ def ls_brick_plotter(filepath,v_min,v_max):
     ax3.tick_params(axis='y', which='both', direction='in', left=True, right=True)
     ax3.tick_params(axis='y', which='major', length=8)
     ax3.tick_params(axis='y', which='minor', length=4)
-    # ax3.yaxis.set_minor_formatter(NullFormatter())
+    ax3.yaxis.set_minor_formatter(ticker.NullFormatter())
     ax3.tick_params(axis='x', direction='in', labelsize=23)
     ax3.set_yticklabels([])
-    plt.show()
-    # plt.savefig(fname=source_location + '/rel_flux/' + line + '_' + star_name + '.png', format='png', \
-    #             bbox_inches='tight', dpi=200)
+    if save == 'on':
+        plt.savefig(fname=plotsavefolder + 'LS_period'+'_'+str(v_min)+'to'+str(v_max) +'_' + lineinfo[0]+str(int(lineinfo[1])) + '_' +  '.png',
+                    format='png', bbox_inches='tight', dpi=200)
+    if show == 'on':
+        plt.show()
     plt.clf()
     plt.close()
+
+    # fig, ax = plt.subplots(figsize=(20, 5))
+    # ax.set_title(lineinfo[-1], fontsize=26, pad=10)
+    # ax.plot( 1 / frequency_ls, som_frequency,lw=0.5, color='k')
+    # ax.axvline(6.83, linestyle='--', color='gray')
+    # ax.set_xlabel('Period (d)')
+    # ax.set_ylabel('Relative Power')
+    # plt.show()
+    # plt.clf()
+    # plt.close()
     del (cs, power_ls_trans)
 
     return

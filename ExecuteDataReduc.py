@@ -16,6 +16,7 @@ import os
 import Make_Plots
 import open_masterfiles
 from collections import defaultdict
+import tqdm
 matplotlib.style.use('classic')
 vsini =127
 c_light = 299792.458
@@ -156,8 +157,8 @@ def get_day_data_list(data_individual_folder,data_full_night_path):
     #     datareduc.plot_snr_test(day,li[2:6] )
 
 ls_databrick_filelist = glob.glob(ls_databrick_original+r'*.txt')
-for filepath in ls_databrick_filelist:
-    datareduc.ls_brick_plotter(filepath,-300,300)
+for filepath in tqdm.tqdm(ls_databrick_filelist):
+    datareduc.ls_brick_plotter(filepath,-500,500,plotsavefolder=r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_original\vrange-500to500\\',show='off',save='on' )
 
 quit()
 print(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\single_obs\\')

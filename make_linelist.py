@@ -126,6 +126,14 @@ linelist_apo_vshift_revised = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'
 ['O_III', 5592.37, 5587.5, 5588.5, 5596.7, 5597.7, 'O III 5592'],
 ['C_IV', 5801.33, 5792.9, 5793.9, 5816.2, 5817.2, 'C IV 5801'],
 ['Hy',4340.472,4326.0, 4330.3, 4355.0, 4362.2,r'H$\gamma$ 4861']]
+
+boundaries = {'Ha6562':[0,0], 'Hb4861''Ha6562':[0,0], 'He_I4713''Ha6562':[0,0], 'He_I5875''Ha6562':[0,0],
+              'He_II4541''Ha6562':[0,0], 'He_II4685''Ha6562':[0,0], 'He_II5411''Ha6562':[0,0], 'He_I4471''Ha6562':[0,0],
+              'He_I4921''Ha6562':[0,0], 'He_I6678''Ha6562':[0,0], 'O_III5592''Ha6562':[0,0], 'C_IV5801''Ha6562':[0,0],
+              'Hy4340''Ha6562':[0,0]}
+
+
+
 linelist_apo_ha_test = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'H$\alpha$ 6563']]
 # print(airmass.velocity_to_wl([-1000, -700, 1000, 1500],4340.472))
 # datafiles = open_masterfiles.apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\',manual_filelist=None,sorted='off')
@@ -143,7 +151,7 @@ linelist_file_path = str(converted_Data_folder)+ r'\linelists\\' + linelist_file
 # 		line[i]=b
 # 	print(line,', ')
 
-make_linelist(linelist_apo_vshift_revised,linelist_file_path)
+# make_linelist(linelist_apo_vshift_revised,linelist_file_path)
 # make_linelist(linelist_apo_vshift_revised,test_file_name)
 # mylist = open_linelist(test_file_name)
 # print(mylist)

@@ -9,7 +9,7 @@
       <change beforePath="$PROJECT_DIR$/ExecuteDataReduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExecuteDataReduc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/td.py" beforeDir="false" afterPath="$PROJECT_DIR$/td.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/make_linelist.py" beforeDir="false" afterPath="$PROJECT_DIR$/make_linelist.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -281,7 +281,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="oversampling" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="datareduc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MasterThesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -289,11 +289,32 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../Master_Thesis/testing_noise/scripts" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../Master_Thesis/testing_noise/scripts/oversampling.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/datareduc.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="make_linelist" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MasterThesis" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/make_linelist.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -323,34 +344,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests in test3.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="MasterThesis" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/test3.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
     <list>
+      <item itemvalue="Python.datareduc" />
+      <item itemvalue="Python.make_linelist" />
       <item itemvalue="Python.ExecuteDataReduc" />
       <item itemvalue="Python.create_datafiles" />
-      <item itemvalue="Python.oversampling" />
       <item itemvalue="Python.td" />
-      <item itemvalue="Python tests.Python tests in test3.py" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.ExecuteDataReduc" />
+        <item itemvalue="Python.datareduc" />
+        <item itemvalue="Python.make_linelist" />
         <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.td" />
-        <item itemvalue="Python tests.Python tests in test3.py" />
-        <item itemvalue="Python.oversampling" />
       </list>
     </recent_temporary>
   </component>
@@ -372,13 +379,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00164" summary="changes">
-      <created>1736198319966</created>
-      <option name="number" value="00164" />
-      <option name="presentableId" value="LOCAL-00164" />
-      <option name="project" value="LOCAL" />
-      <updated>1736198319967</updated>
     </task>
     <task id="LOCAL-00165" summary="changes">
       <created>1736439388541</created>
@@ -716,7 +716,14 @@
       <option name="project" value="LOCAL" />
       <updated>1746376869081</updated>
     </task>
-    <option name="localTasksCounter" value="213" />
+    <task id="LOCAL-00213" summary="changes">
+      <created>1746379840831</created>
+      <option name="number" value="00213" />
+      <option name="presentableId" value="LOCAL-00213" />
+      <option name="project" value="LOCAL" />
+      <updated>1746379840831</updated>
+    </task>
+    <option name="localTasksCounter" value="214" />
     <servers />
   </component>
   <component name="ToolWindowManager">

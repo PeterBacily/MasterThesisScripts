@@ -268,7 +268,7 @@ def make_ls_brick(fluxbrick_filepath,output_filefolder):
     header = b['header']
     lineinfo = b['li']
     power_ls_list = []
-    min_freq = 1 / 20
+    min_freq = 1 / 10
     max_freq = 1/2
     # looping over single observation per v bin
     # Here use Lomb Scargle
@@ -367,7 +367,7 @@ def run_mlb():
     fl = glob.glob(input_folder + r'*.txt')
     for filepath in fl:
         make_ls_brick(filepath,output_folder)
-# run_mlb()
+run_mlb()
 # run_mdg()
 
 # run_cda()

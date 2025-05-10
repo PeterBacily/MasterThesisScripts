@@ -257,6 +257,60 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     # datadict[header]=headerlist
     return datadict
 
+
+
+def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desired, rebin_size=0.1):
+    linekey = line+'_original'
+    rebinv_lim = 1000
+    firstfile = masterfilelist[0]
+    li = getattr(firstfile,linekey).lineinfo
+    centerwl = li[1]
+    rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
+    wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
+    v_rebin = airmass.wl_to_velocity(wavenew, centerwl)[0]
+    speed_index = np.where((v_rebin > v_min) & (v_rebin < v_max))
+    wl_bound = wavenew[speed_index]
+    speed_bound = v_rebin[speed_index]
+    fluxarraylist = []
+
+    bjdlist = []
+    headerlist = []
+    for file in masterfilelist:
+        header = file.header
+        BJD = file.BJD
+        wl = getattr(file,linekey).wl
+        v= getattr(file,linekey).v
+        bvcor_check = file.bc_from_header
+        if bvcor_check is False:
+            v=v-file.baricentric_correction
+            wl = airmass.velocity_to_wl(v,centerwl)
+        flux = getattr(file,linekey).flux
+        flux_rebin = airmass.rebin_spec(wl,flux,wavenew)
+        flux_bound = flux_rebin[speed_index]
+        wl_deg,flux_deg = airmass.degrade_spectrum_noise_first(wl,flux,spectral_resolution=100000,desired_snr=1000,pre_rebin=None)
+        v_deg = airmass.wl_to_velocity(wl_deg,centerwl)
+        v_deg_bound=v_deg[speed_index]
+        flux_deg_bound = flux_deg[speed_index]
+        plt.plot(v_deg_bound,flux_deg_bound,label='deg')
+        plt.plot(speed_bound,flux_bound,label='normal')
+        plt.legend()
+        plt.show()
+        plt.close()
+        bjdlist.append(BJD)
+        headerlist.append(header)
+        fluxarraylist.append(flux_bound)
+    datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist,li=li)
+    # datadict[flux]=fluxarraylist
+    # datadict[wl]=wl_bound
+    # datadict[v]=speed_bound
+    # # datadict[bjd]=bjdlist
+    # datadict[header]=headerlist
+    return datadict
+
+
+
+
+
 def make_ls_brick(fluxbrick_filepath,output_filefolder):
     a = open(fluxbrick_filepath, 'rb')
     b = pickle.load(a)
@@ -361,14 +415,32 @@ def run_mdg():
         workfileresource = open(savename, 'wb')
         pickle.dump(data_grid, workfileresource)
         workfileresource.close()
+
+def run_mdg_deg():
+    filelist = open_masterfiles.mercator(str(converted_Data_folder)+r'\dataset_omar\\')
+    linelist = open_masterfiles.open_linelist(str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt')
+    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\deg_test\\'
+
+    for i,line in enumerate(linelist):
+        vmin = -800
+        vmax = 800
+        linekey = 'line' + str(int(line[k]))
+        print(i+1)
+        data_grid = make_data_grid_with_degradation(filelist,linekey, vmin,vmax,R=100000,snr_desired=1000,rebin_size=0.1)
+        savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+str(vmin)+'_'+str(vmax)+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(data_grid, workfileresource)
+        workfileresource.close()
+
 def run_mlb():
     input_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\\'
     output_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\\'
     fl = glob.glob(input_folder + r'*.txt')
     for filepath in fl:
         make_ls_brick(filepath,output_folder)
-run_mlb()
+# run_mlb()
 # run_mdg()
+run_mdg_deg()
 
 # run_cda()
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')

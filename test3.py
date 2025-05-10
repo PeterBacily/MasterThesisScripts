@@ -85,12 +85,16 @@ def degrade_spectrum2(wl,flux,spectral_resolution=10000, desired_snr=70):
 def slice_and_norm(wl,flux,start,end,rebin=None):
     slice_flux = flux[(wl > start) & (wl < end)]
     slice_wl = wl[(wl > start) & (wl < end)]
-    slice_flux_norm = slice_flux / np.average(slice_flux)
+    res = ss.linregress(slice_wl, slice_flux)
+    ff= res.intercept + res.slope*slice_wl
+    straight_flux = np.divide(slice_flux,ff)
+    slice_flux_norm = straight_flux/np.average(straight_flux)
+    # slice_flux_norm = straight_flux
     if rebin == None:
         return slice_wl,slice_flux_norm
     else:
         slice_wl_rebinned,slice_flux_rebinned = airmass.rebin2(slice_wl,slice_flux_norm,step=rebin)
-        return slice_wl_rebinned,slice_flux_rebinned
+        return slice_wl_rebinned[2:],slice_flux_rebinned[2:]
 
 dark_path = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\20160228\20160304-210922-DARK-600s-1.fit'
 flat_path = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Altair_Response\20160228\20160228-224418-FLAT-85s-1.fit'
@@ -104,7 +108,8 @@ flat_path = r'D:\peter\Master_Thesis\Datareduction\Data\Demetra\Zet_Ori_Data_Alt
 # plt.close()
 # exit()
 
-bd = [5170, 5210]
+# bd = [5170, 5210]
+bd = [5224, 5239]
 # bd =[6549, 6550.7, 6576.0, 6578.0]
 merc_file= filelist_merc[0]
 merc_wl=merc_file.wl_rebin
@@ -112,10 +117,10 @@ merc_flux=merc_file.flux_rebin
 list_of_orders = tf.orders
 order_file = airmass.find_order(bd,tf)
 print(order_file.order_number_demetra)
-
+reb=0.5
 apo_wl = order_file.wl_rebin
 apo_flux = order_file.flux_rebin
-apo_wl_slice,apo_flux_slice = slice_and_norm(apo_wl,apo_flux,bd[0],bd[1])
+apo_wl_slice,apo_flux_slice = slice_and_norm(apo_wl,apo_flux,bd[0],bd[1],rebin=reb)
 # print(airmass.velocity_to_wl([-1174,-985],6562.819))
 # wl_apo = tf.line4861_order_rebin.wl
 # flux_apo = tf.line4861_order_rebin.flux
@@ -126,8 +131,8 @@ apo_wl_slice,apo_flux_slice = slice_and_norm(apo_wl,apo_flux,bd[0],bd[1])
 
 # exit()
 sr = 10000
-d_snr = 35
-deg_wl,deg_flux = airmass.degrade_spectrum_noise_first(merc_wl,merc_flux,spectral_resolution=sr, desired_snr=d_snr,pre_rebin = 0.1)
+d_snr = 60
+deg_wl,deg_flux = airmass.degrade_spectrum_noise_first(merc_wl,merc_flux,spectral_resolution=sr, desired_snr=d_snr,pre_rebin = 0.05)
 # deg_wl,deg_flux = airmass.degrade_spectrum(merc_wl,merc_flux,spectral_resolution=10000, desired_snr=120,pre_rebin = 0.05)
 # deg_wl_rebin,deg_flux_rebin = airmass.rebin2(deg_wl,deg_flux,0.1)
 # wl_apo_sn,flux_apo_sn = slice_and_norm(wl_apo,flux_apo,start_wl,end_wl,rebin=None)
@@ -135,10 +140,10 @@ deg_wl,deg_flux = airmass.degrade_spectrum_noise_first(merc_wl,merc_flux,spectra
 md_snr_ha,md_snr_straight = airmass.SNR_merc_degen(deg_wl,deg_flux)
 apo_snr_ha,apo_snr_straight = airmass.SNR_apo_orders(tf)
 print(md_snr_straight,apo_snr_straight)
-wl_deg_sn, flux_deg_sn = slice_and_norm(deg_wl,deg_flux,bd[0],bd[1],rebin=None)
+wl_deg_sn, flux_deg_sn = slice_and_norm(deg_wl,deg_flux,bd[0],bd[1],rebin=reb)
 plt.plot(wl_deg_sn,flux_deg_sn,label='Mercator degenerated, R='+str(sr)+'\nSNR given='+str(d_snr)+' SNR measured='+str(np.round(md_snr_straight)))
 plt.plot(apo_wl_slice,apo_flux_slice,label='APO SNR measured='+str(np.round(apo_snr_straight)))
-plt.title('Continuum slice of APO and degenrated mercator spectra\n rebinned to 0.1 Å')
+plt.title('Continuum slice of APO and degenrated mercator spectra\n rebinned to '+ str(reb)+'Å')
 plt.xlabel('Wavelength (Å)')
 plt.ylabel('Relative flux')
 plt.legend()

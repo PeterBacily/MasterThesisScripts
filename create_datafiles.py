@@ -285,13 +285,12 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
             v=v-file.baricentric_correction
             wl = airmass.velocity_to_wl(v,centerwl)
         flux = getattr(file,linekey).flux
+        wl_deg,flux_deg = airmass.degrade_spectrum_noise_first(wl,flux,spectral_resolution=30000,desired_snr=50,pre_rebin=None)
         flux_rebin = airmass.rebin_spec(wl,flux,wavenew)
+        flux_deg_rebin = airmass.rebin_spec(wl_deg,flux_deg,wavenew)
         flux_bound = flux_rebin[speed_index]
-        wl_deg,flux_deg = airmass.degrade_spectrum_noise_first(wl,flux,spectral_resolution=100000,desired_snr=1000,pre_rebin=None)
-        v_deg = airmass.wl_to_velocity(wl_deg,centerwl)
-        v_deg_bound=v_deg[speed_index]
-        flux_deg_bound = flux_deg[speed_index]
-        plt.plot(v_deg_bound,flux_deg_bound,label='deg')
+        flux_deg_bound = flux_deg_rebin[speed_index]
+        plt.plot(speed_bound,flux_deg_bound,label='deg')
         plt.plot(speed_bound,flux_bound,label='normal')
         plt.legend()
         plt.show()

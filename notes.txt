@@ -41,3 +41,9 @@ To do met info van Sarah:
     * kijken of het bij elke dag zo is
     plotjes mooi maken voor in verslag.
     * kies correcte binsize.:0.5A
+
+
+Binsize: 0.5A
+functie:  airmass.degrade_spectrum_noise_first
+desired snr: 60
+Spectral Resolution: 10000

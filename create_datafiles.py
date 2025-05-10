@@ -223,6 +223,7 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
     li = getattr(firstfile,linekey).lineinfo
+    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size]]
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
@@ -234,6 +235,7 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
 
     bjdlist = []
     headerlist = []
+    snrlist =  []
     for file in masterfilelist:
         header = file.header
         BJD = file.BJD
@@ -241,15 +243,18 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
         v= getattr(file,linekey).v
         bvcor_check = file.bc_from_header
         if bvcor_check is False:
-            v=v-file.baricentric_correction
+            v = v-file.baricentric_correction
             wl = airmass.velocity_to_wl(v,centerwl)
         flux = getattr(file,linekey).flux
         flux_rebin = airmass.rebin_spec(wl,flux,wavenew)
+        # snr = airmass.SNR_3(wavenew,flux_rebin,boundaries='flat_continuum',rebin=False,separate=False)
+        # snrlist.append(snr)
         flux_bound = flux_rebin[speed_index]
         bjdlist.append(BJD)
         headerlist.append(header)
         fluxarraylist.append(flux_bound)
-    datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist,li=li)
+    datadict = dict(flux=fluxarraylist, wl=wl_bound, v=speed_bound, BJD=bjdlist, header=headerlist, snrlist=snrlist,
+                    li=li, paraminfo=pi)
     # datadict[flux]=fluxarraylist
     # datadict[wl]=wl_bound
     # datadict[v]=speed_bound
@@ -264,6 +269,7 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
     li = getattr(firstfile,linekey).lineinfo
+    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size],['Spectral resolution'],['Desired_SNR']]
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
@@ -285,7 +291,7 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
             v=v-file.baricentric_correction
             wl = airmass.velocity_to_wl(v,centerwl)
         flux = getattr(file,linekey).flux
-        wl_deg,flux_deg = airmass.degrade_spectrum_noise_first(wl,flux,spectral_resolution=30000,desired_snr=50,pre_rebin=None)
+        wl_deg,flux_deg = airmass.degrade_spectrum_noise_first(wl,flux,spectral_resolution=R,desired_snr=snr_desired,pre_rebin=None)
         flux_rebin = airmass.rebin_spec(wl,flux,wavenew)
         flux_deg_rebin = airmass.rebin_spec(wl_deg,flux_deg,wavenew)
         flux_bound = flux_rebin[speed_index]
@@ -409,7 +415,7 @@ def run_mdg():
         vmax = 800
         linekey = 'line' + str(int(line[k]))
         print(i+1)
-        data_grid = make_data_grid(filelist,linekey, vmin,vmax,rebin_size=0.1)
+        data_grid = make_data_grid(filelist,linekey, vmin,vmax,rebin_size=0.5)
         savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+str(vmin)+'_'+str(vmax)+'.txt'
         workfileresource = open(savename, 'wb')
         pickle.dump(data_grid, workfileresource)
@@ -438,8 +444,8 @@ def run_mlb():
     for filepath in fl:
         make_ls_brick(filepath,output_folder)
 # run_mlb()
-# run_mdg()
-run_mdg_deg()
+run_mdg()
+# run_mdg_deg()
 
 # run_cda()
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')

@@ -1607,7 +1607,7 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     if 'degrade_params' in line_period_info:
         degp = 'line_period_info'
     else:
-        degp = 'No Degredation'
+        degp = 'No Degradation'
     snr_avg=str(pi[3][1])
 
     x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)
@@ -1665,7 +1665,9 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     ax3.tick_params(axis='y', which='major', length=8)
     ax3.tick_params(axis='y', which='minor', length=4)
     ax3.yaxis.set_minor_formatter(ticker.NullFormatter())
-    ax3.tick_params(axis='x', direction='in', labelsize=23)
+    ax3.tick_params(axis='x', direction='in', labelsize=18)
+    ax3.xaxis.set_major_locator(ticker.MaxNLocator(4))
+    # ax3.locator_params(tight=True, nbins=5)
     ax3.set_yticklabels([])
     if save == 'on':
         plt.savefig(fname=plotsavefolder + 'LS_period'+'_'+str(v_min)+'to'+str(v_max) +'_' + lineinfo[0]+str(int(lineinfo[1])) + '_' +  '.png',

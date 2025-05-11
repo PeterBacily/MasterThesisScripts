@@ -1590,16 +1590,26 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     # period_dict = pickle.load(infile_LS)
     #
     # line_period_info = period_dict[line]
-    v = line_period_info[2]
+    v = line_period_info['v']
     # print(line_period_info[0].shape,line_period_info[1].shape,line_period_info[2].shape,line_period_info[3].shape)
     speed_index = np.where((v > v_min) & (v < v_max))
     # print(speed_index)
-    wave_grid = line_period_info[2][speed_index]
-    power_ls = line_period_info[0][speed_index]
-    frequency_ls = line_period_info[1]
+    wave_grid = line_period_info['v'][speed_index]
+    power_ls = line_period_info['powerarray'][speed_index]
+    frequency_ls = line_period_info['frequency']
 
-    BJDlist = line_period_info[3]
-    lineinfo = line_period_info[4]
+    BJDlist = line_period_info['BJD']
+    lineinfo = line_period_info['li']
+    header = line_period_info['header']
+    snrlist=line_period_info['snrlist']
+    pi = line_period_info['paraminfo']
+    binsize = str(pi[2][1])+'Å'
+    if 'degrade_params' in line_period_info:
+        degp = 'line_period_info'
+    else:
+        degp = 'No Degredation'
+    snr_avg=str(pi[3][1])
+
     x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)
     power_ls_trans = power_ls.T
 
@@ -1619,6 +1629,8 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     ax1 = fig5.add_subplot(spec5[0, 0])
     # ax1.set_title(fr'${plot_titles[index]} \ {line_number[index]}$', fontsize=26, pad=10)
     ax1.set_title(lineinfo[-1], fontsize=26, pad=10)
+
+    # plt.text('binning: '+binsize, fontsize=18, pad=10)
     ax1.plot(wave_grid, som_wave, lw=1.0, color='k')
     ax1.set_xlim(np.min(wave_grid), np.max(wave_grid))
     ax1.tick_params(labelsize=10, bottom=False, left=False, right=True)
@@ -1645,6 +1657,7 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     ax3.set_yscale('log')
     ax3.plot(som_frequency, 1 / frequency_ls, lw=0.5, color='k')
     ax3.set_ylim(np.min(1 / frequency_ls), np.max(1 / frequency_ls))
+    ax3.text(3, 11, 'Binning: ' + binsize+'\n'+degp, fontsize=14, bbox=dict(facecolor='white', alpha=1))
     cbar = fig5.colorbar(cs)
 
     # set ticks left and right, turn ylabels off

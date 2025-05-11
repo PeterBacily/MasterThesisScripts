@@ -1,6 +1,8 @@
 from __future__ import division
 import glob
 import astropy.io.fits as pf
+import numpy as np
+
 import airmass
 import matplotlib.style
 import pickle
@@ -220,6 +222,7 @@ def create_datafiles_lapalma_omar(filelist=fl_dataset_omar,save_folder=datafile_
 
 def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     linekey = line+'_original'
+    snr_region = [5224, 5239]
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
     li = getattr(firstfile,linekey).lineinfo
@@ -227,6 +230,7 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
+    snr_wavenew = np.arange(snr_region[0],snr_region[1],rebin_size)
     v_rebin = airmass.wl_to_velocity(wavenew, centerwl)[0]
     speed_index = np.where((v_rebin > v_min) & (v_rebin < v_max))
     wl_bound = wavenew[speed_index]
@@ -237,6 +241,11 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     headerlist = []
     snrlist =  []
     for file in masterfilelist:
+        full_wl = file.wl_original
+        full_flux = file.flux_original
+        snr_bound = np.where((full_wl > (snr_region[0]-1)) & (full_wl < (snr_region[1]+1)))
+        snr_wl = full_wl[snr_bound]
+        snr_flux = full_flux[snr_bound]
         header = file.header
         BJD = file.BJD
         wl = getattr(file,linekey).wl
@@ -247,12 +256,14 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
             wl = airmass.velocity_to_wl(v,centerwl)
         flux = getattr(file,linekey).flux
         flux_rebin = airmass.rebin_spec(wl,flux,wavenew)
-        # snr = airmass.SNR_3(wavenew,flux_rebin,boundaries='flat_continuum',rebin=False,separate=False)
-        # snrlist.append(snr)
+        snr_flux_rebin = airmass.rebin_spec(snr_wl,snr_flux,snr_wavenew)
+        snr = airmass.SNR_3(snr_wavenew,snr_flux_rebin,boundaries=snr_region,rebin=False,separate=False)
+        snrlist.append(snr)
         flux_bound = flux_rebin[speed_index]
         bjdlist.append(BJD)
         headerlist.append(header)
         fluxarraylist.append(flux_bound)
+    pi.append(['snr_average',np.average(snrlist)])
     datadict = dict(flux=fluxarraylist, wl=wl_bound, v=speed_bound, BJD=bjdlist, header=headerlist, snrlist=snrlist,
                     li=li, paraminfo=pi)
     # datadict[flux]=fluxarraylist
@@ -326,6 +337,9 @@ def make_ls_brick(fluxbrick_filepath,output_filefolder):
     v = np.array(b['v'])
     header = b['header']
     lineinfo = b['li']
+    snrlist = b['snrlist']
+    li = b['li']
+    pi = b['paraminfo']
     power_ls_list = []
     min_freq = 1 / 10
     max_freq = 1/2
@@ -342,8 +356,9 @@ def make_ls_brick(fluxbrick_filepath,output_filefolder):
 
         power_ls_list.append(power_LS)
     power_ls_array = np.asarray(power_ls_list)
-    lombscl_dict = [power_ls_array, frequency_LS, v, BJDlist,lineinfo]
-    output_filepath=output_filefolder+lineinfo[0]+str(int(lineinfo[1]))+'ls_brick.txt'
+    lombscl_dict = dict(powerarray=power_ls_array, frequency=frequency_LS, v=v, BJD=BJDlist, header=header, snrlist=snrlist,
+                    li=li, paraminfo=pi)
+    output_filepath=output_filefolder+lineinfo[0]+str(int(lineinfo[1]))+'rebin'+str(pi[2][1])+'_ls_brick.txt'
     workfileresource = open(output_filepath, 'wb')
     pickle.dump(lombscl_dict, workfileresource)
     workfileresource.close()
@@ -408,15 +423,17 @@ def run_cda():
 def run_mdg():
     filelist = open_masterfiles.mercator(str(converted_Data_folder)+r'\dataset_omar\\')
     linelist = open_masterfiles.open_linelist(str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt')
-    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\\'
-
+    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\no_degredation\rebin_05\\'
+    rb=0.5
     for i,line in enumerate(linelist):
         vmin = -800
         vmax = 800
         linekey = 'line' + str(int(line[k]))
         print(i+1)
-        data_grid = make_data_grid(filelist,linekey, vmin,vmax,rebin_size=0.5)
-        savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+str(vmin)+'_'+str(vmax)+'.txt'
+        data_grid = make_data_grid(filelist,linekey, vmin,vmax,rebin_size=rb)
+        print(data_grid["paraminfo"])
+        print(data_grid["snrlist"])
+        savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+'rebin'+str(rb)+'_vlim'+str(vmin)+'_'+str(vmax)+'.txt'
         workfileresource = open(savename, 'wb')
         pickle.dump(data_grid, workfileresource)
         workfileresource.close()
@@ -438,13 +455,13 @@ def run_mdg_deg():
         workfileresource.close()
 
 def run_mlb():
-    input_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\vlim-800_800\\'
-    output_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\\'
+    input_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\no_degredation\rebin_05\\'
+    output_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\'
     fl = glob.glob(input_folder + r'*.txt')
     for filepath in fl:
         make_ls_brick(filepath,output_folder)
-# run_mlb()
-run_mdg()
+run_mlb()
+# run_mdg()
 # run_mdg_deg()
 
 # run_cda()

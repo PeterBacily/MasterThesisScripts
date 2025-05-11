@@ -132,7 +132,7 @@ dfs_full_night = [data_full_night_110,data_full_night_100]
 pfs_full_night = [pf_full_night_110,pf_full_night_100]
 audela_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\AudeLA\all\\'
 snr_comp_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\SNR_comp\comp\\'
-ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\\'
+
 def get_day_data_list(data_individual_folder,data_full_night_path):
 
     data_full_list = open_masterfiles.apo_demetra_orders(path = data_full_night_path,manual_filelist=None,sort_data_files='on')
@@ -156,9 +156,13 @@ def get_day_data_list(data_individual_folder,data_full_night_path):
     #     li=day[0].line6562.lineinfo
     #     datareduc.plot_snr_test(day,li[2:6] )
 
+
+# ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\\'
+ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\'
+# ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\'
 ls_databrick_filelist = glob.glob(ls_databrick_original+r'*.txt')
 for filepath in tqdm.tqdm(ls_databrick_filelist):
-    datareduc.ls_brick_plotter(filepath,-500,500,plotsavefolder=r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_original\vrange-500to500\\',show='off',save='on' )
+    datareduc.ls_brick_plotter(filepath,-500,500,plotsavefolder=r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_original\vrange-500to500\\',show='on',save='off' )
 
 quit()
 print(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\single_obs\\')

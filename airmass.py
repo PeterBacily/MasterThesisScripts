@@ -1431,8 +1431,14 @@ def degrade_spectrum_noise_first(wl,flux,spectral_resolution=10000, desired_snr=
 
     return rebin_wl,deg_noisy_flux
 
-
-
+def make_frequency_array(start,stop,ss_start,ss_end,bigstep = 1/1000,smallstep=1/10000):
+    #in days, will return 1/d frequency array
+    a = np.arange(start, ss_start, bigstep)
+    b = np.arange(ss_start, ss_end, smallstep)
+    c = np.append(a, b)
+    d = np.arange(ss_end, stop + bigstep, bigstep)
+    e = np.append(c, d)
+    return 1/e
 
 
 

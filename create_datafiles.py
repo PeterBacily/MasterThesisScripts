@@ -14,6 +14,7 @@ import sys
 from astropy.timeseries import LombScargle
 import open_masterfiles
 from Datafile_class import *
+import tqdm
 # sys.modules['Line'] = Line
 # sys.modules['Datafile_mercator'] = Datafile_mercator
 # sys.modules['Datafile_apo'] = Datafile_apo
@@ -327,7 +328,7 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
 
 
 
-def make_ls_brick(fluxbrick_filepath,output_filefolder):
+def make_ls_brick(fluxbrick_filepath,output_filefolder,frequencyarray = None):
     a = open(fluxbrick_filepath, 'rb')
     b = pickle.load(a)
     a.close()
@@ -350,10 +351,13 @@ def make_ls_brick(fluxbrick_filepath,output_filefolder):
         # print(len(BJDlist), len(single_vbin), len(single_vbin_err))
 
         # autopower code
-        frequency_LS, power_LS = LombScargle(BJDlist, single_vbin).autopower(
-            minimum_frequency=min_freq,
-            maximum_frequency=max_freq)
-
+        if frequencyarray is None:
+            frequency_LS, power_LS = LombScargle(BJDlist, single_vbin).autopower(
+                minimum_frequency=min_freq,
+                maximum_frequency=max_freq)
+        else:
+            frequency_LS = frequencyarray
+            power_LS = LombScargle(BJDlist, single_vbin).power(frequencyarray)
         power_ls_list.append(power_LS)
     power_ls_array = np.asarray(power_ls_list)
     lombscl_dict = dict(powerarray=power_ls_array, frequency=frequency_LS, v=v, BJD=BJDlist, header=header, snrlist=snrlist,
@@ -455,11 +459,12 @@ def run_mdg_deg():
         workfileresource.close()
 
 def run_mlb():
-    input_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\no_degredation\rebin_05\\'
-    output_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\'
+    input_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\no_degredation\rebin_01\\'
+    output_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\custom_f_array\rebin01\\'
     fl = glob.glob(input_folder + r'*.txt')
-    for filepath in fl:
-        make_ls_brick(filepath,output_folder)
+    f_array = airmass.make_frequency_array(2,12,6.5,7,smallstep=1/100000)
+    for filepath in tqdm.tqdm(fl):
+        make_ls_brick(filepath,output_folder,frequencyarray=f_array)
 run_mlb()
 # run_mdg()
 # run_mdg_deg()

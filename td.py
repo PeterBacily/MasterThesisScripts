@@ -127,7 +127,7 @@ for single_vbin in fluxgrid_T:
     power_ls_list.append(power_LS)
 power_ls_array = np.asarray(power_ls_list)
 lombscl_dict = [power_ls_array, frequency_LS, v, BJDlist]
-
+print(len(frequency_LS))
 
 def period_plotter(line_period_info,v_min,v_max):
 
@@ -205,4 +205,4 @@ def period_plotter(line_period_info,v_min,v_max):
 
     return
 
-period_plotter(lombscl_dict,-127,127)
+# period_plotter(lombscl_dict,-127,127)

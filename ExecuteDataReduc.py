@@ -158,11 +158,13 @@ def get_day_data_list(data_individual_folder,data_full_night_path):
 
 
 # ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\\'
-ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\'
+# ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\'
+ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\custom_f_array\rebin05\\'
 # ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\'
 ls_databrick_filelist = glob.glob(ls_databrick_original+r'*.txt')
+print(ls_databrick_filelist)
 for filepath in tqdm.tqdm(ls_databrick_filelist):
-    datareduc.ls_brick_plotter(filepath,-500,500,plotsavefolder=r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_original\rebin01\\',show='off',save='on' )
+    datareduc.ls_brick_plotter(filepath,-500,500,plotsavefolder=r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_original\rebin01\\',show='on',save='off' )
 
 quit()
 print(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\all_darks\rebin01\single_obs\\')

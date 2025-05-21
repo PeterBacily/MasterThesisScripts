@@ -1656,6 +1656,7 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     ax3.axhline(3.415, linestyle='--', color='silver')
     ax3.set_yscale('log')
     ax3.plot(som_frequency, 1 / frequency_ls, lw=0.5, color='k')
+    # ax3.scatter(som_frequency, 1 / frequency_ls, color='k',s=0.5)
     ax3.set_ylim(np.min(1 / frequency_ls), np.max(1 / frequency_ls))
     ax3.text(3, 11, 'Binning: ' + binsize+'\n'+degp, fontsize=14, bbox=dict(facecolor='white', alpha=1))
     cbar = fig5.colorbar(cs)
@@ -1689,3 +1690,71 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     del (cs, power_ls_trans)
 
     return
+from SavitzkyGolay import savitzky_golay
+def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='off',SG=False,SGwindowsize=31):
+    filelist = glob.glob(filefolder+r'*.txt')
+    sum_freq_arr = []
+    for file in filelist:
+        a = open(file, 'rb')
+        line_period_info = pickle.load(a)
+        a.close()
+        # line_number = star_pickle['roundline'].values
+        # plot_titles = star_pickle['plottitle'].values
+        #
+        # infile_LS = open(pickle_location, "rb")
+        # period_dict = pickle.load(infile_LS)
+        #
+        # line_period_info = period_dict[line]
+        v = line_period_info['v']
+        # print(line_period_info[0].shape,line_period_info[1].shape,line_period_info[2].shape,line_period_info[3].shape)
+        speed_index = np.where((v > v_min) & (v < v_max))
+        # print(speed_index)
+        wave_grid = line_period_info['v'][speed_index]
+        power_ls = line_period_info['powerarray'][speed_index]
+        frequency_ls = line_period_info['frequency']
+
+        BJDlist = line_period_info['BJD']
+        lineinfo = line_period_info['li']
+        header = line_period_info['header']
+        snrlist=line_period_info['snrlist']
+        pi = line_period_info['paraminfo']
+        binsize = str(pi[2][1])+'Å'
+        if 'degrade_params' in line_period_info:
+            degp = 'line_period_info'
+        else:
+            degp = 'No Degradation'
+        snr_avg=str(pi[3][1])
+
+        x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)
+        power_ls_trans = power_ls.T
+
+        # print(min(list(map(min, power_ls))))
+        # print(max(list(map(max, power_ls))))
+        period = 1 / frequency_ls
+        som_frequency = np.sum(power_ls_trans, axis=1)
+        som_wave_place = np.sum(power_ls_trans, axis=0)
+        som_wave = som_wave_place / np.max(som_wave_place)
+        sum_freq_arr.append(som_frequency)
+    sum_sum_frequency = np.sum(sum_freq_arr, axis=0)
+    fit_SG_power = savitzky_golay(sum_sum_frequency, SGwindowsize, 4)
+    print(' asdk' )
+    plt.rcParams["figure.figsize"] = (10, 3)
+    if SG is True:
+        plt.plot(period, fit_SG_power, lw=0.5, color='r',label = 'Smoothed power')
+    else:
+        plt.plot( period,sum_sum_frequency, lw=0.5, color='b', label = 'Power')
+    plt.axvline(6.83,linestyle='--', color='silver',alpha=0.5 )
+    plt.axvline(3.415, linestyle='--', color='silver',alpha=0.5)
+    plt.xscale('log')
+    plt.xlim(1,12)
+    plt.xticks([2, 5, 10], [2, 5, 10])
+    plt.xlabel('Period (d)')
+    plt.ylabel('Relative Power')
+    periodlimit = np.where((period > 3) & (period < 9))
+    maxpowerperiod = np.where(sum_sum_frequency>30)
+    print(sum_sum_frequency[periodlimit])
+    print(period[maxpowerperiod])
+    plt.text(2.2,np.max(sum_sum_frequency[periodlimit])-2, 'Binning: ' + binsize+'\n'+degp, fontsize=14, bbox=dict(facecolor='white', alpha=1))
+    # plt.plots
+    plt.show()
+    plt.close()

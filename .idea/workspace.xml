@@ -7,10 +7,7 @@
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExecuteDataReduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExecuteDataReduc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/td.py" beforeDir="false" afterPath="$PROJECT_DIR$/td.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,7 +217,7 @@
       <recent name="D:\peter\Master_Thesis\Datareduction\Scripts" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.create_datafiles">
+  <component name="RunManager" selected="Python.ExecuteDataReduc">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -354,8 +351,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.ExecuteDataReduc" />
+        <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.testfile" />
         <item itemvalue="Python.td" />
         <item itemvalue="Python.test3" />
@@ -380,13 +377,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00172" summary="changes">
-      <created>1737397103901</created>
-      <option name="number" value="00172" />
-      <option name="presentableId" value="LOCAL-00172" />
-      <option name="project" value="LOCAL" />
-      <updated>1737397103902</updated>
     </task>
     <task id="LOCAL-00173" summary="changes">
       <created>1737723473009</created>
@@ -724,7 +714,14 @@
       <option name="project" value="LOCAL" />
       <updated>1746987098249</updated>
     </task>
-    <option name="localTasksCounter" value="221" />
+    <task id="LOCAL-00221" summary="changes">
+      <created>1747585020811</created>
+      <option name="number" value="00221" />
+      <option name="presentableId" value="LOCAL-00221" />
+      <option name="project" value="LOCAL" />
+      <updated>1747585020811</updated>
+    </task>
+    <option name="localTasksCounter" value="222" />
     <servers />
   </component>
   <component name="ToolWindowManager">

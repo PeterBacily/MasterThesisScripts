@@ -276,7 +276,7 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
 
 
 
-def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desired, rebin_size=0.1):
+def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desired, rebin_size=0.5):
     linekey = line+'_original'
     rebinv_lim = 1000
     firstfile = masterfilelist[0]

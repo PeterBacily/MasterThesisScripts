@@ -159,11 +159,21 @@ def get_day_data_list(data_individual_folder,data_full_night_path):
 
 # ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\\'
 # ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\'
-ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\custom_f_array\rebin01\\'
-# ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\'
+# ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\custom_f_array\rebin01\\'
+ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\'
 ls_databrick_filelist = glob.glob(ls_databrick_original+r'*.txt')
-datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\selection\\',-500,500,show='on',save='off',SG=True,SGwindowsize=201)
-datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\',-500,500,show='on',save='off',SG=True,SGwindowsize=201)
+sumplot_savefolder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_original\summed\\'
+# datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\selection\\',-500,500,plotsavefolder=sumplot_savefolder,show='off',save='on',SG=True,SGwindowsize=201)
+# datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\selection\\',-500,500,plotsavefolder=sumplot_savefolder,show='off',save='on',SG=False,SGwindowsize=201)
+# # datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\',-500,500,show='on',save='off',SG=True,SGwindowsize=201)
+# quit()
+for bool in [True,False]:
+    datareduc.ls_sum_plotter(
+        r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\', -500,
+        500, plotsavefolder=sumplot_savefolder, show='off', save='on', SG=bool, SGwindowsize=201)
+    datareduc.ls_sum_plotter(
+        r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\', -500,
+        500, plotsavefolder=sumplot_savefolder, show='off', save='on', SG=bool, SGwindowsize=201)
 
 quit()
 print(ls_databrick_filelist)

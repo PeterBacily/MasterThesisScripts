@@ -1720,7 +1720,7 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
         pi = line_period_info['paraminfo']
         binsize = str(pi[2][1])+'Å'
         if 'degrade_params' in line_period_info:
-            degp = 'line_period_info'
+            degp = line_period_info['degrade_params']
         else:
             degp = 'No Degradation'
         snr_avg=str(pi[3][1])
@@ -1736,15 +1736,21 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
         som_wave = som_wave_place / np.max(som_wave_place)
         sum_freq_arr.append(som_frequency)
     sum_sum_frequency = np.sum(sum_freq_arr, axis=0)
-    fit_SG_power = savitzky_golay(sum_sum_frequency, SGwindowsize, 4)
+
     print(' asdk' )
     plt.rcParams["figure.figsize"] = (20, 10)
+    periodlimit = np.where((period > 3) & (period < 9))
     if SG is True:
+        fit_SG_power = savitzky_golay(sum_sum_frequency, SGwindowsize, 4)
         plt.plot(period, fit_SG_power, lw=0.5, color='tab:red',label = 'Smoothed power')
         plt.title('Smoothed sum of power spectra of all lines')
+        sg_figsaveextension = '_smoothed'
+        textbox_y_lim = np.max(fit_SG_power[periodlimit]) * 0.95
     else:
         plt.plot(period, sum_sum_frequency, lw=0.5, color='tab:blue', label='Power')
         plt.title('Sum of power spectra of all lines')
+        sg_figsaveextension = ''
+        textbox_y_lim = np.max(sum_sum_frequency[periodlimit]) * 0.95
     plt.axvline(6.83,linestyle='--', color='black',alpha=0.5 )
     plt.axvline(3.415, linestyle='--', color='black',alpha=0.5)
     plt.xscale('log')
@@ -1754,10 +1760,14 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
     plt.xticks([2, 5, 10], [2, 5, 10])
     plt.xlabel('Period (d)')
     plt.ylabel('Relative Power')
-    periodlimit = np.where((period > 3) & (period < 9))
-    maxpowerperiod = np.where(sum_sum_frequency>30)
-    print(sum_sum_frequency[periodlimit])
-    print(period[maxpowerperiod])
-    plt.text(plot_lowerlim+0.1,np.max(sum_sum_frequency[periodlimit])*0.95, 'Binning: ' + binsize+'\n'+degp, fontsize=12, bbox=dict(facecolor='white', alpha=0.5))
-    plt.show()
+    # print(sum_sum_frequency[periodlimit])
+    # print(period[maxpowerperiod])
+    plt.text(plot_lowerlim+0.1,textbox_y_lim, 'Binning: ' + binsize+'\n'+degp, fontsize=12, bbox=dict(facecolor='white', alpha=0.5))
+    if show == 'on':
+        plt.show()
+    if save == 'on':
+        degp_joined = "_".join(degp.split())
+        plt.savefig(fname=plotsavefolder + 'LS_period' + '_' + 'rebin' + binsize +'_'+degp_joined + '_summed'+sg_figsaveextension+ '.png',
+                    format='png', bbox_inches='tight', dpi=200)
+    print('made 1 plot')
     plt.close()

@@ -162,8 +162,8 @@ def get_day_data_list(data_individual_folder,data_full_night_path):
 ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\custom_f_array\rebin01\\'
 # ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\'
 ls_databrick_filelist = glob.glob(ls_databrick_original+r'*.txt')
-# datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\selection\\',-500,500,show='on',save='off')
-datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\',-500,500,show='on',save='off',SG=False,SGwindowsize=31)
+datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\selection\\',-500,500,show='on',save='off',SG=True,SGwindowsize=201)
+datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\',-500,500,show='on',save='off',SG=True,SGwindowsize=201)
 
 quit()
 print(ls_databrick_filelist)

@@ -54,3 +54,7 @@ to do zondag 11 april:
     - maken met r=10000 maar geen snr degredation
     - maken met r=10000 en verschillende snr degredations.
     - alle plaatjes op USB stick zetten voor dinsdag
+
+
+- idee voor limiet van wat telt als een detectie: Als de gesmoothe piek bij periode niet de hoogste is tussen 5 en 8 dagen
+                                                  of als de halve periode niet de hoogste piek is tussen 2 en 5 dagem

@@ -1738,15 +1738,19 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
     sum_sum_frequency = np.sum(sum_freq_arr, axis=0)
     fit_SG_power = savitzky_golay(sum_sum_frequency, SGwindowsize, 4)
     print(' asdk' )
-    plt.rcParams["figure.figsize"] = (10, 3)
+    plt.rcParams["figure.figsize"] = (20, 10)
     if SG is True:
-        plt.plot(period, fit_SG_power, lw=0.5, color='r',label = 'Smoothed power')
+        plt.plot(period, fit_SG_power, lw=0.5, color='tab:red',label = 'Smoothed power')
+        plt.title('Smoothed sum of power spectra of all lines')
     else:
-        plt.plot( period,sum_sum_frequency, lw=0.5, color='b', label = 'Power')
-    plt.axvline(6.83,linestyle='--', color='silver',alpha=0.5 )
-    plt.axvline(3.415, linestyle='--', color='silver',alpha=0.5)
+        plt.plot(period, sum_sum_frequency, lw=0.5, color='tab:blue', label='Power')
+        plt.title('Sum of power spectra of all lines')
+    plt.axvline(6.83,linestyle='--', color='black',alpha=0.5 )
+    plt.axvline(3.415, linestyle='--', color='black',alpha=0.5)
     plt.xscale('log')
-    plt.xlim(1,12)
+    plot_lowerlim =2
+    plot_upperlim=12
+    plt.xlim(plot_lowerlim,plot_upperlim)
     plt.xticks([2, 5, 10], [2, 5, 10])
     plt.xlabel('Period (d)')
     plt.ylabel('Relative Power')
@@ -1754,7 +1758,6 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
     maxpowerperiod = np.where(sum_sum_frequency>30)
     print(sum_sum_frequency[periodlimit])
     print(period[maxpowerperiod])
-    plt.text(2.2,np.max(sum_sum_frequency[periodlimit])-2, 'Binning: ' + binsize+'\n'+degp, fontsize=14, bbox=dict(facecolor='white', alpha=1))
-    # plt.plots
+    plt.text(plot_lowerlim+0.1,np.max(sum_sum_frequency[periodlimit])*0.95, 'Binning: ' + binsize+'\n'+degp, fontsize=12, bbox=dict(facecolor='white', alpha=0.5))
     plt.show()
     plt.close()

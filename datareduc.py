@@ -1605,9 +1605,9 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     pi = line_period_info['paraminfo']
     binsize = str(pi[2][1])+'Å'
     if 'degrade_params' in line_period_info:
-        degp = 'line_period_info'
+        degp = line_period_info['line_period_info']
     else:
-        degp = 'No Degradation'
+        degp = line_period_info['No Degradation']
     snr_avg=str(pi[3][1])
 
     x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)

@@ -278,22 +278,29 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
 
 def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desired, rebin_size=0.5):
     linekey = line+'_original'
+    snr_region = [5224, 5239]
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
     li = getattr(firstfile,linekey).lineinfo
-    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size],['Spectral resolution'],['Desired_SNR']]
+    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size],['Spectral resolution',R],['Desired_SNR',snr_desired]]
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
+    snr_wavenew = np.arange(snr_region[0], snr_region[1], rebin_size)
     wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
     v_rebin = airmass.wl_to_velocity(wavenew, centerwl)[0]
     speed_index = np.where((v_rebin > v_min) & (v_rebin < v_max))
     wl_bound = wavenew[speed_index]
     speed_bound = v_rebin[speed_index]
     fluxarraylist = []
-
+    snrlist = []
     bjdlist = []
     headerlist = []
     for file in masterfilelist:
+        full_wl = file.wl_original
+        full_flux = file.flux_original
+        snr_bound = np.where((full_wl > (snr_region[0]-1)) & (full_wl < (snr_region[1]+1)))
+        snr_wl = full_wl[snr_bound]
+        snr_flux = full_flux[snr_bound]
         header = file.header
         BJD = file.BJD
         wl = getattr(file,linekey).wl
@@ -308,6 +315,9 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
         flux_deg_rebin = airmass.rebin_spec(wl_deg,flux_deg,wavenew)
         flux_bound = flux_rebin[speed_index]
         flux_deg_bound = flux_deg_rebin[speed_index]
+        snr_flux_rebin = airmass.rebin_spec(snr_wl, snr_flux, snr_wavenew)
+        snr = airmass.SNR_3(snr_wavenew,snr_flux_rebin,boundaries=snr_region,rebin=False,separate=False)
+        snrlist.append(snr)
         plt.plot(speed_bound,flux_deg_bound,label='deg')
         plt.plot(speed_bound,flux_bound,label='normal')
         plt.legend()
@@ -316,7 +326,8 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
         bjdlist.append(BJD)
         headerlist.append(header)
         fluxarraylist.append(flux_bound)
-    datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist,li=li)
+    datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist,snrlist=snrlist,
+                    li=li, paraminfo=pi)
     # datadict[flux]=fluxarraylist
     # datadict[wl]=wl_bound
     # datadict[v]=speed_bound

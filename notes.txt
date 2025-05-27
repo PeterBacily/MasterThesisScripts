@@ -59,7 +59,10 @@ to do zondag 11 april:
 - idee voor limiet van wat telt als een detectie: Als de gesmoothe piek bij periode niet de hoogste is tussen 5 en 8 dagen
                                                   of als de halve periode niet de hoogste piek is tussen 2 en 5 dagem
 
-to-do: maak in executedatareduc functie die meteen alles plot als je basefolder meegeeft, dan maak het zo dat je degraded databricks kan maken in een loop
+to-do: maak in executedatareduc functie die meteen alles plot als je basefolder meegeeft,
+
+dan maak het zo dat je degraded databricks kan maken in een loop
+- nog nodig: degraded databricks hebben stukjke nodig in berijk van de line om snr te brekenen. Kan het meeste van de rest van de snr shit in de degraded databrick functie ook weg.
 als je alle databricks hebt, even testen en dan in 1 keer alle plots maken.
 dan: maak period search functie voor EW. kijk of je daarmee period kan vinden. en kijk of daar een detectie kwantificeerbaar is.
 dan: maak TVS voor alle databricks.

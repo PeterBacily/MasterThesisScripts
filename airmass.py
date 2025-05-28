@@ -1,4 +1,5 @@
 from __future__ import division
+
 import time
 import matplotlib.pyplot as plt
 import glob
@@ -11,15 +12,19 @@ import calendar
 import numpy as np
 from scipy import interpolate
 from scipy.optimize import *
+
 from PyAstronomy import pyasl
 import scipy.stats as ss
 import scipy.signal as scisig
 from collections import defaultdict
+
 warnings.simplefilter('ignore')
 from SavitzkyGolay import savitzky_golay
+
 from pysynphot import observation
 from pysynphot import spectrum
 from astropy.coordinates import SkyCoord
+
 from astropy.coordinates import ICRS, Galactic, FK4, FK5  # Low-level frames
 from astropy.coordinates import Angle, Latitude, Longitude  # Angles
 import astropy.units as u

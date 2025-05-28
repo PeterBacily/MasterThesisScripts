@@ -71,3 +71,5 @@ dan: maak zelfde plots voor apo
 dan: vergelijk resultaat degraded met apo.
 dan: kijk naar kwaliteit van nieuwe apo spectra
 dan schrijf thesis af.
+
+pysynphot import niet/super langzaaam

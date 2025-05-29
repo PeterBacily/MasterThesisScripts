@@ -2,13 +2,12 @@ from __future__ import division
 import glob
 import astropy.io.fits as pf
 import numpy as np
-print('0')
 import airmass
 import matplotlib.style
 import pickle
-print('bla')
 # import Datafile_class
 import os
+from pathlib import Path
 import Path_check
 import pathlib
 import sys
@@ -81,7 +80,6 @@ fl_apo_audela_all = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\eShelD
 fl_dataset_omar = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Data\Dataset_Omar\fits\*.fits')
 
 
-print('1')
 
 def bjd(file):
     fits = pf.open(file)
@@ -156,7 +154,6 @@ def create_datafiles_demetra_orders(datafolder,savefolder,linelist_file,snrtresh
                     workfileresource.close()
         else:
             print('YOU SUCK')
-print('2')
 
 def create_test_version_datafiles_demetra_orders(datafolder,linelist_file,snrtreshhold=None):
     zipfiles = sorted(glob.glob(datafolder+r'*.zip'), key=lambda x: time_from_filename(x))
@@ -222,7 +219,7 @@ def create_datafiles_lapalma_omar(filelist=fl_dataset_omar,save_folder=datafile_
         workfileresource.close()
         k+=1
 
-def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
+def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.5):
     linekey = line+'_original'
     snr_region = [5224, 5239]
     rebinv_lim = 1000
@@ -275,7 +272,6 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.1):
     # datadict[header]=headerlist
     return datadict
 
-print('3')
 
 def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desired, rebin_size=0.5):
     linekey = line+'_original'
@@ -318,13 +314,12 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
         flux_deg_bound = flux_deg_rebin[speed_index]
         snr_flux_rebin = airmass.rebin_spec(snr_wl, snr_flux, snr_wavenew)
         snr = airmass.SNR_3(snr_wavenew,snr_flux_rebin,boundaries=snr_region,rebin=False,separate=False)
-        print(snr)
         snrlist.append(snr)
-        plt.plot(speed_bound,flux_deg_bound,label='deg')
-        plt.plot(speed_bound,flux_bound,label='normal')
-        plt.legend()
-        plt.show()
-        plt.close()
+        # plt.plot(speed_bound,flux_deg_bound,label='deg')
+        # plt.plot(speed_bound,flux_bound,label='normal')
+        # plt.legend()
+        # plt.show()
+        # plt.close()
         bjdlist.append(BJD)
         headerlist.append(header)
         fluxarraylist.append(flux_bound)
@@ -338,7 +333,6 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
     return datadict
 
 
-print('4')
 
 
 def make_ls_brick(fluxbrick_filepath,output_filefolder,frequencyarray = None):
@@ -454,20 +448,19 @@ def run_mdg():
         workfileresource = open(savename, 'wb')
         pickle.dump(data_grid, workfileresource)
         workfileresource.close()
-print('5')
-def run_mdg_deg():
-    print('function called')
+def run_mdg_deg(R=10000,snr_desired = 1000):
     filelist = open_masterfiles.mercator(str(converted_Data_folder)+r'\dataset_omar\\')
     linelist = open_masterfiles.open_linelist(str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt')
-    savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\deg_test\\'
-    print('folders called')
+    parent_path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\degraded\rebin_05'
+    subforder = r'\R'+str(int(R))+'_snr'+str(int(snr_desired*5))+r'\\'
+    savefolder = parent_path+subforder
+    Path(savefolder).mkdir(parents=True, exist_ok=True)
     for i,line in enumerate(linelist):
-        print('forloop started',str(i+1))
         vmin = -800
         vmax = 800
         linekey = 'line' + str(int(line[k]))
 
-        data_grid = make_data_grid_with_degradation(filelist,linekey, vmin,vmax,R=100000,snr_desired=1000,rebin_size=0.5)
+        data_grid = make_data_grid_with_degradation(filelist,linekey, vmin,vmax,R=R,snr_desired=snr_desired,rebin_size=0.5)
         savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+str(vmin)+'_'+str(vmax)+'.txt'
         workfileresource = open(savename, 'wb')
         pickle.dump(data_grid, workfileresource)
@@ -482,8 +475,10 @@ def run_mlb():
         make_ls_brick(filepath,output_folder,frequencyarray=f_array)
 # run_mlb()
 # run_mdg()
-print('6')
-run_mdg_deg()
+snr_list = np.divide([50,60,70,80,90,100,110,120,140,160,200,250,300,400],5)
+# run_mdg_deg(R=10000,snr_desired=20)
+for snr in tqdm.tqdm(snr_list):
+    run_mdg_deg(R=10000,snr_desired=snr)
 
 # run_cda()
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')

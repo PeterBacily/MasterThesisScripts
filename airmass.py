@@ -24,7 +24,6 @@ from SavitzkyGolay import savitzky_golay
 from pysynphot import observation
 from pysynphot import spectrum
 from astropy.coordinates import SkyCoord
-
 from astropy.coordinates import ICRS, Galactic, FK4, FK5  # Low-level frames
 from astropy.coordinates import Angle, Latitude, Longitude  # Angles
 import astropy.units as u
@@ -297,6 +296,7 @@ def normalize(wls,flux,a,b,c,d,startwl,endwl,xtype = 'wave',linecenter = None):
         nnf.append(normflux[k]/fit(nwl))
 
     return linewave, fluxarray,nnf,lineflux, fit
+
 
 def normalize_single_part(x,y,start=None,stop=None):
     slope, height = np.polyfit(x, y, 1)
@@ -1425,9 +1425,9 @@ def degrade_spectrum_noise_first(wl,flux,spectral_resolution=10000, desired_snr=
     noisy_flux = np.array(flux)+noise_array
     if type(pre_rebin) == float or type(pre_rebin) == int:
         rebin_wl,rebin_noisy_flux = rebin2(wl,noisy_flux,step=pre_rebin)
-    elif pre_rebin is False or None:
+    elif pre_rebin is False or pre_rebin is None:
         rebin_noisy_flux = noisy_flux
-        rebin_wl = wl
+        rebin_wl, rebin_noisy_flux = rebin2(wl, noisy_flux, step=np.max(np.diff(wl)))
     else:
         print('incorrect import for pre_rebin parameter. Rebin set to 0.05, to customize either specify stepsize or set to None')
         rebin_wl, rebin_noisy_flux = rebin2(wl, noisy_flux, step=0.05)

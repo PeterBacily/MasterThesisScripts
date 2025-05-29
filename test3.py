@@ -131,7 +131,7 @@ apo_wl_slice,apo_flux_slice = slice_and_norm(apo_wl,apo_flux,bd[0],bd[1],rebin=r
 
 # exit()
 sr = 10000
-d_snr = 60
+d_snr = 20
 deg_wl,deg_flux = airmass.degrade_spectrum_noise_first(merc_wl,merc_flux,spectral_resolution=sr, desired_snr=d_snr,pre_rebin = 0.05)
 # deg_wl,deg_flux = airmass.degrade_spectrum(merc_wl,merc_flux,spectral_resolution=10000, desired_snr=120,pre_rebin = 0.05)
 # deg_wl_rebin,deg_flux_rebin = airmass.rebin2(deg_wl,deg_flux,0.1)

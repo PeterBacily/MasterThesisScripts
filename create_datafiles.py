@@ -298,6 +298,8 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
         snr_bound = np.where((full_wl > (snr_region[0]-1)) & (full_wl < (snr_region[1]+1)))
         snr_wl = full_wl[snr_bound]
         snr_flux = full_flux[snr_bound]
+        snr_wl_deg, snr_flux_deg = airmass.degrade_spectrum_noise_first(snr_wl, snr_flux, spectral_resolution=R,
+                                                                desired_snr=snr_desired, pre_rebin=None)
         header = file.header
         BJD = file.BJD
         wl = getattr(file,linekey).wl
@@ -308,21 +310,14 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
             wl = airmass.velocity_to_wl(v,centerwl)
         flux = getattr(file,linekey).flux
         wl_deg,flux_deg = airmass.degrade_spectrum_noise_first(wl,flux,spectral_resolution=R,desired_snr=snr_desired,pre_rebin=None)
-        flux_rebin = airmass.rebin_spec(wl,flux,wavenew)
         flux_deg_rebin = airmass.rebin_spec(wl_deg,flux_deg,wavenew)
-        flux_bound = flux_rebin[speed_index]
         flux_deg_bound = flux_deg_rebin[speed_index]
-        snr_flux_rebin = airmass.rebin_spec(snr_wl, snr_flux, snr_wavenew)
+        snr_flux_rebin = airmass.rebin_spec(snr_wl_deg, snr_flux_deg, snr_wavenew)
         snr = airmass.SNR_3(snr_wavenew,snr_flux_rebin,boundaries=snr_region,rebin=False,separate=False)
         snrlist.append(snr)
-        # plt.plot(speed_bound,flux_deg_bound,label='deg')
-        # plt.plot(speed_bound,flux_bound,label='normal')
-        # plt.legend()
-        # plt.show()
-        # plt.close()
         bjdlist.append(BJD)
         headerlist.append(header)
-        fluxarraylist.append(flux_bound)
+        fluxarraylist.append(flux_deg_bound)
     datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist,snrlist=snrlist,
                     li=li, paraminfo=pi)
     # datadict[flux]=fluxarraylist
@@ -491,13 +486,15 @@ def run_mlb_deg():
             workfileresource = open(output_filepath, 'wb')
             pickle.dump(lombscl_dict, workfileresource)
             workfileresource.close()
-run_mlb_deg()
+
 # run_mlb()
 # run_mdg()
-# snr_list = np.divide([50,60,70,80,90,100,110,120,140,160,200,250,300,400],5)
-# # run_mdg_deg(R=10000,snr_desired=20)
-# for snr in tqdm.tqdm(snr_list):
-#     run_mdg_deg(R=10000,snr_desired=snr)
+snr_list = np.divide([50,60,70,80,90,100,110,120,140,160,200,250,300,400],5)
+# run_mdg_deg(R=10000,snr_desired=20)
+for snr in tqdm.tqdm(snr_list):
+    run_mdg_deg(R=10000,snr_desired=snr)
+
+run_mlb_deg()
 
 # run_cda()
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')

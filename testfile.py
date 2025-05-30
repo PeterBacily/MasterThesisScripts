@@ -1,5 +1,6 @@
 from __future__ import division
 import glob
+import pickle
 from pathlib import Path
 import numpy as np
 import os
@@ -23,13 +24,27 @@ import scipy
 # mercator_lines = ['line5875', 'line4861', 'line4340', 'line6562', 'line6678', 'line5592', 'line4026', 'line4471',
 #                       'line4685', 'line4921', 'line5801', 'line4713', 'line5411', 'line4541']
 
-a = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\degraded\rebin_05\*')
+a = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\*')
 for folder in a:
     filepaths = glob.glob(folder+r'\*.txt')
-    for filepath in filepaths:
-        path = Path(filepath)
-        subdirectory = path.parent.name
-        print(subdirectory)
+    fp = filepaths[6]
+    testfile = open(fp, 'rb')
+    datadict = pickle.load(testfile)
+    powerarray = datadict['powerarray']
+    fq= datadict['frequency']
+    v= datadict['v']
+    BJD = datadict['BJD']
+    header = datadict['header']
+    snrlist = datadict['snrlist']
+    lineinfo = datadict['li']
+    paraminfo = datadict['paraminfo']
+    print(lineinfo)
+    print(paraminfo[-1],str(paraminfo[-1][1]*5), np.average(snrlist))
+
+    # for filepath in filepaths:
+    #     path = Path(filepath)
+    #     subdirectory = path.parent.name
+    #     print(subdirectory)
 # a,b,c = os.walk(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\degraded')[0]
 # print(a)
 # print(b)

@@ -335,7 +335,7 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
 
 
 
-def make_ls_brick(fluxbrick_filepath,output_filefolder,frequencyarray = None):
+def make_ls_brick(fluxbrick_filepath,output_filefolder= '',frequencyarray = None):
     a = open(fluxbrick_filepath, 'rb')
     b = pickle.load(a)
     a.close()
@@ -369,10 +369,12 @@ def make_ls_brick(fluxbrick_filepath,output_filefolder,frequencyarray = None):
     power_ls_array = np.asarray(power_ls_list)
     lombscl_dict = dict(powerarray=power_ls_array, frequency=frequency_LS, v=v, BJD=BJDlist, header=header, snrlist=snrlist,
                     li=li, paraminfo=pi)
-    output_filepath=output_filefolder+lineinfo[0]+str(int(lineinfo[1]))+'rebin'+str(pi[2][1])+'_ls_brick.txt'
-    workfileresource = open(output_filepath, 'wb')
-    pickle.dump(lombscl_dict, workfileresource)
-    workfileresource.close()
+    # output_filepath=output_filefolder+lineinfo[0]+str(int(lineinfo[1]))+'rebin'+str(pi[2][1])+'_ls_brick.txt'
+    # workfileresource = open(output_filepath, 'wb')
+    # pickle.dump(lombscl_dict, workfileresource)
+    # workfileresource.close()
+    output_filename = lineinfo[0]+str(int(lineinfo[1]))+'rebin'+str(pi[2][1])+'_ls_brick.txt'
+    return lombscl_dict, output_filename
 
 def makenote(rebin='0.5'):
     a=rebin
@@ -473,12 +475,29 @@ def run_mlb():
     f_array = airmass.make_frequency_array(2,12,6.5,7,smallstep=1/100000)
     for filepath in tqdm.tqdm(fl):
         make_ls_brick(filepath,output_folder,frequencyarray=f_array)
+def run_mlb_deg():
+    input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\degraded\rebin_05\\'
+    output_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
+    input_folder_list = glob.glob(input_base_folder + r'\*')
+    print(input_folder_list)
+    for folderpath in tqdm.tqdm(input_folder_list):
+        subfolder = os.path.basename(folderpath)
+        savefolder = output_base_folder+subfolder
+        Path(savefolder).mkdir(parents=True, exist_ok=True)
+        filelist = glob.glob(folderpath+'\*.txt')
+        for filepath in filelist:
+            lombscl_dict,output_filename = make_ls_brick(filepath)
+            output_filepath = savefolder+r'\\'+output_filename
+            workfileresource = open(output_filepath, 'wb')
+            pickle.dump(lombscl_dict, workfileresource)
+            workfileresource.close()
+run_mlb_deg()
 # run_mlb()
 # run_mdg()
-snr_list = np.divide([50,60,70,80,90,100,110,120,140,160,200,250,300,400],5)
-# run_mdg_deg(R=10000,snr_desired=20)
-for snr in tqdm.tqdm(snr_list):
-    run_mdg_deg(R=10000,snr_desired=snr)
+# snr_list = np.divide([50,60,70,80,90,100,110,120,140,160,200,250,300,400],5)
+# # run_mdg_deg(R=10000,snr_desired=20)
+# for snr in tqdm.tqdm(snr_list):
+#     run_mdg_deg(R=10000,snr_desired=snr)
 
 # run_cda()
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')

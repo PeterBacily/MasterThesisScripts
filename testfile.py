@@ -39,7 +39,7 @@ for folder in a:
     lineinfo = datadict['li']
     paraminfo = datadict['paraminfo']
     print(lineinfo)
-    print(paraminfo[-1],str(paraminfo[-1][1]*5), np.average(snrlist))
+    print(paraminfo[-1],str(paraminfo[-1][1]*6), np.average(snrlist))
 
     # for filepath in filepaths:
     #     path = Path(filepath)

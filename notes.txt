@@ -54,9 +54,14 @@ Spectral Resolution: 10000
 - idee voor limiet van wat telt als een detectie: Als de gesmoothe piek bij periode niet de hoogste is tussen 5 en 8 dagen
                                                   of als de halve periode niet de hoogste piek is tussen 2 en 5 dagem
 
-to-do: maak in executedatareduc functie die meteen alles plot als je basefolder meegeeft,
+to-do:
 
+afmaken ls plots degraded:
+maak in executedatareduc functie die meteen alles plot als je basefolder meegeeft,
+dubbelcheck de output van de gewone ls_plotter en de sum_plotter
 als je alle databricks hebt, even testen en dan in 1 keer alle plots maken.
+
+grote lijn datareductie:
 dan: maak period search functie voor EW. kijk of je daarmee period kan vinden. en kijk of daar een detectie kwantificeerbaar is.
 dan: maak TVS voor alle databricks.
 dan: maak databricks voor apo data

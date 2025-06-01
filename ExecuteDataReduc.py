@@ -182,6 +182,14 @@ def make_sumplot(databrickfolder,degredation = True):
             r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\', -500,
             500, plotsavefolder=psf, show='off', save='on', SG=bool, SGwindowsize=201)
 
+def plot_sumplot_degraded():
+    input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
+    output_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_degraded\summed\\'
+    input_folder_list = glob.glob(input_base_folder + r'\*')
+    for folderpath in tqdm.tqdm(input_folder_list):
+        for bool in [True, False]:
+            datareduc.ls_sum_plotter(folderpath+r'\\', -500, 500, plotsavefolder=output_folder, show='off', save='on', SG=bool, SGwindowsize=201)
+plot_sumplot_degraded()
 def plot_databricks():
     input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
     output_base_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_degraded\normal\rebin_05\\'
@@ -193,8 +201,8 @@ def plot_databricks():
         Path(savefolder).mkdir(parents=True, exist_ok=True)
         filelist = glob.glob(folderpath + '\*.txt')
         for file in filelist:
-            datareduc.ls_brick_plotter(file, -500, 500, plotsavefolder=savefolder, show='on', save='off')
-plot_databricks()
+            datareduc.ls_brick_plotter(file, -500, 500, plotsavefolder=savefolder, show='off', save='on')
+# plot_databricks()
 quit()
 print(ls_databrick_filelist)
 for filepath in tqdm.tqdm(ls_databrick_filelist):

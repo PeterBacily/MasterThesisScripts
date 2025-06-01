@@ -2,7 +2,7 @@ from __future__ import division
 import matplotlib.pyplot as plt
 import glob
 import astropy.io.fits as pf
-from more_itertools import collapse
+from itertools import chain
 from astropy.time import Time
 import math
 import calendar
@@ -1606,10 +1606,11 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     pi = line_period_info['paraminfo']
     binsize = str(pi[2][1])+'Å'
     if any('Spectral resolution' in sl for sl in pi):
-        degp = ' '.join(map(str, collapse(pi[-2:])))
-        print(degp)
+        degp = pi[-2][0]+ ': '+str(pi[-2][1])+' '+'\nSNR: '+str(int(np.average(snrlist)))
+        titleadd = ' Degraded'
     else:
         degp = 'No Degradation'
+        titleadd = ''
     snr_avg=str(pi[3][1])
 
     x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)
@@ -1630,7 +1631,7 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
 
     ax1 = fig5.add_subplot(spec5[0, 0])
     # ax1.set_title(fr'${plot_titles[index]} \ {line_number[index]}$', fontsize=26, pad=10)
-    ax1.set_title(lineinfo[-1], fontsize=26, pad=10)
+    ax1.set_title(lineinfo[-1]+titleadd, fontsize=26, pad=10)
 
     # plt.text('binning: '+binsize, fontsize=18, pad=10)
     ax1.plot(wave_grid, som_wave, lw=1.0, color='k')
@@ -1660,7 +1661,7 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     ax3.plot(som_frequency, 1 / frequency_ls, lw=0.5, color='k')
     # ax3.scatter(som_frequency, 1 / frequency_ls, color='k',s=0.5)
     ax3.set_ylim(np.min(1 / frequency_ls), np.max(1 / frequency_ls))
-    ax3.text(3, 11, 'Binning: ' + binsize+'\n'+degp, fontsize=14, bbox=dict(facecolor='white', alpha=1))
+    ax3.text(ax3.get_xlim()[1]*0.3, 11, 'Binning: ' + binsize+'\n'+degp, fontsize=14, bbox=dict(facecolor='white', alpha=1))
     cbar = fig5.colorbar(cs)
 
     # set ticks left and right, turn ylabels off
@@ -1721,8 +1722,9 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
         snrlist=line_period_info['snrlist']
         pi = line_period_info['paraminfo']
         binsize = str(pi[2][1])+'Å'
-        if 'degrade_params' in line_period_info:
-            degp = line_period_info['degrade_params']
+        if any('Spectral resolution' in sl for sl in pi):
+            degp = pi[-2][0] + ': ' + str(pi[-2][1]) + ' ' + '\nSNR: ' + str(int(np.average(snrlist)))
+            titleadd = ' Degraded'
         else:
             degp = 'No Degradation'
         snr_avg=str(pi[3][1])
@@ -1738,8 +1740,6 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
         som_wave = som_wave_place / np.max(som_wave_place)
         sum_freq_arr.append(som_frequency)
     sum_sum_frequency = np.sum(sum_freq_arr, axis=0)
-
-    print(' asdk' )
     plt.rcParams["figure.figsize"] = (20, 10)
     periodlimit = np.where((period > 3) & (period < 9))
     if SG is True:
@@ -1768,8 +1768,7 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
     if show == 'on':
         plt.show()
     if save == 'on':
-        degp_joined = "_".join(degp.split())
+        degp_joined = "_".join(degp.replace(':','').split())
         plt.savefig(fname=plotsavefolder + 'LS_period' + '_' + 'rebin' + binsize +'_'+degp_joined + '_summed'+sg_figsaveextension+ '.png',
                     format='png', bbox_inches='tight', dpi=200)
-    print('made 1 plot')
     plt.close()

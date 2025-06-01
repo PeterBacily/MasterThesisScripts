@@ -10,6 +10,7 @@ import airmass
 from scipy.optimize import *
 from scipy.stats import chi2
 from PyAstronomy import pyasl
+from pathlib import Path
 import matplotlib.style
 import datareduc
 import os
@@ -181,6 +182,19 @@ def make_sumplot(databrickfolder,degredation = True):
             r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\', -500,
             500, plotsavefolder=psf, show='off', save='on', SG=bool, SGwindowsize=201)
 
+def plot_databricks():
+    input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
+    output_base_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_degraded\normal\rebin_05\\'
+    input_folder_list = glob.glob(input_base_folder + r'\*')
+    print(input_folder_list)
+    for folderpath in tqdm.tqdm(input_folder_list):
+        subfolder = os.path.basename(folderpath)
+        savefolder = output_base_folder+subfolder+r'\\'
+        Path(savefolder).mkdir(parents=True, exist_ok=True)
+        filelist = glob.glob(folderpath + '\*.txt')
+        for file in filelist:
+            datareduc.ls_brick_plotter(file, -500, 500, plotsavefolder=savefolder, show='on', save='off')
+plot_databricks()
 quit()
 print(ls_databrick_filelist)
 for filepath in tqdm.tqdm(ls_databrick_filelist):

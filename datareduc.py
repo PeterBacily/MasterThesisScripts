@@ -2,6 +2,7 @@ from __future__ import division
 import matplotlib.pyplot as plt
 import glob
 import astropy.io.fits as pf
+from more_itertools import collapse
 from astropy.time import Time
 import math
 import calendar
@@ -1604,10 +1605,11 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     snrlist=line_period_info['snrlist']
     pi = line_period_info['paraminfo']
     binsize = str(pi[2][1])+'Å'
-    if 'degrade_params' in line_period_info:
-        degp = line_period_info['line_period_info']
+    if any('Spectral resolution' in sl for sl in pi):
+        degp = ' '.join(map(str, collapse(pi[-2:])))
+        print(degp)
     else:
-        degp = line_period_info['No Degradation']
+        degp = 'No Degradation'
     snr_avg=str(pi[3][1])
 
     x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)

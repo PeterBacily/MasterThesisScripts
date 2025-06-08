@@ -57,6 +57,7 @@ Spectral Resolution: 10000
 to-do:
 
 afmaken ls plots degraded:
+kleinere snrs todat periodiciteit verdwijnt
 maak in executedatareduc functie die meteen alles plot als je basefolder meegeeft,
 dubbelcheck de output van de gewone ls_plotter en de sum_plotter
 als je alle databricks hebt, even testen en dan in 1 keer alle plots maken.

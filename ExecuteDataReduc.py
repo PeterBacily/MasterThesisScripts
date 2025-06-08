@@ -1,6 +1,7 @@
 from __future__ import division
 import matplotlib.pyplot as plt
 import glob
+import re
 import astropy.io.fits as pf
 from astropy.time import Time
 import math
@@ -14,7 +15,7 @@ from pathlib import Path
 import matplotlib.style
 import datareduc
 import os
-import Make_Plots
+
 import open_masterfiles
 from collections import defaultdict
 import tqdm
@@ -185,7 +186,17 @@ def make_sumplot(databrickfolder,degredation = True):
 def plot_sumplot_degraded():
     input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
     output_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_degraded\summed\\'
+    #  --------- pick below to turn on folder snr selection
     input_folder_list = glob.glob(input_base_folder + r'\*')
+    folders = glob.glob(input_base_folder + r'\*')
+    input_folder_list = []
+    for folder in folders:
+        match = re.search(r"snr(\d+)", folder)
+        if match:
+            x = int(match.group(1))
+            if x < 50:
+                input_folder_list.append(folder)
+    # ---------
     for folderpath in tqdm.tqdm(input_folder_list):
         for bool in [True, False]:
             datareduc.ls_sum_plotter(folderpath+r'\\', -500, 500, plotsavefolder=output_folder, show='off', save='on', SG=bool, SGwindowsize=201)
@@ -193,7 +204,17 @@ plot_sumplot_degraded()
 def plot_databricks():
     input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
     output_base_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_degraded\normal\rebin_05\\'
-    input_folder_list = glob.glob(input_base_folder + r'\*')
+    #  --------- pick below to turn on folder snr selection
+    # input_folder_list = glob.glob(input_base_folder + r'\*')
+    folders = glob.glob(input_base_folder + r'\*')
+    input_folder_list = []
+    for folder in folders:
+        match = re.search(r"snr(\d+)", folder)
+        if match:
+            x = int(match.group(1))
+            if x < 50:
+                input_folder_list.append(folder)
+    # ---------
     print(input_folder_list)
     for folderpath in tqdm.tqdm(input_folder_list):
         subfolder = os.path.basename(folderpath)
@@ -202,7 +223,7 @@ def plot_databricks():
         filelist = glob.glob(folderpath + '\*.txt')
         for file in filelist:
             datareduc.ls_brick_plotter(file, -500, 500, plotsavefolder=savefolder, show='off', save='on')
-# plot_databricks()
+plot_databricks()
 quit()
 print(ls_databrick_filelist)
 for filepath in tqdm.tqdm(ls_databrick_filelist):

@@ -8,6 +8,7 @@ import pickle
 # import Datafile_class
 import os
 from pathlib import Path
+import re
 import Path_check
 import pathlib
 import sys
@@ -521,7 +522,17 @@ def run_mlb():
 def run_mlb_deg():
     input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\degraded\rebin_05\\'
     output_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
+    #  --------- pick below to turn on folder snr selection
     input_folder_list = glob.glob(input_base_folder + r'\*')
+    # folders = glob.glob(input_base_folder + r'\*')
+    # input_folder_list = []
+    # for folder in folders:
+    #     match = re.search(r"snr(\d+)", folder)
+    #     if match:
+    #         x = int(match.group(1))
+    #         if x < 50:
+    #             input_folder_list.append(folder)
+    # ---------
     print(input_folder_list)
     for folderpath in tqdm.tqdm(input_folder_list):
         subfolder = os.path.basename(folderpath)
@@ -537,10 +548,10 @@ def run_mlb_deg():
 
 # run_mlb()
 # run_mdg()
-snr_list = np.divide([50,60,70,80,90,100,110,120,140,160,200,250,300,400],5)
-# run_mdg_deg(R=10000,snr_desired=20)
-for snr in tqdm.tqdm(snr_list):
-    run_mdg_deg(R=10000,snr_desired=snr)
+# snr_list = np.divide([1,2,5,10,20,30,40],5)
+# # run_mdg_deg(R=10000,snr_desired=20)
+# for snr in tqdm.tqdm(snr_list):
+#     run_mdg_deg(R=10000,snr_desired=snr)
 
 run_mlb_deg()
 

@@ -1446,5 +1446,31 @@ def make_frequency_array(start,stop,ss_start,ss_end,bigstep = 1/1000,smallstep=1
     return 1/e
 
 
+def group_observations(observations, gap_days=183):
+    # Sort objects by HJD
+    sorted_objects = sorted(observations, key=lambda obj: obj.HJD)
 
+    groups = []
+    current_group = []
+
+    previous_hjd = None
+
+    for obj in sorted_objects:
+        if previous_hjd is None:
+            # Start the first group
+            current_group = [obj]
+        else:
+            if obj.HJD - previous_hjd >= gap_days:
+                # Gap is large enough to start a new group
+                groups.append(current_group)
+                current_group = [obj]
+            else:
+                current_group.append(obj)
+        previous_hjd = obj.HJD
+
+    # Append the last group
+    if current_group:
+        groups.append(current_group)
+
+    return groups
 

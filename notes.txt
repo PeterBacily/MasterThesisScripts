@@ -57,11 +57,12 @@ Spectral Resolution: 10000
 to-do:
 
 afmaken ls plots degraded:
-kleinere snrs todat periodiciteit verdwijnt
-maak in executedatareduc functie die meteen alles plot als je basefolder meegeeft,
-dubbelcheck de output van de gewone ls_plotter en de sum_plotter
-als je alle databricks hebt, even testen en dan in 1 keer alle plots maken.
-
+[x] kleinere snrs todat periodiciteit verdwijnt
+[x]maak in executedatareduc functie die meteen alles plot als je basefolder meegeeft,
+[x]dubbelcheck de output van de gewone ls_plotter en de sum_plotter
+[x]als je alle databricks hebt, even testen en dan in 1 keer alle plots maken.
+[ ] sum plots maken zonder hy
+    - ls brick mappen gemaakt zonder hy dus alleen nog de plot funxties runnen in die map
 grote lijn datareductie:
 dan: maak period search functie voor EW. kijk of je daarmee period kan vinden. en kijk of daar een detectie kwantificeerbaar is.
 dan: maak TVS voor alle databricks.

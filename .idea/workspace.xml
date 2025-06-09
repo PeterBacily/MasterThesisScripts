@@ -7,6 +7,7 @@
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/notes.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -378,20 +379,6 @@
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
     </task>
-    <task id="LOCAL-00190" summary="changes">
-      <created>1741290913676</created>
-      <option name="number" value="00190" />
-      <option name="presentableId" value="LOCAL-00190" />
-      <option name="project" value="LOCAL" />
-      <updated>1741290913676</updated>
-    </task>
-    <task id="LOCAL-00191" summary="changes">
-      <created>1741362349022</created>
-      <option name="number" value="00191" />
-      <option name="presentableId" value="LOCAL-00191" />
-      <option name="project" value="LOCAL" />
-      <updated>1741362349022</updated>
-    </task>
     <task id="LOCAL-00192" summary="changes">
       <created>1741447493777</created>
       <option name="number" value="00192" />
@@ -721,7 +708,21 @@
       <option name="project" value="LOCAL" />
       <updated>1749400996719</updated>
     </task>
-    <option name="localTasksCounter" value="239" />
+    <task id="LOCAL-00239" summary="changes">
+      <created>1749460081111</created>
+      <option name="number" value="00239" />
+      <option name="presentableId" value="LOCAL-00239" />
+      <option name="project" value="LOCAL" />
+      <updated>1749460081111</updated>
+    </task>
+    <task id="LOCAL-00240" summary="changes">
+      <created>1749460107401</created>
+      <option name="number" value="00240" />
+      <option name="presentableId" value="LOCAL-00240" />
+      <option name="project" value="LOCAL" />
+      <updated>1749460107401</updated>
+    </task>
+    <option name="localTasksCounter" value="241" />
     <servers />
   </component>
   <component name="ToolWindowManager">

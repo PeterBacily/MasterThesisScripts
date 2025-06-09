@@ -63,6 +63,10 @@ afmaken ls plots degraded:
 [x]als je alle databricks hebt, even testen en dan in 1 keer alle plots maken.
 [ ] sum plots maken zonder hy
     - ls brick mappen gemaakt zonder hy dus alleen nog de plot funxties runnen in die map
+[ ] weghalen data per jaar totdat pieken verdwijnen.
+[ ] weghalen random data totdat pieken verdwijnen
+
+
 grote lijn datareductie:
 dan: maak period search functie voor EW. kijk of je daarmee period kan vinden. en kijk of daar een detectie kwantificeerbaar is.
 dan: maak TVS voor alle databricks.

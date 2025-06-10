@@ -170,37 +170,33 @@ sumplot_savefolder_degraded = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_pe
 # datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\selection\\',-500,500,plotsavefolder=sumplot_savefolder,show='off',save='on',SG=False,SGwindowsize=201)
 # # datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\',-500,500,show='on',save='off',SG=True,SGwindowsize=201)
 # quit()
-def make_sumplot(databrickfolder,degredation = True):
-    if degredation is True:
-        psf = sumplot_savefolder_degraded
-    else:
-        psf = sumplot_savefolder_original
+def make_sumplot(savefolder):
     for bool in [True,False]:
         datareduc.ls_sum_plotter(
             r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\', -500,
-            500, plotsavefolder=psf, show='off', save='on', SG=bool, SGwindowsize=201)
+            500, plotsavefolder=savefolder, show='off', save='on', SG=bool, SGwindowsize=201)
         datareduc.ls_sum_plotter(
             r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\', -500,
-            500, plotsavefolder=psf, show='off', save='on', SG=bool, SGwindowsize=201)
+            500, plotsavefolder=save, show='off', save='on', SG=bool, SGwindowsize=201)
 
-def plot_sumplot_degraded():
+def plot_sumplot_degraded(excludehy = True):
     input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
-    output_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_degraded\summed\\'
+    output_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_degraded\summed\exclude_hgamma\\'
     #  --------- pick below to turn on folder snr selection
     input_folder_list = glob.glob(input_base_folder + r'\*')
-    folders = glob.glob(input_base_folder + r'\*')
-    input_folder_list = []
-    for folder in folders:
-        match = re.search(r"snr(\d+)", folder)
-        if match:
-            x = int(match.group(1))
-            if x < 50:
-                input_folder_list.append(folder)
+    # folders = glob.glob(input_base_folder + r'\*')
+    # input_folder_list = []
+    # for folder in folders:
+    #     match = re.search(r"snr(\d+)", folder)
+    #     if match:
+    #         x = int(match.group(1))
+    #         if x < 50:
+    #             input_folder_list.append(folder)
     # ---------
     for folderpath in tqdm.tqdm(input_folder_list):
         for bool in [True, False]:
-            datareduc.ls_sum_plotter(folderpath+r'\\', -500, 500, plotsavefolder=output_folder, show='off', save='on', SG=bool, SGwindowsize=201)
-# plot_sumplot_degraded()
+            datareduc.ls_sum_plotter(folderpath+r'\\', -500, 500, plotsavefolder=output_folder, show='off', save='on', SG=bool, SGwindowsize=201,excludehy=excludehy)
+plot_sumplot_degraded(excludehy=True)
 def plot_databricks():
     input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
     output_base_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_degraded\normal\rebin_05\\'

@@ -1694,8 +1694,15 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
 
     return
 from SavitzkyGolay import savitzky_golay
-def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='off',SG=False,SGwindowsize=31):
-    filelist = glob.glob(filefolder+r'*.txt')
+def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='off',SG=False,SGwindowsize=31,excludehy = 'off'):
+    filelist_raw = glob.glob(filefolder+r'*.txt')
+    filtered_paths = [path for path in filelist_raw if 'Hy' not in os.path.basename(path)]
+    if excludehy == 'off' or excludehy is False:
+        filelist = filelist_raw
+    elif excludehy == 'on' or excludehy is True:
+        filelist = filtered_paths
+    else:
+        raise Exception("excludehy needs to be 'on', 'off', True, or False")
     sum_freq_arr = []
     for file in filelist:
         a = open(file, 'rb')

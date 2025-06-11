@@ -478,8 +478,8 @@ def run_cda():
 
                                 linelist_file_path=linelist, vshift=True)
 def run_mdg():
-    filelist = open_masterfiles.mercator(str(converted_Data_folder)+r'\dataset_omar\\')
-    linelist = open_masterfiles.open_linelist(str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt')
+    filelist = open_masterfiles.mercator(str(converted_Data_folder) + r'\dataset_omar\\')
+    linelist = open_masterfiles.open_linelist(str(converted_Data_folder) + r'\linelists\linelist_merc_incl_Hy.txt')
     savefolder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\no_degredation\rebin_05\\'
     rb=0.5
     for i,line in enumerate(linelist):
@@ -511,6 +511,26 @@ def run_mdg_deg(R=10000,snr_desired = 1000):
         workfileresource = open(savename, 'wb')
         pickle.dump(data_grid, workfileresource)
         workfileresource.close()
+
+
+def run_mdg_deg_spectra_removed(R=10000,snr_desired = 1000):
+    filelist = open_masterfiles.mercator(str(converted_Data_folder)+r'\dataset_omar\\')
+    linelist = open_masterfiles.open_linelist(str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt')
+    parent_path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\degraded\rebin_05'
+    subforder = r'\R'+str(int(R))+'_snr'+str(int(snr_desired*5))+r'\\'
+    savefolder = parent_path+subforder
+    Path(savefolder).mkdir(parents=True, exist_ok=True)
+    for i,line in enumerate(linelist):
+        vmin = -800
+        vmax = 800
+        linekey = 'line' + str(int(line[k]))
+
+        data_grid = make_data_grid_with_degradation(filelist,linekey, vmin,vmax,R=R,snr_desired=snr_desired,rebin_size=0.5)
+        savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+str(vmin)+'_'+str(vmax)+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(data_grid, workfileresource)
+        workfileresource.close()
+
 
 def run_mlb():
     input_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\no_degredation\rebin_01\\'

@@ -1,0 +1,82 @@
+import glob
+import os
+import pathlib
+
+import tqdm
+import airmass
+import create_datafiles
+import datareduc
+import Datafile_class
+import open_masterfiles
+import pickle
+import Path_check
+
+folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
+Path_check.dir_check(folder_of_this_file)
+
+[converted_Data_folder, Data_folder, Plots_folder, Scripts_folder] = Path_check.dir_paths(folder_of_this_file)
+
+# filelist = open_masterfiles.mercator(str(converted_Data_folder)+r'\dataset_omar\\')
+# linelist = open_masterfiles.open_linelist(str(converted_Data_folder)+r'\linelists\linelist_merc_incl_Hy.txt')
+def open_linelist(filepath):
+    workfileresource = open(filepath, 'rb')
+    list = pickle.load(workfileresource)
+    workfileresource.close()
+    return list
+
+def make_folderpath(parent_path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\degraded\rebin_05',
+                              R=10000,snr_desired = 1000,k=1, selection_folder_prefix = ''):
+    subfolder = r'\\'+selection_folder_prefix+'R'+str(int(R))+'_snr'+str(int(snr_desired*5))+r'\\'
+    savefolder = parent_path+subfolder
+    pathlib.Path(savefolder).mkdir(parents=True, exist_ok=True)
+    return(savefolder)
+
+def run_mdg_deg(filelist,linelist,savefolder,R=10000,snr_desired = 1000,vmin = -800,vmax = 800,k=1):
+    for i,line in enumerate(linelist):
+        linekey = 'line' + str(int(line[k]))
+
+        data_grid = create_datafiles.make_data_grid_with_degradation(filelist,linekey, vmin,vmax,R=R,snr_desired=snr_desired,rebin_size=0.5)
+        savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+str(vmin)+'_'+str(vmax)+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(data_grid, workfileresource)
+        workfileresource.close()
+
+def run_mdg(filelist,linelist,datagridfolder,vmin = -800,vmax = 800):
+    savefolder = datagridfolder
+    rb=0.5
+    for i,line in enumerate(linelist):
+        linekey = 'line' + str(int(line[k]))
+        print(i+1)
+        data_grid = create_datafiles.make_data_grid(filelist,linekey, vmin,vmax,rebin_size=rb)
+        print(data_grid["paraminfo"])
+        print(data_grid["snrlist"])
+        savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+'rebin'+str(rb)+'_vlim'+str(vmin)+'_'+str(vmax)+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(data_grid, workfileresource)
+        workfileresource.close()
+
+
+def run_mlb_deg(data_brick_folderpath,ls_grid_folderpath):
+    savefolder = ls_grid_folderpath
+    filelist = glob.glob(data_brick_folderpath+'\*.txt')
+    for filepath in filelist:
+        lombscl_dict,output_filename = create_datafiles.make_ls_brick(filepath)
+        output_filepath = savefolder+r'\\'+output_filename
+        workfileresource = open(output_filepath, 'wb')
+        pickle.dump(lombscl_dict, workfileresource)
+        workfileresource.close()
+
+
+def plot_LS_grid(ls_brick_folder,LS_plot_folder,v_min_ls=-500,v_max_ls=500):
+    filelist = glob.glob(ls_brick_folder + '\*.txt')
+    for file in filelist:
+        datareduc.ls_brick_plotter(file, v_min_ls, v_max_ls, plotsavefolder=LS_plot_folder, show='off', save='on')
+
+
+def run_full_pipeline(filelist,linelist,datagrid_folder,LS_brick_folder,LS_plot_folder,Sumplot_folder,R=None,SNR_desired=None,vmin=-800,vmax=800,v_min_ls=-500,v_max_ls=500):
+    if R is None and SNR_desired is None:
+        run_mdg(filelist,linelist,datagrid_folder,vmin=vmin,vmax=vmax)
+    else:
+        run_mdg_deg(filelist,linelist,datagrid_folder,R,SNR_desired,vmin=vmin,vmax=vmax)
+    run_mlb_deg(datagrid_folder,LS_brick_folder)
+    plot_LS_grid(LS_brick_folder,LS_plot_folder,v_min_ls=v_min_ls,v_max_ls=v_max_ls)

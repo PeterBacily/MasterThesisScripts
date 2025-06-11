@@ -61,7 +61,7 @@ afmaken ls plots degraded:
 [x]maak in executedatareduc functie die meteen alles plot als je basefolder meegeeft,
 [x]dubbelcheck de output van de gewone ls_plotter en de sum_plotter
 [x]als je alle databricks hebt, even testen en dan in 1 keer alle plots maken.
-[ ] sum plots maken zonder hy
+[x] sum plots maken zonder hy
     - ls brick mappen gemaakt zonder hy dus alleen nog de plot funxties runnen in die map
 [ ] weghalen data per jaar totdat pieken verdwijnen.
 [ ] weghalen random data totdat pieken verdwijnen
@@ -76,3 +76,12 @@ dan: vergelijk resultaat degraded met apo.
 dan: kijk naar kwaliteit van nieuwe apo spectra
 dan schrijf thesis af.
 
+to-do in Remove_obs_and-run__datareduction
+   - in run_full_pipeline sum plot toevoegen.
+   - run_full_pipeline testen
+   - functie bouwen om alle paths automatisch te genereren geven en run full pipeline te runnen vooral met selection_folder_prefix
+   - manier bedenken om selectie weer te geven in plots (misshcien door middel van indicator en dan tabel
+   - test run met handmatige selectie
+   - loop maken die over alle selecties heen loopt
+   - test run met selectie loop maar super ingekort
+   - full run

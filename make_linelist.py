@@ -132,8 +132,37 @@ boundaries = {'Ha6562':[0,0], 'Hb4861''Ha6562':[0,0], 'He_I4713''Ha6562':[0,0], 
               'He_I4921''Ha6562':[0,0], 'He_I6678''Ha6562':[0,0], 'O_III5592''Ha6562':[0,0], 'C_IV5801''Ha6562':[0,0],
               'Hy4340''Ha6562':[0,0]}
 
+a= open_linelist(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo_v_cor_3.txt')
+print(a)
+b= open_linelist("D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_merc_incl_Hy.txt")
+print(b)
 
 
+def deep_equal(x, y):
+    if isinstance(x, list) and isinstance(y, list):
+        if len(x) != len(y):
+            return False
+        return all(deep_equal(i, j) for i, j in zip(x, y))
+    return x == y
+
+
+def find_inserted_elements(a, b):
+    ai = 0
+    inserted = []
+
+    for bi in range(len(b)):
+        if ai < len(a) and deep_equal(a[ai], b[bi]):
+            ai += 1  # Match found, move to next element in 'a'
+        else:
+            inserted.append(b[bi])  # Extra element in 'b'
+
+    if ai == len(a):
+        return inserted  # All elements of 'a' matched in order
+    else:
+        return None  # 'a' is not a subsequence of 'b'
+print(find_inserted_elements(a,b))
+
+quit()
 linelist_apo_ha_test = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'H$\alpha$ 6563']]
 # print(airmass.velocity_to_wl([-1000, -700, 1000, 1500],4340.472))
 # datafiles = open_masterfiles.apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\v_cor\snr_100\\',manual_filelist=None,sorted='off')

@@ -197,7 +197,7 @@ def plot_sumplot_degraded(excludehy = True):
         for bool in [True, False]:
             datareduc.ls_sum_plotter(folderpath+r'\\', -500, 500, plotsavefolder=output_folder, show='off', save='on', SG=bool, SGwindowsize=201,excludehy=excludehy)
 plot_sumplot_degraded(excludehy=True)
-def plot_databricks():
+def plot_LS_bricks():
     input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'
     output_base_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\mercator_degraded\normal\rebin_05\\'
     #  --------- pick below to turn on folder snr selection

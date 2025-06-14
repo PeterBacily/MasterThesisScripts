@@ -170,14 +170,14 @@ sumplot_savefolder_degraded = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_pe
 # datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\selection\\',-500,500,plotsavefolder=sumplot_savefolder,show='off',save='on',SG=False,SGwindowsize=201)
 # # datareduc.ls_sum_plotter(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\',-500,500,show='on',save='off',SG=True,SGwindowsize=201)
 # quit()
-def make_sumplot(savefolder):
+def make_sumplot(LS_brick_folder,savefolder,excludehy=True):
     for bool in [True,False]:
         datareduc.ls_sum_plotter(
             r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin05\\', -500,
             500, plotsavefolder=savefolder, show='off', save='on', SG=bool, SGwindowsize=201)
         datareduc.ls_sum_plotter(
             r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\', -500,
-            500, plotsavefolder=save, show='off', save='on', SG=bool, SGwindowsize=201)
+            500, plotsavefolder=savefolder, show='off', save='on', SG=bool, SGwindowsize=201,excludehy=excludehy)
 
 def plot_sumplot_degraded(excludehy = True):
     input_base_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\degraded\rebin_05\\'

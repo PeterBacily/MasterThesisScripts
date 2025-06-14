@@ -77,10 +77,12 @@ dan: kijk naar kwaliteit van nieuwe apo spectra
 dan schrijf thesis af.
 
 to-do in Remove_obs_and-run__datareduction
-   - in run_full_pipeline sum plot toevoegen.
-   - run_full_pipeline testen
-   - functie bouwen om alle paths automatisch te genereren geven en run full pipeline te runnen vooral met selection_folder_prefix
+   [x] in run_full_pipeline sum plot toevoegen.
+   [x] run_full_pipeline testen
    - manier bedenken om selectie weer te geven in plots (misshcien door middel van indicator en dan tabel
+        [x] parameter selectionstring meegeven in pipeline
+         - die gebruiken in ls_plot en ls_sum_plot textboxes en folderpath
+   - functie bouwen om alle paths automatisch te genereren geven en run full pipeline te runnen vooral met selection_folder_prefix
    - test run met handmatige selectie
    - loop maken die over alle selecties heen loopt
    - test run met selectie loop maar super ingekort

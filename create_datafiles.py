@@ -220,13 +220,13 @@ def create_datafiles_lapalma_omar(filelist=fl_dataset_omar,save_folder=datafile_
         workfileresource.close()
         k+=1
 
-def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.5):
+def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.5,selectionstring = 'All'):
     linekey = line+'_original'
     snr_region = [5224, 5239]
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
     li = getattr(firstfile,linekey).lineinfo
-    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size]]
+    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size],['Selection',selectionstring] ]
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
@@ -274,13 +274,13 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.5):
     return datadict
 
 
-def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desired, rebin_size=0.5):
+def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desired, selectionstring='All', rebin_size=0.5):
     linekey = line+'_original'
     snr_region = [5224, 5239]
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
     li = getattr(firstfile,linekey).lineinfo
-    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size],['Spectral resolution',R],['Desired_SNR',snr_desired]]
+    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size],['Spectral resolution',R],['Desired SNR',snr_desired], ['Selection',selectionstring] ]
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     snr_wavenew = np.arange(snr_region[0], snr_region[1], rebin_size)
@@ -379,7 +379,7 @@ def make_data_grid_apo(masterfilelist,line,v_min,v_max,rebin_size=0.5):
 
 
 
-def make_ls_brick(fluxbrick_filepath,output_filefolder= '',frequencyarray = None):
+def make_ls_brick(fluxbrick_filepath,frequencyarray = None):
     a = open(fluxbrick_filepath, 'rb')
     b = pickle.load(a)
     a.close()
@@ -573,7 +573,7 @@ def run_mlb_deg():
 # for snr in tqdm.tqdm(snr_list):
 #     run_mdg_deg(R=10000,snr_desired=snr)
 
-run_mlb_deg()
+# run_mlb_deg()
 
 # run_cda()
 # create_datafiles_demetra(filelist=fl_demetra_good_alt,savefolder=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\altair_good\\',linelist_file_path=r'D:\peter\Master_Thesis\Datareduction\Converted_Data\linelists\linelist_apo.txt')

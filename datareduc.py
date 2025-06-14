@@ -24,6 +24,7 @@ import os
 import Path_check
 from linedict import linedict
 from matplotlib import ticker, cm
+from SavitzkyGolay import savitzky_golay
 
 folder_of_this_file = os.path.dirname(os.path.abspath(__file__))
 Path_check.dir_check(folder_of_this_file)
@@ -1661,7 +1662,8 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     ax3.plot(som_frequency, 1 / frequency_ls, lw=0.5, color='k')
     # ax3.scatter(som_frequency, 1 / frequency_ls, color='k',s=0.5)
     ax3.set_ylim(np.min(1 / frequency_ls), np.max(1 / frequency_ls))
-    ax3.text(ax3.get_xlim()[1]*0.3, 11, 'Binning: ' + binsize+'\n'+degp, fontsize=14, bbox=dict(facecolor='white', alpha=1))
+    textxplacement = ax3.get_xlim()[0]+((ax3.get_xlim()[1]-ax3.get_xlim()[0])*0.2)
+    ax3.text(textxplacement, 11, 'Binning: ' + binsize+'\n'+degp, fontsize=14, bbox=dict(facecolor='white', alpha=1))
     cbar = fig5.colorbar(cs)
 
     # set ticks left and right, turn ylabels off
@@ -1693,7 +1695,7 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     del (cs, power_ls_trans)
 
     return
-from SavitzkyGolay import savitzky_golay
+
 def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='off',SG=False,SGwindowsize=31,excludehy = 'off'):
     filelist_raw = glob.glob(filefolder+r'*.txt')
     filtered_paths = [path for path in filelist_raw if 'Hy' not in os.path.basename(path)]
@@ -1742,11 +1744,13 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
         # print(min(list(map(min, power_ls))))
         # print(max(list(map(max, power_ls))))
         period = 1 / frequency_ls
+
         som_frequency = np.sum(power_ls_trans, axis=1)
         som_wave_place = np.sum(power_ls_trans, axis=0)
         som_wave = som_wave_place / np.max(som_wave_place)
         sum_freq_arr.append(som_frequency)
     sum_sum_frequency = np.sum(sum_freq_arr, axis=0)
+
     plt.rcParams["figure.figsize"] = (20, 10)
     periodlimit = np.where((period > 3) & (period < 9))
     if SG is True:
@@ -1754,23 +1758,26 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
         plt.plot(period, fit_SG_power, lw=0.5, color='tab:red',label = 'Smoothed power')
         plt.title('Smoothed sum of power spectra of all lines')
         sg_figsaveextension = '_smoothed'
-        textbox_y_lim = np.max(fit_SG_power[periodlimit]) * 0.95
+        # textbox_y_lim = np.max(fit_SG_power[periodlimit]) * 0.95
     else:
         plt.plot(period, sum_sum_frequency, lw=0.5, color='tab:blue', label='Power')
         plt.title('Sum of power spectra of all lines')
         sg_figsaveextension = ''
-        textbox_y_lim = np.max(sum_sum_frequency[periodlimit]) * 0.95
+        # textbox_y_lim = np.max(sum_sum_frequency[periodlimit]) * 0.95
     plt.axvline(6.83,linestyle='--', color='black',alpha=0.5 )
     plt.axvline(3.415, linestyle='--', color='black',alpha=0.5)
     plt.xscale('log')
     plot_lowerlim =2
-    plot_upperlim=12
+    plot_upperlim=10
     plt.xlim(plot_lowerlim,plot_upperlim)
     plt.xticks([2, 5, 10], [2, 5, 10])
     plt.xlabel('Period (d)')
     plt.ylabel('Relative Power')
     # print(sum_sum_frequency[periodlimit])
     # print(period[maxpowerperiod])
+    ymin = plt.gca().get_ylim()[0]
+    ymax = plt.gca().get_ylim()[1]
+    textbox_y_lim = ymin+((ymax-ymin)*0.88)
     plt.text(plot_lowerlim+0.1,textbox_y_lim, 'Binning: ' + binsize+'\n'+degp, fontsize=12, bbox=dict(facecolor='white', alpha=0.5))
     if show == 'on':
         plt.show()

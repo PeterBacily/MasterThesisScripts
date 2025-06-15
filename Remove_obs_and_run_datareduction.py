@@ -99,21 +99,25 @@ def run_full_pipeline(filelist,linelist,datagrid_folder,LS_brick_folder,LS_plot_
     run_mlb(datagrid_folder,LS_brick_folder,frequencyarray=frequency_array)
     plot_LS_grid(LS_brick_folder,LS_plot_folder,v_min_ls=v_min_ls,v_max_ls=v_max_ls)
     make_sumplot(LS_brick_folder,Sumplot_folder)
-def test_pipeline(selection_method='Group'):
-    filelistpaths = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\masterfiles\\'+'*.txt')
-    filelist_nested = airmass.group_observations(open_masterfiles.mercator(manual_filelist=filelistpaths))
-    # Wat hierboven staat als parameters meegeven
-    filelist_flattened = flatten_list(filelist_nested)
-    filelist = sorted(filelist_flattened, key=lambda obj: obj.HJD)
-    firstfile = filelist[0]
-    lastfile = filelist[-1]
-    [yr_f,m_f,d_f,t_f]=airmass.split_date(firstfile.header['DATE-OBS'])[0]
-    [yr_l, m_l, d_l, t_l] = airmass.split_date(lastfile.header['DATE-OBS'])[0]
-    groupselectionstring = 'from '+yr_f+'-'+m_f+'-'+d_f+' to '+yr_l+'-' +m_l+'-'+ d_l
+def feed_selection_into_pipeline(filelist, LS_brick_folder,LS_plot_folder,datagrid_folder,Sumplot_folder,selection_method='Group',randomremoval_percent_removed = '0'):
     linelist = open_masterfiles.open_linelist(str(converted_Data_folder) + r'\linelists\final_lls\linelist_no_hy.txt')
-    datagrid_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\datagrid_folder\\'
-    LS_brick_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\lsbrick\\'
-    LS_plot_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\lsplot\\'
-    Sumplot_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\sumplot\\'
-    run_full_pipeline(filelist,linelist,datagrid_folder,LS_brick_folder,LS_plot_folder,Sumplot_folder,R=10000,SNR_desired=150,selectionstring=groupselectionstring)
+    # filelistpaths = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\masterfiles\\'+'*.txt')
+    # filelist_nested = airmass.group_observations(open_masterfiles.mercator(manual_filelist=filelistpaths))
+    # Wat hierboven staat als parameters meegeven
+    filelist_flattened = flatten_list(filelist)
+    filelist_sorted = sorted(filelist_flattened, key=lambda obj: obj.HJD)
+    if selection_method=='Group':
+        firstfile = filelist_sorted[0]
+        lastfile = filelist_sorted[-1]
+        [yr_f,m_f,d_f,t_f]=airmass.split_date(firstfile.header['DATE-OBS'])[0]
+        [yr_l, m_l, d_l, t_l] = airmass.split_date(lastfile.header['DATE-OBS'])[0]
+        selectionstring = 'from '+yr_f+'-'+m_f+'-'+d_f+' to '+yr_l+'-' +m_l+'-'+ d_l
+        foldernamestring = yr_f+m_f+'-'+yr_l+ m_l
+    elif selection_method=='Random':
+        selectionstring = 'Randomly removed '+randomremoval_percent_removed+'%'
+        foldernamestring ='RandomRemoved'+randomremoval_percent_removed
+    else:
+        print('Selection method needs to be "Group" or "Random"')
+
+    run_full_pipeline(filelist_sorted,linelist,datagrid_folder,LS_brick_folder,LS_plot_folder,Sumplot_folder,R=10000,SNR_desired=150,selectionstring=selectionstring)
 test_pipeline()

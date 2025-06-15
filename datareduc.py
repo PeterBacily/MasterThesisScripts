@@ -1605,9 +1605,10 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     header = line_period_info['header']
     snrlist=line_period_info['snrlist']
     pi = line_period_info['paraminfo']
+    si = line_period_info['selectioninfo']
     binsize = str(pi[2][1])+'Å'
     if any('Spectral resolution' in sl for sl in pi):
-        degp = pi[-2][0]+ ': '+str(pi[-2][1])+' '+'\nSNR: '+str(int(np.average(snrlist)))
+        degp = pi[3][0]+ ': '+str(pi[3][1])+' '+'\nSNR: '+str(int(np.average(snrlist)))
         titleadd = ' Degraded'
     else:
         degp = 'No Degradation'
@@ -1662,8 +1663,9 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     ax3.plot(som_frequency, 1 / frequency_ls, lw=0.5, color='k')
     # ax3.scatter(som_frequency, 1 / frequency_ls, color='k',s=0.5)
     ax3.set_ylim(np.min(1 / frequency_ls), np.max(1 / frequency_ls))
+    ss = si[0][1]
     textxplacement = ax3.get_xlim()[0]+((ax3.get_xlim()[1]-ax3.get_xlim()[0])*0.2)
-    ax3.text(textxplacement, 11, 'Binning: ' + binsize+'\n'+degp, fontsize=14, bbox=dict(facecolor='white', alpha=1))
+    ax3.text(textxplacement, 11, 'Binning: ' + binsize+'\n'+degp+'\nSelection: '+ss, fontsize=14, bbox=dict(facecolor='white', alpha=1))
     cbar = fig5.colorbar(cs)
 
     # set ticks left and right, turn ylabels off
@@ -1730,9 +1732,10 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
         header = line_period_info['header']
         snrlist=line_period_info['snrlist']
         pi = line_period_info['paraminfo']
+        si = line_period_info['selectioninfo']
         binsize = str(pi[2][1])+'Å'
         if any('Spectral resolution' in sl for sl in pi):
-            degp = pi[-2][0] + ': ' + str(pi[-2][1]) + ' ' + '\nSNR: ' + str(int(np.average(snrlist)))
+            degp = pi[3][0] + ': ' + str(pi[3][1]) + ' ' + '\nSNR: ' + str(int(np.average(snrlist)))
             titleadd = ' Degraded'
         else:
             degp = 'No Degradation'
@@ -1777,8 +1780,9 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
     # print(period[maxpowerperiod])
     ymin = plt.gca().get_ylim()[0]
     ymax = plt.gca().get_ylim()[1]
-    textbox_y_lim = ymin+((ymax-ymin)*0.88)
-    plt.text(plot_lowerlim+0.1,textbox_y_lim, 'Binning: ' + binsize+'\n'+degp, fontsize=12, bbox=dict(facecolor='white', alpha=0.5))
+    textbox_y_lim = ymin+((ymax-ymin)*0.89)
+    ss=si[0][1]
+    plt.text(plot_lowerlim+0.05,textbox_y_lim, 'Binning: ' + binsize+'\n'+degp+'\nSelection: '+ss, fontsize=12, bbox=dict(facecolor='white', alpha=0.5))
     if show == 'on':
         plt.show()
     if save == 'on':

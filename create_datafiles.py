@@ -220,13 +220,17 @@ def create_datafiles_lapalma_omar(filelist=fl_dataset_omar,save_folder=datafile_
         workfileresource.close()
         k+=1
 
-def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.5,selectionstring = 'All'):
+def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.5,selectionstring = 'All',selectionmode=None):
     linekey = line+'_original'
     snr_region = [5224, 5239]
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
+    lastfile = masterfilelist[-1]
+    [yr_f,m_f,d_f,t_f]=airmass.split_date(firstfile.header['DATE-OBS'])[0]
+    [yr_l, m_l, d_l, t_l] = airmass.split_date(lastfile.header['DATE-OBS'])[0]
     li = getattr(firstfile,linekey).lineinfo
-    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size],['Selection',selectionstring] ]
+    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binsize (A)',rebin_size] ]
+    si = [['Selection',selectionstring],['First observation date',yr_f+'-'+m_f+'-'+d_f],['Last observation date',yr_l+'-'+m_l+'-'+d_l],['Selection mode',selectionmode]]
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
@@ -265,7 +269,7 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.5,selectionstrin
         fluxarraylist.append(flux_bound)
     pi.append(['snr_average',np.average(snrlist)])
     datadict = dict(flux=fluxarraylist, wl=wl_bound, v=speed_bound, BJD=bjdlist, header=headerlist, snrlist=snrlist,
-                    li=li, paraminfo=pi)
+                    li=li, paraminfo=pi,selectioninfo =si)
     # datadict[flux]=fluxarraylist
     # datadict[wl]=wl_bound
     # datadict[v]=speed_bound
@@ -274,13 +278,18 @@ def make_data_grid(masterfilelist,line,v_min,v_max,rebin_size=0.5,selectionstrin
     return datadict
 
 
-def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desired, selectionstring='All', rebin_size=0.5):
+def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desired, selectionstring='All', selectionmode=None,rebin_size=0.5):
     linekey = line+'_original'
     snr_region = [5224, 5239]
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
+    lastfile = masterfilelist[-1]
+    [yr_f,m_f,d_f,t_f]=airmass.split_date(firstfile.header['DATE-OBS'])[0]
+    [yr_l, m_l, d_l, t_l] = airmass.split_date(lastfile.header['DATE-OBS'])[0]
     li = getattr(firstfile,linekey).lineinfo
-    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size],['Spectral resolution',R],['Desired SNR',snr_desired], ['Selection',selectionstring] ]
+    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binsize (A)',rebin_size],['Spectral resolution',R],['Desired SNR',snr_desired]]
+    si = [['Selection', selectionstring], ['First observation date', yr_f + '-' + m_f + '-' + d_f],
+          ['Last observation date', yr_l + '-' + m_l + '-' + d_l], ['Selection mode', selectionmode]]
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     snr_wavenew = np.arange(snr_region[0], snr_region[1], rebin_size)
@@ -320,7 +329,7 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
         headerlist.append(header)
         fluxarraylist.append(flux_deg_bound)
     datadict =  dict(flux = fluxarraylist, wl = wl_bound, v = speed_bound,BJD= bjdlist, header = headerlist,snrlist=snrlist,
-                    li=li, paraminfo=pi)
+                    li=li, paraminfo=pi,selectioninfo =si)
     # datadict[flux]=fluxarraylist
     # datadict[wl]=wl_bound
     # datadict[v]=speed_bound
@@ -335,7 +344,7 @@ def make_data_grid_apo(masterfilelist,line,v_min,v_max,rebin_size=0.5):
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
     li = getattr(firstfile,linekey).lineinfo
-    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binzize (A)',rebin_size]]
+    pi = [['v_min',v_min], ['v_max',v_max],['Rebin binsize (A)',rebin_size]]
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
@@ -392,6 +401,7 @@ def make_ls_brick(fluxbrick_filepath,frequencyarray = None):
     snrlist = b['snrlist']
     li = b['li']
     pi = b['paraminfo']
+    si = b['selectioninfo']
     power_ls_list = []
     min_freq = 1 / 10
     max_freq = 1/2
@@ -406,13 +416,16 @@ def make_ls_brick(fluxbrick_filepath,frequencyarray = None):
             frequency_LS, power_LS = LombScargle(BJDlist, single_vbin).autopower(
                 minimum_frequency=min_freq,
                 maximum_frequency=max_freq)
+            if len(frequency_LS)<1000:
+                frequency_LS = np.arange(1/10,1/2, 0.0001)
+                power_LS = LombScargle(BJDlist, single_vbin).power(np.arange(1/10,1/2, 0.0001))
         else:
             frequency_LS = frequencyarray
             power_LS = LombScargle(BJDlist, single_vbin).power(frequencyarray)
         power_ls_list.append(power_LS)
     power_ls_array = np.asarray(power_ls_list)
     lombscl_dict = dict(powerarray=power_ls_array, frequency=frequency_LS, v=v, BJD=BJDlist, header=header, snrlist=snrlist,
-                    li=li, paraminfo=pi)
+                    li=li, paraminfo=pi,selectioninfo =si)
     # output_filepath=output_filefolder+lineinfo[0]+str(int(lineinfo[1]))+'rebin'+str(pi[2][1])+'_ls_brick.txt'
     # workfileresource = open(output_filepath, 'wb')
     # pickle.dump(lombscl_dict, workfileresource)

@@ -130,9 +130,3 @@ def feed_selection_into_pipeline(filelist, LS_brick_folder,LS_plot_folder,datagr
         print('Selection method needs to be "Group" or "Random"')
 
     run_full_pipeline(filelist_sorted,linelist,datagrid_folder,LS_brick_folder,LS_plot_folder,Sumplot_folder,R=10000,SNR_desired=150,selectionstring=selectionstring)
-
-
-make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test_path_maker\mercator_apolines',R=10000,snr_desired = 1000, selectionstring = '')
-make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test_path_maker\mercator_apolines',R=None,snr_desired = None, selectionstring = '')
-make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test_path_maker\mercator_apolines',R=10000,snr_desired = 1000, selectionstring = 'RandomRemoved50')
-make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test_path_maker\mercator_apolines',R=None,snr_desired = None, selectionstring = 'RandomRemoved50')

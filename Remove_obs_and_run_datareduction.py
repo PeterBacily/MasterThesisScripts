@@ -25,12 +25,22 @@ def open_linelist(filepath):
     workfileresource.close()
     return list
 
-def make_folderpath(parent_path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\data_grids\degraded\rebin_05',
-                              R=10000,snr_desired = 1000,k=1, selection_folder_prefix = ''):
-    subfolder = r'\\'+selection_folder_prefix+'R'+str(int(R))+'_snr'+str(int(snr_desired*5))+r'\\'
-    savefolder = parent_path+subfolder
+def make_folderpath(parent_path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator_apolines\selection',
+                              R=10000,snr_desired = 1000, selectionstring = ''):
+    if selectionstring == None or selectionstring =='':
+        selectionpath = r'\no_selection'
+    else:
+        selectionpath = '\selection'
+    if R is None and snr_desired is None:
+        degstring = ''
+        degfolderstring = r'\original\\'
+    else:
+        degstring = 'R'+str(int(R))+'_snr'+str(int(snr_desired*5))
+        degfolderstring = r'\degraded\\'
+    path_with_deg = parent_path +selectionpath+ degfolderstring
+    savefolder = path_with_deg+degstring
     pathlib.Path(savefolder).mkdir(parents=True, exist_ok=True)
-    return(savefolder)
+    return(savefolder+r'\\')
 
 def flatten_list(nested_list):
     flat_list = []
@@ -120,4 +130,9 @@ def feed_selection_into_pipeline(filelist, LS_brick_folder,LS_plot_folder,datagr
         print('Selection method needs to be "Group" or "Random"')
 
     run_full_pipeline(filelist_sorted,linelist,datagrid_folder,LS_brick_folder,LS_plot_folder,Sumplot_folder,R=10000,SNR_desired=150,selectionstring=selectionstring)
-test_pipeline()
+
+
+make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test_path_maker\mercator_apolines',R=10000,snr_desired = 1000, selectionstring = '')
+make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test_path_maker\mercator_apolines',R=None,snr_desired = None, selectionstring = '')
+make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test_path_maker\mercator_apolines',R=10000,snr_desired = 1000, selectionstring = 'RandomRemoved50')
+make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test_path_maker\mercator_apolines',R=None,snr_desired = None, selectionstring = 'RandomRemoved50')

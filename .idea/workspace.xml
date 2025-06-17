@@ -7,8 +7,6 @@
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Remove_obs_and_run_datareduction.py" beforeDir="false" afterPath="$PROJECT_DIR$/Remove_obs_and_run_datareduction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/notes.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -380,34 +378,6 @@
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
     </task>
-    <task id="LOCAL-00197" summary="changes">
-      <created>1742125617791</created>
-      <option name="number" value="00197" />
-      <option name="presentableId" value="LOCAL-00197" />
-      <option name="project" value="LOCAL" />
-      <updated>1742125617791</updated>
-    </task>
-    <task id="LOCAL-00198" summary="changes">
-      <created>1742137185347</created>
-      <option name="number" value="00198" />
-      <option name="presentableId" value="LOCAL-00198" />
-      <option name="project" value="LOCAL" />
-      <updated>1742137185347</updated>
-    </task>
-    <task id="LOCAL-00199" summary="changes">
-      <created>1742138922066</created>
-      <option name="number" value="00199" />
-      <option name="presentableId" value="LOCAL-00199" />
-      <option name="project" value="LOCAL" />
-      <updated>1742138922066</updated>
-    </task>
-    <task id="LOCAL-00200" summary="changes">
-      <created>1742139604226</created>
-      <option name="number" value="00200" />
-      <option name="presentableId" value="LOCAL-00200" />
-      <option name="project" value="LOCAL" />
-      <updated>1742139604226</updated>
-    </task>
     <task id="LOCAL-00201" summary="changes">
       <created>1742318368037</created>
       <option name="number" value="00201" />
@@ -723,7 +693,35 @@
       <option name="project" value="LOCAL" />
       <updated>1749894886551</updated>
     </task>
-    <option name="localTasksCounter" value="246" />
+    <task id="LOCAL-00246" summary="changes">
+      <created>1749993932081</created>
+      <option name="number" value="00246" />
+      <option name="presentableId" value="LOCAL-00246" />
+      <option name="project" value="LOCAL" />
+      <updated>1749993932082</updated>
+    </task>
+    <task id="LOCAL-00247" summary="changes">
+      <created>1749995058588</created>
+      <option name="number" value="00247" />
+      <option name="presentableId" value="LOCAL-00247" />
+      <option name="project" value="LOCAL" />
+      <updated>1749995058588</updated>
+    </task>
+    <task id="LOCAL-00248" summary="changes">
+      <created>1750003234138</created>
+      <option name="number" value="00248" />
+      <option name="presentableId" value="LOCAL-00248" />
+      <option name="project" value="LOCAL" />
+      <updated>1750003234138</updated>
+    </task>
+    <task id="LOCAL-00249" summary="changes">
+      <created>1750009651409</created>
+      <option name="number" value="00249" />
+      <option name="presentableId" value="LOCAL-00249" />
+      <option name="project" value="LOCAL" />
+      <updated>1750009651409</updated>
+    </task>
+    <option name="localTasksCounter" value="250" />
     <servers />
   </component>
   <component name="ToolWindowManager">

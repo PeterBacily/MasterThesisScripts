@@ -109,14 +109,21 @@ def run_full_pipeline(filelist,linelist,datagrid_folder,LS_brick_folder,LS_plot_
     run_mlb(datagrid_folder,LS_brick_folder,frequencyarray=frequency_array)
     plot_LS_grid(LS_brick_folder,LS_plot_folder,v_min_ls=v_min_ls,v_max_ls=v_max_ls)
     make_sumplot(LS_brick_folder,Sumplot_folder)
-def feed_selection_into_pipeline(filelist, LS_brick_folder,LS_plot_folder,datagrid_folder,Sumplot_folder,selection_method='Group',randomremoval_percent_removed = '0'):
+def feed_selection_into_pipeline(filelist, LS_brick_folder,LS_plot_folder,datagrid_folder,Sumplot_folder,plot_selectionstring):
     linelist = open_masterfiles.open_linelist(str(converted_Data_folder) + r'\linelists\final_lls\linelist_no_hy.txt')
     # filelistpaths = glob.glob(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\masterfiles\\'+'*.txt')
     # filelist_nested = airmass.group_observations(open_masterfiles.mercator(manual_filelist=filelistpaths))
     # Wat hierboven staat als parameters meegeven
     filelist_flattened = flatten_list(filelist)
     filelist_sorted = sorted(filelist_flattened, key=lambda obj: obj.HJD)
+
+
+    run_full_pipeline(filelist_sorted,linelist,datagrid_folder,LS_brick_folder,LS_plot_folder,Sumplot_folder,R=10000,SNR_desired=150,selectionstring=plot_selectionstring)
+
+def generate_selection_strings(filelist,selection_method='Group',randomremoval_percent_removed = '0'):
     if selection_method=='Group':
+        filelist_flattened = flatten_list(filelist)
+        filelist_sorted = sorted(filelist_flattened, key=lambda obj: obj.HJD)
         firstfile = filelist_sorted[0]
         lastfile = filelist_sorted[-1]
         [yr_f,m_f,d_f,t_f]=airmass.split_date(firstfile.header['DATE-OBS'])[0]
@@ -128,5 +135,4 @@ def feed_selection_into_pipeline(filelist, LS_brick_folder,LS_plot_folder,datagr
         foldernamestring ='RandomRemoved'+randomremoval_percent_removed
     else:
         print('Selection method needs to be "Group" or "Random"')
-
-    run_full_pipeline(filelist_sorted,linelist,datagrid_folder,LS_brick_folder,LS_plot_folder,Sumplot_folder,R=10000,SNR_desired=150,selectionstring=selectionstring)
+    return selectionstring,foldernamestring

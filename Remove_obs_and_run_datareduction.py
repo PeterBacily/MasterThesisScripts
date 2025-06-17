@@ -28,9 +28,9 @@ def open_linelist(filepath):
 def make_folderpath(parent_path = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator_apolines\selection',
                               R=10000,snr_desired = 1000, selectionstring = ''):
     if selectionstring == None or selectionstring =='':
-        selectionpath = r'\no_selection'
+        selectionpath = r'\All'
     else:
-        selectionpath = '\selection'
+        selectionpath = '\selection_'+selectionstring
     if R is None and snr_desired is None:
         degstring = ''
         degfolderstring = r'\original\\'
@@ -116,8 +116,6 @@ def feed_selection_into_pipeline(filelist, LS_brick_folder,LS_plot_folder,datagr
     # Wat hierboven staat als parameters meegeven
     filelist_flattened = flatten_list(filelist)
     filelist_sorted = sorted(filelist_flattened, key=lambda obj: obj.HJD)
-
-
     run_full_pipeline(filelist_sorted,linelist,datagrid_folder,LS_brick_folder,LS_plot_folder,Sumplot_folder,R=10000,SNR_desired=150,selectionstring=plot_selectionstring)
 
 def generate_selection_strings(filelist,selection_method='Group',randomremoval_percent_removed = '0'):
@@ -136,3 +134,14 @@ def generate_selection_strings(filelist,selection_method='Group',randomremoval_p
     else:
         print('Selection method needs to be "Group" or "Random"')
     return selectionstring,foldernamestring
+
+def run_test_selection(fulldataset,R=10000,snr_desired=20):
+    grouped_dataset=airmass.group_observations(fulldataset)
+    selection = grouped_dataset[:2]
+    plot_selectionstring,folder_selectionstring = generate_selection_strings(selection)
+    databrickfolder = make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\datagrid_folder',R=R,snr_desired=snr_desired,selectionstring=folder_selectionstring)
+    lsbrickfolder = make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\lsbrick',R=R,snr_desired=snr_desired,selectionstring=folder_selectionstring)
+    lsplotfolder = make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\lsplot',R=R,snr_desired=snr_desired,selectionstring=folder_selectionstring)
+    sumlsplotfolder = make_folderpath(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\test\pipelinetest\sumplot',R=R,snr_desired=snr_desired,selectionstring=folder_selectionstring)
+    feed_selection_into_pipeline(selection,LS_brick_folder=lsbrickfolder,datagrid_folder=databrickfolder,LS_plot_folder=lsplotfolder,Sumplot_folder=sumlsplotfolder,plot_selectionstring=plot_selectionstring)
+run_test_selection(open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'))

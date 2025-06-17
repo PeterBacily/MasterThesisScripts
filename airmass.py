@@ -1482,3 +1482,4 @@ def generate_path_list(filelist,basefolder_no_end_backslash=r'D:\peter\Master_Th
         path = savefolder+'\\'+a.observatory+'{num:03d}'.format(num=a.i)+'_'+dl[0]+dl[1]+dl[2]+dl[3]+'.txt'
         pathlist.append(path)
     return pathlist
+

@@ -217,13 +217,13 @@ def run_pipeline_variations_test(observations, pipeline):
             print(f"Random removal test: keeping {frac*100:.0f}% | {len(subset)} observations | R={R}, snr_desired={snr}")
             pipeline(subset, R=R, snr_desired=snr,sm='Random',rm=f'{frac*100:.0f}')
 
-def run_pipeline_firstgroup(observations, pipeline):
+def run_pipeline_single_group(observations, pipeline):
     grouped_all = airmass.group_observations(observations)
-    subset = grouped_all[0]
-    param_sets = [(None, None)] + [(10000, snr) for snr in [6, 8, 10, 15, 20, 30]]
-    for R, snr in tqdm.tqdm(param_sets):
-        print(f"Group-based test: {len(subset)} observations | R={R}, snr_desired={snr}")
-        pipeline(subset, R=R, snr_desired=snr, sm='Group', rm='')
+    for subset in tqdm.tqdm(observations[1:]):
+        param_sets = [(None, None)] + [(10000, snr) for snr in [6, 8, 10, 15, 20, 30]]
+        for R, snr in tqdm.tqdm(param_sets):
+            # print(f"Group-based test: {len(subset)} observations | R={R}, snr_desired={snr}")
+            pipeline(subset, R=R, snr_desired=snr, sm='Group', rm='')
 
 # run_pipeline_variations(open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'),run_selection)
-run_pipeline_firstgroup(open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'),run_selection)
+run_pipeline_single_group(open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'),run_selection)

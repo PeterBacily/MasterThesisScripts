@@ -84,10 +84,13 @@ to-do in Remove_obs_and-run__datareduction
         [x] die gebruiken in ls_plot en ls_sum_plot textboxes en folderpath
    [x] functie bouwen om alle paths automatisch te genereren geven en run full pipeline te runnen vooral met selection_folder_prefix
    [x]  test run met handmatige selectie
-   - loop maken die over alle selecties heen loopt
-   - test run met selectie loop maar super ingekort
-   - full run
+   [x] loop maken die over alle selecties heen loopt
+   [x] test run met selectie loop maar super ingekort
+   [x] full run
 voor ls bricks: ls bricks {basisfolder/apolinesrebin05/}selectionfolder/degradedBool/degradedparams/filename
 voor datagrids: databrick {basisfolder/apolinesrebin05/}selectionfolder/degradedBool/degradedparams/filename
 voor ls plots: ls plot {basisfolder/normal/apolinesrebin05/}selectionfolder/degradedBool/degradedparams/filename
 voor sumplot:ls plot {basisfolder/summed/apolinesrebin05/}selectionfolder/degradedBool/degradedparamsinfilename
+
+Nog te doen voor apo: selection info toevoegen, ls bricks maken, ls plots maken, sumplots maken.
+pipeline voor enkele jaren runnen (staat klaar)

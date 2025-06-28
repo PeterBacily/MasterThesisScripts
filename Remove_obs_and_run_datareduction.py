@@ -242,15 +242,23 @@ def run_full_pipeline_apo(filelist,linelist,datagrid_folder,LS_brick_folder,LS_p
     plot_LS_grid(LS_brick_folder,LS_plot_folder,v_min_ls=v_min_ls,v_max_ls=v_max_ls)
     make_sumplot(LS_brick_folder,Sumplot_folder)
 
-def run_apo_selection():
+def run_apo_selection_individual():
     filelist =open_masterfiles.apo_demetra_orders(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\Individual\\')
     linelist = open_masterfiles.open_linelist(str(converted_Data_folder) + r'\linelists\final_lls\linelist_no_hy.txt')
-    dgf = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\data_bricks\apo_rebin05\\'
-    LS_brick_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\apo_rebin05\\'
-    LS_plot_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\normal\\'
-    Sumplot_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\summed\\'
+    dgf = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\data_bricks\apo_rebin05\individual\\'
+    LS_brick_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\apo_rebin05\individual\\'
+    LS_plot_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\individual\normal\\'
+    Sumplot_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\individual\summed\\'
     run_full_pipeline_apo(filelist,linelist,dgf,LS_brick_folder,LS_plot_folder,Sumplot_folder,v_min=-800,v_max=800,selectionstring='Spectra not stacked')
-
-run_apo_selection()
+def run_apo_selection_stacked():
+    filelist =open_masterfiles.apo_demetra_orders(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\full_night\\')
+    linelist = open_masterfiles.open_linelist(str(converted_Data_folder) + r'\linelists\final_lls\linelist_no_hy.txt')
+    dgf = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\data_bricks\apo_rebin05\stacked\\'
+    LS_brick_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\apo_rebin05\stacked\\'
+    LS_plot_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\stacked\normal\\'
+    Sumplot_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\stacked\summed\\'
+    run_full_pipeline_apo(filelist,linelist,dgf,LS_brick_folder,LS_plot_folder,Sumplot_folder,v_min=-800,v_max=800,selectionstring='Spectra same night stacked')
+run_apo_selection_individual()
+run_apo_selection_stacked()
 # run_pipeline_variations(open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'),run_selection)
 # run_pipeline_single_group(open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'),run_selection)

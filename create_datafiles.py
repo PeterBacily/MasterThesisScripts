@@ -338,13 +338,18 @@ def make_data_grid_with_degradation(masterfilelist,line,v_min,v_max,R,snr_desire
     return datadict
 
 
-def make_data_grid_apo(masterfilelist,line,v_min,v_max,rebin_size=0.5):
+def make_data_grid_apo(masterfilelist,line,v_min,v_max,rebin_size=0.5,selectionstring = 'All',selectionmode=None):
     linekey = line+'_original'
     snr_region = [5224, 5239]
     rebinv_lim = 1000
     firstfile = masterfilelist[0]
+    lastfile = masterfilelist[-1]
+    [yr_f,m_f,d_f,t_f]=airmass.split_date(firstfile.header['DATE-OBS'])[0]
+    [yr_l, m_l, d_l, t_l] = airmass.split_date(lastfile.header['DATE-OBS'])[0]
     li = getattr(firstfile,linekey).lineinfo
     pi = [['v_min',v_min], ['v_max',v_max],['Rebin binsize (A)',rebin_size]]
+    si = [['Selection', selectionstring], ['First observation date', yr_f + '-' + m_f + '-' + d_f],
+          ['Last observation date', yr_l + '-' + m_l + '-' + d_l], ['Selection mode', selectionmode]]
     centerwl = li[1]
     rebinwl_lim = np.round(airmass.velocity_to_wl([-rebinv_lim,rebinv_lim],centerwl),decimals=1)
     wavenew = np.arange(rebinwl_lim[0],rebinwl_lim[1],rebin_size)
@@ -378,7 +383,7 @@ def make_data_grid_apo(masterfilelist,line,v_min,v_max,rebin_size=0.5):
         fluxarraylist.append(flux_bound)
     pi.append(['snr_average',np.average(snrlist)])
     datadict = dict(flux=fluxarraylist, wl=wl_bound, v=speed_bound, BJD=bjdlist, header=headerlist, snrlist=snrlist,
-                    li=li, paraminfo=pi)
+                    li=li, paraminfo=pi,selectioninfo =si)
     # datadict[flux]=fluxarraylist
     # datadict[wl]=wl_bound
     # datadict[v]=speed_bound

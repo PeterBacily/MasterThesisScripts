@@ -73,6 +73,16 @@ def run_mdg(filelist,linelist,datagridfolder,vmin = -800,vmax = 800,k=1,selectio
         pickle.dump(data_grid, workfileresource)
         workfileresource.close()
 
+def run_mdg_apo(filelist,linelist,datagridfolder,vmin=-800,vmax=800,k=1,selectionstring='All'):
+    savefolder = datagridfolder
+    rb=0.5
+    for i,line in enumerate(linelist):
+        linekey = 'line' + str(int(line[k]))
+        data_grid = create_datafiles.make_data_grid_apo(filelist,linekey, vmin,vmax,rebin_size=rb,selectionstring=selectionstring)
+        savename = savefolder+'data_grid_'+line[0]+'_'+str(int(line[1]))+'rebin'+str(rb)+'_vlim'+str(vmin)+'_'+str(vmax)+'.txt'
+        workfileresource = open(savename, 'wb')
+        pickle.dump(data_grid, workfileresource)
+        workfileresource.close()
 
 def run_mlb(data_brick_folderpath,ls_grid_folderpath,frequencyarray = None):
     savefolder = ls_grid_folderpath
@@ -219,11 +229,28 @@ def run_pipeline_variations_test(observations, pipeline):
 
 def run_pipeline_single_group(observations, pipeline):
     grouped_all = airmass.group_observations(observations)
-    for subset in tqdm.tqdm(observations[1:]):
+    for subset in tqdm.tqdm(grouped_all[1:]):
         param_sets = [(None, None)] + [(10000, snr) for snr in [6, 8, 10, 15, 20, 30]]
-        for R, snr in tqdm.tqdm(param_sets):
+        for R, snr in param_sets:
             # print(f"Group-based test: {len(subset)} observations | R={R}, snr_desired={snr}")
             pipeline(subset, R=R, snr_desired=snr, sm='Group', rm='')
 
+def run_full_pipeline_apo(filelist,linelist,datagrid_folder,LS_brick_folder,LS_plot_folder,Sumplot_folder,R=None,SNR_desired=None,v_min=-800,v_max=800,v_min_ls=-500,v_max_ls=500,frequency_array=None,selectionstring='All'):
+    # (filelist, linelist, datagridfolder, vmin=-800, vmax=800, k=1, selectionstring='All')
+    run_mdg_apo(filelist,linelist,datagrid_folder,vmin=v_min,vmax=v_max,selectionstring=selectionstring)
+    run_mlb(datagrid_folder,LS_brick_folder,frequencyarray=frequency_array)
+    plot_LS_grid(LS_brick_folder,LS_plot_folder,v_min_ls=v_min_ls,v_max_ls=v_max_ls)
+    make_sumplot(LS_brick_folder,Sumplot_folder)
+
+def run_apo_selection():
+    filelist =open_masterfiles.apo_demetra_orders(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\demetra\with_orders\Individual\\')
+    linelist = open_masterfiles.open_linelist(str(converted_Data_folder) + r'\linelists\final_lls\linelist_no_hy.txt')
+    dgf = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\data_bricks\apo_rebin05\\'
+    LS_brick_folder = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\apo_rebin05\\'
+    LS_plot_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\normal\\'
+    Sumplot_folder = r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\summed\\'
+    run_full_pipeline_apo(filelist,linelist,dgf,LS_brick_folder,LS_plot_folder,Sumplot_folder,v_min=-800,v_max=800,selectionstring='Spectra not stacked')
+
+run_apo_selection()
 # run_pipeline_variations(open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'),run_selection)
-run_pipeline_single_group(open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'),run_selection)
+# run_pipeline_single_group(open_masterfiles.mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\\'),run_selection)

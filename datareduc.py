@@ -1581,7 +1581,7 @@ def rebin_and_overplot_demetra_orders(individual_files,full_night_file, mercator
     # plt.show()
     plt.close()
 
-def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='off'):
+def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='off',apo='off'):
     a = open(filepath, 'rb')
     line_period_info = pickle.load(a)
     a.close()
@@ -1610,9 +1610,12 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     if any('Spectral resolution' in sl for sl in pi):
         degp = pi[3][0]+ ': '+str(pi[3][1])+' '+'\nSNR: '+str(int(np.average(snrlist)))
         titleadd = ' Degraded'
+    elif apo == 'on':
+        titleadd = ' APO'
     else:
         degp = 'No Degradation'
         titleadd = ''
+
     snr_avg=str(pi[3][1])
 
     x_wave, y_freq = np.meshgrid(wave_grid, 1 / frequency_ls)
@@ -1665,7 +1668,11 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
     ax3.set_ylim(np.min(1 / frequency_ls), np.max(1 / frequency_ls))
     ss = si[0][1]
     textxplacement = ax3.get_xlim()[0]+((ax3.get_xlim()[1]-ax3.get_xlim()[0])*0.2)
-    ax3.text(textxplacement, 11, 'Binning: ' + binsize+'\n'+degp+'\nSelection: '+ss, fontsize=14, bbox=dict(facecolor='white', alpha=1))
+    if apo == 'on':
+        ax3.text(textxplacement, 11, 'Binning: ' + binsize + '\nAPO' + '\n' + ss, fontsize=14,
+                 bbox=dict(facecolor='white', alpha=1))
+    else:
+        ax3.text(textxplacement, 11, 'Binning: ' + binsize+'\n'+degp+'\nSelection: '+ss, fontsize=14, bbox=dict(facecolor='white', alpha=1))
     cbar = fig5.colorbar(cs)
 
     # set ticks left and right, turn ylabels off
@@ -1698,7 +1705,7 @@ def ls_brick_plotter(filepath,v_min,v_max,plotsavefolder='', save='off',show='of
 
     return
 
-def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='off',SG=False,SGwindowsize=31,excludehy = 'off'):
+def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='off',SG=False,SGwindowsize=31,excludehy = 'off',apo='off'):
     filelist_raw = glob.glob(filefolder+r'*.txt')
     filtered_paths = [path for path in filelist_raw if 'Hy' not in os.path.basename(path)]
     if excludehy == 'off' or excludehy is False:
@@ -1756,16 +1763,22 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
 
     plt.rcParams["figure.figsize"] = (20, 10)
     periodlimit = np.where((period > 3) & (period < 9))
+    if apo=='on':
+        apox = ' APO'
+        apox2 = 'APO'
+    else:
+        apox=''
+        apox2 = ''
     if SG is True:
         fit_SG_power = savitzky_golay(sum_sum_frequency, SGwindowsize, 4)
         plt.plot(period, fit_SG_power, lw=0.5, color='tab:red',label = 'Smoothed power')
-        plt.title('Smoothed sum of power spectra of all lines')
-        sg_figsaveextension = '_smoothed'
+        plt.title('Smoothed sum of power spectra of all lines'+apox)
+        sg_figsaveextension = '_smoothed'+apox2
         # textbox_y_lim = np.max(fit_SG_power[periodlimit]) * 0.95
     else:
         plt.plot(period, sum_sum_frequency, lw=0.5, color='tab:blue', label='Power')
-        plt.title('Sum of power spectra of all lines')
-        sg_figsaveextension = ''
+        plt.title('Sum of power spectra of all lines'+apox)
+        sg_figsaveextension = ''+apox2
         # textbox_y_lim = np.max(sum_sum_frequency[periodlimit]) * 0.95
     plt.axvline(6.83,linestyle='--', color='black',alpha=0.5 )
     plt.axvline(3.415, linestyle='--', color='black',alpha=0.5)
@@ -1782,7 +1795,11 @@ def ls_sum_plotter(filefolder,v_min,v_max,plotsavefolder='', save='off',show='of
     ymax = plt.gca().get_ylim()[1]
     textbox_y_lim = ymin+((ymax-ymin)*0.89)
     ss=si[0][1]
-    plt.text(plot_lowerlim+0.05,textbox_y_lim, 'Binning: ' + binsize+'\n'+degp+'\nSelection: '+ss, fontsize=12, bbox=dict(facecolor='white', alpha=0.5))
+    if apo == 'on':
+        plt.text(plot_lowerlim+0.05, textbox_y_lim, 'Binning: ' + binsize + '\nAPO' + '\n' + ss, fontsize=14,
+                 bbox=dict(facecolor='white', alpha=1))
+    else:
+        plt.text(plot_lowerlim+0.05,textbox_y_lim, 'Binning: ' + binsize+'\n'+degp+'\nSelection: '+ss, fontsize=12, bbox=dict(facecolor='white', alpha=0.5))
     if show == 'on':
         plt.show()
     if save == 'on':

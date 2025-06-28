@@ -94,3 +94,14 @@ voor sumplot:ls plot {basisfolder/summed/apolinesrebin05/}selectionfolder/degrad
 
 Nog te doen voor apo: selection info toevoegen, ls bricks maken, ls plots maken, sumplots maken.
 pipeline voor enkele jaren runnen (staat klaar)
+
+APO folders:
+data bricks: r'D:\peter\Master_Thesis\Datareduction\Converted_Data\data_bricks\apo_rebin05'
+ls bricks: r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\apo_rebin05'
+ls periodogram plot individual lines: r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\normal'
+ls periodogram plot summed: r'D:\peter\Master_Thesis\Datareduction\Plots\LS_periodogram\APO\summed'
+
+
+to do voor apo: maak folder structuur met stacked en niet stacked
+run pipeline met stacked en niet stacked
+controleer resultaat

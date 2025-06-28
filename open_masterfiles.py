@@ -96,7 +96,7 @@ def apo_demetra_orders(path = r'D:\peter\Master_Thesis\Datareduction\Converted_D
         # print b.line6562.ew
         datafiles.append(b)
         a.close()
-    print(type(datafiles[0].header['JD-MID']))
+    # print(datafiles[0].header['DATE-OBS'])
     if sort_data_files == 'on':
         sortednewlist = sorted(datafiles,key=lambda x: x.header['JD-MID'])
         return sortednewlist

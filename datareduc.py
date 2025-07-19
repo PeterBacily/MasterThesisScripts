@@ -1367,32 +1367,34 @@ def create_JoO_apo_audela(filefolder):
 def create_JoO_mercator(filefolder):
     files =  open_masterfiles.mercator(path = filefolder,manual_filelist=None)
     print(r'\begin{table*}')
-    print(r'\begin{tabular}{ l|| c| c| c| c|c|c|c|c|c|c|c }')
-    print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & SNR rate& efficiency&Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ \\')
-    print(r'Mercator & 2015 & $-$2457000 & (s)&H$\alpha$ & SNR 60s$^{-1}$& SNR$^{2}$ 60s$^{-1}$& (deg)& (6.83 d)& km\,s$^{-1}$) & km\,s$^{-1}$)) \\')
+    print(r'\begin{tabular}{ l|| c| c|c|c| c|c|c|c|c|c|c|c }')
+    print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & SNR$_{0.5\AA}$& SNR rate& efficiency&Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ \\')
+    print(r'Mercator &  & $-$2455000 & (s)& 5230$\AA$ & 5230$\AA$ & SNR 60s$^{-1}$ & SNR$^{2}$ 60s$^{-1}$& (deg)& (6.83 d)& km\,s$^{-1}$) & km\,s$^{-1}$)) \\')
     print(r'\hline')
     # files.sort(key=lambda x: x.i)
     i = 1
     note=''
     for file in files:
-        a, b, c, d = 6549.7, 6550.7, 6577.0, 6578.0
-        wave = file.line6562_rebin.wl
-        flux = file.line6562_rebin.flux
-        normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
-        normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
-        # fit line trough slice
-        # print('ss', startwl, endwl)
-        slope, height = np.polyfit(normwave, normflux, 1)
-        # print 'slope and height are', slope, height
-        fit = np.poly1d([slope, height])
-        nnf = []
-        for k, nwl in enumerate(normwave):
-            nnf.append(normflux[k] / fit(nwl))
-        snr_ha = 1 / np.std(nnf)
-        snr_per_60 = snr_ha*60/file.exptime
-        count_per_60 = (snr_ha**2)*60/file.exptime
-        print('MERC', file.i, '&', file.time_and_date, '&', "{:.3f}".format(file.HJD - 2457000), '&', "{:.0f}".format(
-              file.exptime), '&', "{:.0f}".format(snr_ha), '&',"{:.0f}".format(snr_per_60), '&',
+        # a, b, c, d = 6549.7, 6550.7, 6577.0, 6578.0
+        # wave = file.line6562_rebin.wl
+        # flux = file.line6562_rebin.flux
+        # normwave = np.hstack((wave[(wave > a) & (wave < b)], wave[(wave > c) & (wave < d)]))
+        # normflux = np.hstack((flux[(wave > a) & (wave < b)], flux[(wave > c) & (wave < d)]))
+        # # fit line trough slice
+        # # print('ss', startwl, endwl)
+        # slope, height = np.polyfit(normwave, normflux, 1)
+        # # print 'slope and height are', slope, height
+        # fit = np.poly1d([slope, height])
+        # nnf = []
+        # for k, nwl in enumerate(normwave):
+        #     nnf.append(normflux[k] / fit(nwl))
+        snr_rebin = file.snr05
+        snr_original =file.snr_original
+        # snr_ha = 1 / np.std(nnf)
+        snr_per_60 = snr_rebin*60/file.exptime
+        count_per_60 = (snr_rebin**2)*60/file.exptime
+        print('MERC', file.i, '&', airmass.timeanddate3(file.header['DATE-OBS']), '&', "{:.3f}".format(file.HJD - 2455000), '&', "{:.0f}".format(
+              file.exptime), '&', "{:.0f}".format(snr_original), '&', "{:.0f}".format(snr_rebin), '&',"{:.0f}".format(snr_per_60), '&',
               "{:.0f}".format(count_per_60), '&', "{:.1f}".format(file.airmass), '&',
               "{:.0f}".format(file.altitude), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
               file.baricentric_correction), '&', "{:.0f}".format(file.velshift),  r'\\')

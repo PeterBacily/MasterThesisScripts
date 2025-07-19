@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf45e5b-3f8a-46be-98e4-a01fe6f9bae8" name="Default" comment="changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datafile_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Datafile_class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExecuteDataReduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExecuteDataReduc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/airmass.py" beforeDir="false" afterPath="$PROJECT_DIR$/airmass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create_datafiles.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_datafiles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datareduc.py" beforeDir="false" afterPath="$PROJECT_DIR$/datareduc.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,7 +218,7 @@
       <recent name="D:\peter\Master_Thesis\Datareduction\Scripts" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.create_datafiles">
+  <component name="RunManager" selected="Python.ExecuteDataReduc">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -344,19 +344,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.ExecuteDataReduc" />
       <item itemvalue="Python.Remove_obs_and_run_datareduction" />
+      <item itemvalue="Python.create_datafiles" />
       <item itemvalue="Python.make_linelist" />
       <item itemvalue="Python.testfile" />
-      <item itemvalue="Python.ExecuteDataReduc" />
-      <item itemvalue="Python.create_datafiles" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ExecuteDataReduc" />
         <item itemvalue="Python.create_datafiles" />
         <item itemvalue="Python.Remove_obs_and_run_datareduction" />
         <item itemvalue="Python.testfile" />
         <item itemvalue="Python.make_linelist" />
-        <item itemvalue="Python.ExecuteDataReduc" />
       </list>
     </recent_temporary>
   </component>
@@ -378,13 +378,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458221868445</updated>
-    </task>
-    <task id="LOCAL-00210" summary="changes">
-      <created>1746001569527</created>
-      <option name="number" value="00210" />
-      <option name="presentableId" value="LOCAL-00210" />
-      <option name="project" value="LOCAL" />
-      <updated>1746001569528</updated>
     </task>
     <task id="LOCAL-00211" summary="changes">
       <created>1746008818708</created>
@@ -722,7 +715,14 @@
       <option name="project" value="LOCAL" />
       <updated>1751141065663</updated>
     </task>
-    <option name="localTasksCounter" value="259" />
+    <task id="LOCAL-00259" summary="changes">
+      <created>1752929147413</created>
+      <option name="number" value="00259" />
+      <option name="presentableId" value="LOCAL-00259" />
+      <option name="project" value="LOCAL" />
+      <updated>1752929147414</updated>
+    </task>
+    <option name="localTasksCounter" value="260" />
     <servers />
   </component>
   <component name="ToolWindowManager">

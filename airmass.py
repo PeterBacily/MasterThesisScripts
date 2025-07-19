@@ -158,7 +158,14 @@ def timeanddate2(DATE_OBS):
     t = dt[11:16]
     m_n = calendar.month_abbr[m]
     return str(d) + ' ' + str( m_n) + ' ' + str(t)
-
+def timeanddate3(DATE_OBS):
+    dt = DATE_OBS
+    yr = dt[0:4]
+    m = int(dt[5:7])
+    d = dt[8:10]
+    t = dt[11:16]
+    m_n = calendar.month_abbr[m]
+    return str(d) + ' ' + str( m_n) + ' ' +str(yr) +' '+ str(t)
 def date(file):
     datafile = pf.open(file)
     header =  datafile[0].header

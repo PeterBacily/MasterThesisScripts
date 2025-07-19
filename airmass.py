@@ -320,8 +320,8 @@ def snr(wl,flux):
 
     # wl,data = extractdata(35, file)
     # print wl
-    start =5375
-    stop = 5385
+    start =5224
+    stop = 5239
     # print wl[(wl>start-5) & (wl<stop+5)]
     slice = flux[(wl>start) & (wl<stop)]
     wlslice = wl[(wl>start) & (wl<stop)]
@@ -396,7 +396,7 @@ def SNR_3(wl,flux,boundaries='Halpha',rebin=False,separate=False):
         bd = boundaries
     else:
         raise TypeError('Boundaries needs to be \'Halpha\', \'flat_continuum\', or a list of 2 or 4 boundaries')
-    snr = snr_2(wl, flux, boundaries=bd, rebin=rebin, rebin_size=0.1, separate=separate)
+    snr = snr_2(wl, flux, boundaries=bd, rebin=rebin, rebin_size=0.5, separate=separate)
     return snr
 
 def SNR_merc(masterfile,binsize = '01'):

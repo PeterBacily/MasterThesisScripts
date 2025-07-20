@@ -1369,7 +1369,7 @@ def create_JoO_mercator(filefolder):
     print(r'\begin{table*}')
     print(r'\begin{tabular}{ l|| c| c|c|c| c|c|c|c|c|c|c|c }')
     print(r'\# & Date & HJD & T$_{\textrm{exp}}$  & SNR & SNR$_{0.5\AA}$& SNR rate& efficiency&Airmass & Alt & Phase & BC& v$_{\textrm{ISM}}$ \\')
-    print(r'Mercator &  & $-$2455000 & (s)& 5230$\AA$ & 5230$\AA$ & SNR 60s$^{-1}$ & SNR$^{2}$ 60s$^{-1}$& (deg)& (6.83 d)& km\,s$^{-1}$) & km\,s$^{-1}$)) \\')
+    print(r'Mercator full &  & $-$2455000 & (s)& 5230$\AA$ & 5230$\AA$ & SNR 60s$^{-1}$ & SNR$^{2}$ 60s$^{-1}$& (deg)& (6.83 d)& km\,s$^{-1}$) & km\,s$^{-1}$)) \\')
     print(r'\hline')
     # files.sort(key=lambda x: x.i)
     i = 1
@@ -1393,7 +1393,7 @@ def create_JoO_mercator(filefolder):
         # snr_ha = 1 / np.std(nnf)
         snr_per_60 = snr_rebin*60/file.exptime
         count_per_60 = (snr_rebin**2)*60/file.exptime
-        print('MERC', file.i, '&', airmass.timeanddate3(file.header['DATE-OBS']), '&', "{:.3f}".format(file.HJD - 2455000), '&', "{:.0f}".format(
+        print('Merc$_{f}$', file.i, '&', airmass.timeanddate3(file.header['DATE-OBS']), '&', "{:.3f}".format(file.HJD - 2455000), '&', "{:.0f}".format(
               file.exptime), '&', "{:.0f}".format(snr_original), '&', "{:.0f}".format(snr_rebin), '&',"{:.0f}".format(snr_per_60), '&',
               "{:.0f}".format(count_per_60), '&', "{:.1f}".format(file.airmass), '&',
               "{:.0f}".format(file.altitude), '&', "{:.3f}".format(file.phase), '&', "{:.0f}".format(
@@ -1401,6 +1401,63 @@ def create_JoO_mercator(filefolder):
         i+=1
     print(r'\end{tabular}')
     print(r'\end{table*}')
+def create_JoO_merc_longtable(filefolder,rows_per_table = 50 ):
+    files = open_masterfiles.mercator(path=filefolder, manual_filelist=None)
+
+    # Config
+     # Adjust based on page size or readability
+    total_files = len(files)
+
+    # Precompute data rows
+    table_rows = []
+    for file in files:
+        snr_rebin = file.snr05
+        snr_original = file.snr_original
+        snr_per_60 = snr_rebin * 60 / file.exptime
+        count_per_60 = (snr_rebin ** 2) * 60 / file.exptime
+
+        row = 'Merc$_{{f}}$ {} & {} & {:.3f} & {:.0f} & {:.0f} & {:.0f} & {:.0f} & {:.0f} & {:.1f} & {:.0f} & {:.3f} & {:.0f} & {:.0f} \\\\'.format(
+
+            file.i,
+            airmass.timeanddate3(file.header['DATE-OBS']),
+            file.HJD - 2455000,
+            file.exptime,
+            snr_original,
+            snr_rebin,
+            snr_per_60,
+            count_per_60,
+            file.airmass,
+            file.altitude,
+            file.phase,
+            file.baricentric_correction,
+            file.velshift
+        )
+        table_rows.append(row)
+
+    # LaTeX column header
+    header = r'''
+    \begin{sidewaystable*}[!h]
+    \centering
+    \footnotesize
+    \begin{tabular}{ l|| c| c|c|c| c|c|c|c|c|c|c|c }
+    \# & Date & HJD & T$_{\textrm{exp}}$ & SNR & SNR$_{0.5\AA}$ & SNR rate & efficiency & Airmass & Alt & Phase & BC & v$_{\textrm{ISM}}$ \\
+    Mercator &  & $-$2455000 & (s) & 5230$\AA$ & 5230$\AA$ & SNR 60s$^{-1}$ & SNR$^2$ 60s$^{-1}$ &  & (deg) & (6.83 d) & km\,s$^{-1}$ & km\,s$^{-1}$ \\
+    \hline
+    '''
+
+    footer = r'''
+    \end{tabular}
+    \caption{Journal of Observations Mercator full (continued).}
+    \end{sidewaystable*}
+    '''
+
+    # Print table chunks
+    for i in range(0, total_files, rows_per_table):
+        print(header)
+        for row in table_rows[i:i + rows_per_table]:
+            print(row)
+        print(footer)
+
 
 def equivalent_width_array_apo_orders(folder,line,vlim=[-500,500]):
     if folder[-2] == r'\\':

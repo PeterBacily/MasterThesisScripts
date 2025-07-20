@@ -220,7 +220,7 @@ def plot_LS_bricks():
         for file in filelist:
             datareduc.ls_brick_plotter(file, -500, 500, plotsavefolder=savefolder, show='off', save='on')
 # plot_databricks()
-datareduc.create_JoO_mercator(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\masterfiles_with_snr\\')
+datareduc.create_JoO_merc_longtable(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\masterfiles_with_snr\\')
 quit()
 print(ls_databrick_filelist)
 for filepath in tqdm.tqdm(ls_databrick_filelist):

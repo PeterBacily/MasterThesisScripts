@@ -126,7 +126,8 @@ data_full_night_110= str(converted_Data_folder)+r'\demetra\with_orders\full_nigh
 data_full_night_100= str(converted_Data_folder)+r'\demetra\with_orders\full_night\snr_100\\'
 # data_individual = str(converted_Data_folder)+r'\demetra\with_orders\Individual\\'
 data_individual = str(converted_Data_folder)+r'\demetra\with_orders\all_darks\single_obs\\'
-# data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
+data_individual_list = open_masterfiles.apo_demetra_orders(path = data_individual,manual_filelist=None,sort_data_files='on')
+data_merc_2015_list = open_masterfiles.mercator(path=df_lp)
 # data_full_list = open_masterfiles.apo_demetra_orders(path = data_full_night_all,manual_filelist=None,sort_data_files='on')
 # pfs=[pf_dem_final_all,pf_dem_final_90,pf_dem_final_100]
 # dfs=[df1,df2,df3]
@@ -158,7 +159,8 @@ def get_day_data_list(data_individual_folder,data_full_night_path):
     #     li=day[0].line6562.lineinfo
     #     datareduc.plot_snr_test(day,li[2:6] )
 
-
+datareduc.rebin_and_overplot_demetra_orders(data_individual_list[5:8],full_night_file=None, mercator_file=data_merc_2015_list[3],rebin_size=0.5,boundaries=[5170, 5190])
+quit()
 # ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\\'
 # ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\rebin01\\'
 # ls_databrick_original = r'D:\peter\Master_Thesis\Datareduction\Converted_Data\ls_bricks\mercator\original\custom_f_array\rebin01\\'
@@ -220,7 +222,8 @@ def plot_LS_bricks():
         for file in filelist:
             datareduc.ls_brick_plotter(file, -500, 500, plotsavefolder=savefolder, show='off', save='on')
 # plot_databricks()
-datareduc.create_JoO_merc_longtable(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\masterfiles_with_snr\\')
+# datareduc.create_JoO_merc_longtable(r'D:\peter\Master_Thesis\Datareduction\Converted_Data\dataset_omar\masterfiles_with_snr\\')
+
 quit()
 print(ls_databrick_filelist)
 for filepath in tqdm.tqdm(ls_databrick_filelist):

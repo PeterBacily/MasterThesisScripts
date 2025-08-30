@@ -160,7 +160,52 @@ def find_inserted_elements(a, b):
         return inserted  # All elements of 'a' matched in order
     else:
         return None  # 'a' is not a subsequence of 'b'
-print(find_inserted_elements(a,b))
+
+
+import numpy as np
+from airmass import wl_to_velocity_2
+
+import numpy as np
+from airmass import wl_to_velocity_2
+
+def make_latex_table(linelist, offset_v=0):
+    latex = []
+    latex.append(r"\begin{table}[h!]")
+    latex.append(r"\centering")
+    latex.append(r"\begin{tabular}{l l l l}")
+    latex.append(r"\hline")
+    latex.append(r"Line & Type & Lower Boundaries & Upper Boundaries \\")
+    latex.append(r"\hline")
+
+    for i, line in enumerate(linelist):
+        center = line[1]
+        lows = line[2:4]
+        highs = line[4:6]
+        name = line[-1]
+
+        # Velocity conversion
+        v_lows = wl_to_velocity_2(lows, center, offset_v)
+        v_highs = wl_to_velocity_2(highs, center, offset_v)
+
+        # Wavelength row
+        wl_row = f"{name} & wl & {lows[0]:.1f} - {lows[1]:.1f} & {highs[0]:.1f} - {highs[1]:.1f} \\\\"
+        v_row  = f" & v & {v_lows[0]:.1f} - {v_lows[1]:.1f} & {v_highs[0]:.1f} - {v_highs[1]:.1f} \\\\"
+
+        latex.append(wl_row)
+        latex.append(v_row)
+
+        # Horizontal line only between different spectral lines
+        latex.append(r"\hline")
+
+    latex.append(r"\end{tabular}")
+    latex.append(r"\caption{Spectral line wavelength and velocity boundaries.}")
+    latex.append(r"\end{table}")
+
+    return "\n".join(latex)
+
+
+latex_code = make_latex_table(linelist_apo_vshift_revised, offset_v=18.5)
+print(latex_code)
 
 quit()
 linelist_apo_ha_test = [['Ha', 6562.819, 6549, 6550.7, 6576.0, 6578.0, r'H$\alpha$ 6563']]
